@@ -1,0 +1,1588 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pikku rakettiretki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2B1B5A; --panel:#FFFFFF; --edge:#2B1B5A; --muted:#8C82BF;
+  --sun:#FFC83D; --pink:#FF6FA8; --mint:#3FD6B0; --sky:#7FD3FF;
+  --btn:clamp(64px,17vw,104px);
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --ink:#FFF4CC; --panel:#2A2160; --edge:#120C33; --muted:#9D93D6; --sky:#26306E; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --ink:#FFF4CC; --panel:#2A2160; --edge:#120C33; --muted:#9D93D6; --sky:#26306E; color-scheme:dark; }
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%; scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  height:100%; margin:0; overflow:hidden; background:var(--sky); color:var(--ink);
+  font-family:"Baloo 2","Trebuchet MS","Comic Sans MS",system-ui,sans-serif;
+  user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent;
+}
+#game{position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+#top{
+  position:fixed; top:0; left:0; right:0; z-index:2; pointer-events:none;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 0;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+#topRow{width:100%; display:flex; justify-content:space-between; align-items:center}
+#track{list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:6px; pointer-events:none}
+#track li{
+  width:38px; height:38px; border-radius:50%; display:grid; place-items:center; font-size:20px;
+  background:var(--panel); border:3px solid var(--edge); opacity:.55; transition:transform .25s, opacity .25s, background .25s;
+}
+#track li.done{background:var(--mint); opacity:1}
+#track li.now{background:var(--sun); opacity:1; transform:scale(1.22)}
+#sound{
+  pointer-events:auto; width:52px; height:52px; border-radius:18px; font-size:24px; cursor:pointer;
+  background:var(--panel); color:var(--ink); border:3px solid var(--edge); box-shadow:0 4px 0 var(--edge);
+}
+#caption{
+  pointer-events:auto; cursor:pointer; font:inherit; font-weight:800;
+  font-size:clamp(1.2rem,4.6vw,1.9rem); line-height:1.15; text-align:center;
+  max-width:min(34rem,100%); padding:.35em .9em .3em;
+  background:var(--panel); color:var(--ink); border:4px solid var(--edge); border-radius:24px;
+  box-shadow:0 6px 0 var(--edge);
+}
+#caption.pop{animation:pop .35s ease-out}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+#bottom{
+  position:fixed; bottom:0; left:0; right:0; z-index:2;
+  padding:0 12px calc(env(safe-area-inset-bottom,0px) + 18px);
+  display:flex; justify-content:center; pointer-events:none;
+}
+#controls{display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:12px; pointer-events:auto}
+.big{
+  appearance:none; font:inherit; cursor:pointer; touch-action:none;
+  color:var(--ink); background:var(--panel);
+  min-width:var(--btn); min-height:var(--btn); padding:6px 14px 4px;
+  border:4px solid var(--edge); border-radius:26px; box-shadow:0 7px 0 var(--edge);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:transform .08s, box-shadow .08s;
+}
+.big .ico{font-size:calc(var(--btn) * .42); line-height:1}
+.big .lbl{font-size:clamp(.9rem,2.8vw,1.1rem); font-weight:800; line-height:1.1; margin-top:4px; white-space:nowrap}
+.big:active,.big.down{transform:translateY(5px); box-shadow:0 2px 0 var(--edge)}
+.big.swatch{background:var(--sw); color:#2B1B5A}
+.big.swatch.on{outline:5px solid var(--ink); outline-offset:3px}
+.big.go,.big.hold{background:var(--sun); color:#2B1B5A}
+.big.hold{min-width:calc(var(--btn) * 2.3)}
+.big.check{background:var(--mint); color:#2B1B5A}
+.big.red{
+  width:calc(var(--btn) * 1.7); height:calc(var(--btn) * 1.7); border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#FF9A9A,#E8283A 62%); color:#fff;
+  animation:pulse 1.1s ease-in-out infinite;
+}
+.big.red .ico{font-size:calc(var(--btn) * .5); font-weight:800; letter-spacing:.02em}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.big:focus-visible,#sound:focus-visible,#caption:focus-visible{outline:4px solid var(--pink); outline-offset:4px}
+.slots{
+  display:flex; gap:4px; padding:8px 14px; font-size:clamp(1.5rem,7vw,2.3rem); line-height:1;
+  background:var(--panel); border:4px solid var(--edge); border-radius:24px; box-shadow:0 6px 0 var(--edge);
+}
+.slots span{color:var(--muted)}
+.slots span.got{animation:pop .4s ease-out}
+.big .ico img{width:calc(var(--btn) * .62); height:calc(var(--btn) * .62); display:block}
+.big.oxb{background:#9FE7FF; color:#2B1B5A}
+.big.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.big.hint{background:var(--sun); color:#2B1B5A; animation:hint .9s ease-in-out infinite}
+@keyframes hint{50%{transform:translateY(-9px)}}
+@media (prefers-reduced-motion: reduce){ .big.red,.big.hint,.big.shake{animation:none} #caption.pop{animation:none} }
+</style>
+</head>
+<body>
+<h1 class="sr">Pikku rakettiretki</h1>
+<canvas id="game" aria-label="Rakettipelin kuva"></canvas>
+
+<div id="top">
+  <div id="topRow">
+    <ol id="track" aria-label="Tehtävän vaiheet">
+      <li aria-label="Rakenna ja tarkista">🔧</li><li aria-label="Laukaisu">🚀</li><li aria-label="Lento">🛰️</li><li aria-label="Laskeutuminen">🪐</li>
+    </ol>
+    <button id="sound" type="button" aria-label="Ääni päällä">🔊</button>
+  </div>
+  <button id="caption" type="button" aria-live="polite">Pikku rakettiretki</button>
+</div>
+
+<div id="bottom"><div id="controls"></div></div>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const cv = $('#game');
+let ctx = cv.getContext('2d');
+const cap = $('#caption'), controls = $('#controls'), soundBtn = $('#sound');
+const INK = '#2B1B5A', RED = '#FF4D4D', WHITE = '#F6F4FF', GRAY = '#8A86A8';
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isDark = () => {
+  const t = document.documentElement.dataset.theme;
+  if (t === 'dark') return true; if (t === 'light') return false;
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+};
+
+/* ---------- helpers ---------- */
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const lerp = (a,b,t) => a + (b-a)*t;
+const ease = t => { t = clamp(t,0,1); return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; };
+const rand = (a,b) => a + Math.random()*(b-a);
+const hex = c => { const n = parseInt(c.slice(1),16); return [n>>16, n>>8&255, n&255]; };
+const mixc = (a,b,t) => { const A=hex(a), B=hex(b); return `rgb(${A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(',')})`; };
+
+let W=0, H=0, U=1;
+function resize(){
+  const d = Math.min(devicePixelRatio||1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W*d); cv.height = Math.round(H*d);
+  ctx.setTransform(d,0,0,d,0,0);
+  U = Math.min(W, H*0.75)/100;
+}
+addEventListener('resize', resize); resize();
+
+function lay(){
+  const RH = Math.max(120, Math.min(U*40, H*.38));
+  const w = RH*.3, hb = RH*.3, ht = RH*.36*tankK(), hc = RH*.34;
+  const gy = H*.74, rx = W/2, padH = U*2.4;
+  const rb = gy - padH - RH*.06;
+  return { RH, w, hb, ht, hc, gy, rx, padH, rb, ah: RH*.3,
+    winY: rb - hb - ht - hc*.45, towerX: rx - RH*.42, ax0: rx - RH*.95,
+    fuelX: rx + RH*.52, oxX: rx + RH*.8, legLen: RH*.12 };
+}
+const moonY = (x, gy) => gy + U*3*(4*Math.pow(x/W - .5, 2));
+
+/* ---------- sound ---------- */
+let AC = null, soundOn = true, hiss = null, rumble = null;
+function ac(){
+  if (!AC){ try { AC = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){} }
+  if (AC && AC.state === 'suspended') AC.resume();
+  if (AC && !hiss){ hiss = noiseLoop(1100); rumble = noiseLoop(320); }
+  return AC;
+}
+function tone(f, dur=.15, type='sine', vol=.2, delay=0, slide){
+  if (!soundOn) return; const a = ac(); if (!a) return;
+  const t = a.currentTime + delay, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t);
+  if (slide) o.frequency.exponentialRampToValueAtTime(slide, t+dur);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(vol, t+.02); g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t+dur+.05);
+}
+function noiseLoop(freq){
+  const a = AC; if (!a) return null;
+  const len = a.sampleRate, b = a.createBuffer(1, len, a.sampleRate), d = b.getChannelData(0);
+  for (let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  const src = a.createBufferSource(); src.buffer = b; src.loop = true;
+  const f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = freq;
+  const g = a.createGain(); g.gain.value = 0;
+  src.connect(f).connect(g).connect(a.destination); src.start();
+  return { set(v){ g.gain.setTargetAtTime(soundOn ? v : 0, a.currentTime, .06); } };
+}
+const loopSet = (l,v) => l && l.set(v);
+const sfx = {
+  pick(){ tone(523,.12,'triangle',.2); tone(784,.18,'triangle',.16,.07); },
+  nope(){ tone(240,.16,'square',.07); tone(190,.22,'square',.07,.13); },
+  clunk(){ tone(150,.2,'triangle',.32,0,70); tone(95,.22,'sine',.25,.03); },
+  glug(){ tone(rand(180,280),.09,'sine',.18,0,rand(380,520)); },
+  beep(){ tone(880,.2,'square',.08); },
+  zero(){ tone(1320,.5,'square',.1); },
+  power(){ tone(200,.45,'sawtooth',.06,0,900); },
+  radio(){ [1200,900,1500,1100].forEach((f,i)=>tone(f,.07,'square',.05,i*.09)); },
+  engines(){ tone(70,.6,'sawtooth',.1,0,140); },
+  bonk(){ tone(420,.14,'square',.1,0,140); },
+  boing(){ tone(180,.4,'sine',.28,0,620); },
+  win(){ [523,659,784,1047].forEach((f,i)=>tone(f,.28,'triangle',.18,i*.12)); }
+};
+
+/* ---------- voice ---------- */
+let voice = null, lastLine = '';
+function pickVoice(){
+  if (!('speechSynthesis' in window)) return;
+  const vs = speechSynthesis.getVoices();
+  voice = vs.find(v => /^fi/i.test(v.lang) && /satu|google|female|nainen/i.test(v.name))
+       || vs.find(v => /^fi/i.test(v.lang)) || null;
+}
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+const VOICE = false; // synthetic speech disabled: captions + sound effects only
+function speak(text){
+  if (!VOICE || !soundOn || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\uFE0F\u200D]/gu,''));
+    u.lang = 'fi-FI'; u.rate = .92; u.pitch = 1.15; if (voice) u.voice = voice;
+    speechSynthesis.speak(u);
+  } catch(e){}
+}
+function say(text, talk=true){
+  lastLine = text; cap.textContent = text;
+  cap.classList.remove('pop'); void cap.offsetWidth; cap.classList.add('pop');
+  if (talk) speak(text);
+}
+cap.addEventListener('click', () => { ac(); speak(lastLine); });
+soundBtn.addEventListener('click', () => {
+  soundOn = !soundOn;
+  soundBtn.textContent = soundOn ? '🔊' : '🔇';
+  soundBtn.setAttribute('aria-label', soundOn ? 'Ääni päällä' : 'Ääni pois');
+  if (!soundOn){ try{ speechSynthesis.cancel(); }catch(e){} loopSet(hiss,0); loopSet(rumble,0); }
+  else { ac(); sfx.pick(); }
+});
+
+/* ---------- state ---------- */
+const G = { gen:0 };
+const parts = [];
+const field = Array.from({length:140}, () => ({ x:Math.random(), y:Math.random(), r:rand(.6,2.2), d:rand(.25,1), ph:rand(0,6) }));
+const craters = Array.from({length:9}, () => ({ x:Math.random(), dy:rand(.05,.8), r:rand(.03,.08) }));
+const clouds = [{x:.12,y:.24,s:1},{x:.7,y:.13,s:.8},{x:.45,y:.36,s:.55}];
+let T = 0;
+
+function reset(scene){
+  G.gen++;
+  Object.assign(G, {
+    scene, step:'', built:0, fly:null,
+    astro:'ground', ap:0, ax:0, ay:0,
+    fuel:0, ox:0, glugT:0, fuelDone:false, oxDone:false,
+    sys:{ power:false, radio:false, engines:false }, radioT:-9, engT:-9,
+    alt:0, vy:0, ry:0, cam:0, saidSpace:false, count:0, shake:0, boost:null, etDrop:null,
+    rx:W/2, vx:0, keyDir:0, drag:false, ptrX:W/2, drift:0, driftT:3, prog:0, near:true, offT:0, lastNag:-99,
+    panels:0, panelsOpen:false, batt:0, bent:false, rock:null, scroll:0, planetY:-.4, tilt:0,
+    events:[], evIdx:0, ev:null, dust:0, frost:0, frostGoal:0, temp:0, shield:0, debris:[], bolt:0, boltRot:0,
+    legs:0, legsOut:false, land:{ y:0, vy:0, state:'hover', bounces:0, saidBoing:false },
+    jump:{ y:0, vy:0 }, jumped:false, flag:0, flagDone:false,
+    hold:false, holdSrc:'', holdWhich:'', bigText:'', bigT:0, bigDur:1
+  });
+  parts.length = 0;
+}
+function later(ms, fn){ const g = G.gen; setTimeout(() => { if (G.gen === g) fn(); }, ms); }
+function setTrack(i){
+  document.querySelectorAll('#track li').forEach((li,k) => {
+    li.classList.toggle('done', k < i); li.classList.toggle('now', k === i);
+    if (k === i) li.setAttribute('aria-current','step'); else li.removeAttribute('aria-current');
+  });
+}
+
+/* ---------- controls ---------- */
+function setControls(items){
+  controls.innerHTML = ''; G.hold = false; G.holdWhich = '';
+  for (const it of items){
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'big ' + (it.cls||'');
+    if (it.id) b.id = it.id;
+    const ico = it.img ? `<img src="${it.img}" alt="">` : (it.icon||'');
+    b.innerHTML = `<span class="ico" aria-hidden="true">${ico}</span>${it.label ? `<span class="lbl">${it.label}</span>` : ''}`;
+    if (!it.label && it.aria) b.setAttribute('aria-label', it.aria);
+    if (it.hold){
+      const on = e => { e.preventDefault(); ac(); G.hold = true; G.holdSrc = 'btn'; G.holdWhich = it.hold; b.classList.add('down'); try{ b.setPointerCapture(e.pointerId); }catch(_){} };
+      const off = () => { if (!b.classList.contains('down')) return; b.classList.remove('down'); G.hold = false; if (it.tap) it.tap(); };
+      b.addEventListener('pointerdown', on);
+      ['pointerup','pointercancel','lostpointercapture'].forEach(ev => b.addEventListener(ev, off));
+      b.addEventListener('contextmenu', e => e.preventDefault());
+      b.addEventListener('keydown', e => { if ((e.key===' '||e.key==='Enter') && !e.repeat){ e.preventDefault(); G.hold = true; G.holdSrc='btn'; G.holdWhich = it.hold; b.classList.add('down'); } });
+      b.addEventListener('keyup', e => { if (e.key===' '||e.key==='Enter'){ e.preventDefault(); off(); } });
+    } else {
+      b.addEventListener('click', () => { ac(); it.click(b); });
+    }
+    controls.append(b);
+  }
+}
+
+/* ---------- title ---------- */
+function startTitle(){
+  reset('title'); setTrack(-1); G.built = 3; G.fuel = G.ox = 1;
+  say('Pikku rakettiretki', false);
+  setControls([{ icon:'🚀', label:'Aloita', cls:'go', click: startMap }]);
+}
+
+/* ---------- build ---------- */
+const ORDER = ['booster','tank','capsule'];
+const TRAY = ['capsule','booster','tank'];
+const PART_LABEL = { booster:'Kantoraketti', tank:'Tankki', capsule:'Kapseli' };
+const HINT = {
+  booster: 'Aloita alhaalta! Etsi osa, jossa on iso moottori.',
+  tank: 'Ei vielä! Seuraavaksi tulee osa, jossa on polttoaine.'
+};
+let ICONS = null;
+
+/* ---------- destinations ---------- */
+const DESTS = [
+  { key:'mercury', name:'Merkurius', ill:'Merkuriukseen', gen:'Merkuriuksen', far:false, fact:'Merkurius on lähimpänä Aurinkoa.', ground:'#C9BBAE', crater:['#B0A294','#988A7C'], sky:['#120E3D','#2A1E6B'], stars:true, skyObj:'bigsun' },
+  { key:'venus', name:'Venus', ill:'Venukseen', gen:'Venuksen', far:false, fact:'Venus on tosi kuuma, ja sitä peittävät paksut pilvet.', ground:'#B8743F', crater:['#9E5F30','#86501F'], sky:['#D99A2B','#FFE28A'], stars:false, skyObj:'none' },
+  { key:'mars', name:'Mars', ill:'Marsiin', gen:'Marsin', far:false, fact:'Mars on punainen, koska sen pöly on ruostetta.', ground:'#D9744A', crater:['#B85A35','#9E4A2A'], sky:['#7A4A3A','#E8B89A'], stars:false, skyObj:'sun' },
+  { key:'jupiter', name:'Jupiter', ill:'Jupiteriin', gen:'Europan', far:true, fact:'Jupiter on kaasua, joten sille ei voi laskeutua. Laskeudutaan sen kuulle, Europalle!', ground:'#EDE6DA', crater:['#C9A98A','#B98B6A'], sky:['#120E3D','#2A1E6B'], stars:true, skyObj:'jupiter' },
+  { key:'saturn', name:'Saturnus', ill:'Saturnukseen', gen:'Titanin', far:true, fact:'Saturnus on kaasua, joten sille ei voi laskeutua. Laskeudutaan sen kuulle, Titanille! Titanilla on järviä, mutta ei vettä.', ground:'#A88B5C', crater:['#4A4A5A','#3A3A4A'], sky:['#6E4E2E','#C99A5A'], stars:false, skyObj:'none' },
+  { key:'uranus', name:'Uranus', ill:'Uranukseen', gen:'Mirandan', far:true, fact:'Uranus on kaasua, joten sille ei voi laskeutua. Laskeudutaan sen kuulle, Mirandalle!', ground:'#BFC3C9', crater:['#A3A8B0','#8C919A'], sky:['#120E3D','#2A1E6B'], stars:true, skyObj:'uranus' },
+  { key:'neptune', name:'Neptunus', ill:'Neptunukseen', gen:'Tritonin', far:true, fact:'Neptunus on kaasua, joten sille ei voi laskeutua. Laskeudutaan sen kuulle, Tritonille!', ground:'#E8D9D6', crater:['#D4BEB9','#BFA39D'], sky:['#120E3D','#2A1E6B'], stars:true, skyObj:'neptune' }
+];
+let D = DESTS[2];
+DESTS.forEach(d => d.tank = d.far ? 1.35 : 1);
+DESTS.push({ key:'iss', iss:true, name:'avaruusasema', ill:'avaruusasemalle', gen:'', far:false, tank:.8 });
+const tankK = () => D.tank || 1;
+const MAP_ORDER = ['mercury','venus','earth','mars','jupiter','saturn','uranus','neptune'];
+const MAP_SIZE = { mercury:3, venus:4.5, earth:5, mars:4, jupiter:9, saturn:7.5, uranus:6, neptune:6 };
+const BODIES = {
+  mercury:{ col:'#B9A89A', dots:'#9E8E80' },
+  venus:{ col:'#F2C46B', bands:'#E0A458' },
+  mars:{ col:'#E0663A', dots:'#B84A28', cap:true },
+  jupiter:{ col:'#E8C49A', bands:'#C98A5A', spot:'#D9573B' },
+  saturn:{ col:'#EBD39A', bands:'#D4B270', rings:'#C9A85A' },
+  uranus:{ col:'#9FE3E8' },
+  neptune:{ col:'#4D7CFF', bands:'#3A62D9' }
+};
+const TXT = {
+  rocket: { labels:{ booster:'Kantoraketti', tank:'Tankki', capsule:'Kapseli' },
+    hint:{ booster:'Aloita alhaalta! Etsi osa, jossa on iso moottori.', tank:'Ei vielä! Seuraavaksi tulee osa, jossa on polttoaine.' },
+    intro:'Rakennetaan raketti alhaalta ylöspäin! Missä osassa on iso moottori?',
+    p1:'Kantoraketti paikallaan! Nyt osa, jossa on polttoaine.', p3:'Rakensit raketin! Kantoraketti, tankki ja kapseli.' },
+  shuttle: { labels:{ booster:'Kantoraketit', tank:'Iso tankki', capsule:'Sukkula' },
+    hint:{ booster:'Aloita kantoraketeista! Niitä on kaksi.', tank:'Ei vielä! Seuraavaksi iso tankki kantorakettien väliin.' },
+    intro:'Rakennetaan avaruussukkula! Mistä osasta aloitetaan? Vihje: niitä on kaksi.',
+    p1:'Kantoraketit paikallaan! Nyt iso tankki niiden väliin.', p2:'Tankki paikallaan! Lopuksi sukkula tankin eteen. Siinä astronautti istuu.',
+    p3:'Rakensit avaruussukkulan! Kaksi kantorakettia, iso tankki ja sukkula.' }
+};
+const VT = () => SH() ? TXT.shuttle : TXT.rocket;
+function makeIcons(){
+  ICONS = {};
+  for (const k of ORDER){
+    const c = document.createElement('canvas'); c.width = c.height = 160;
+    const k2 = c.getContext('2d'), old = ctx; ctx = k2;
+    try {
+      if (SH()){
+        if (k === 'booster') partSRBs(80, 145, 170, {});
+        if (k === 'tank') partET(80, 152, 150, { fuel:0, ox:0 });
+        if (k === 'capsule') partOrbiter(80, 135, 170, {});
+      } else {
+        if (k === 'booster') partBooster(80, 122, 230, {});
+        if (k === 'tank') partTank(80, 124, 230, { fuel:0, ox:0 });
+        if (k === 'capsule') partCapsule(80, 128, 230, {});
+      }
+    } finally { ctx = old; }
+    ICONS[k] = c.toDataURL();
+  }
+}
+function buildControls(){
+  setControls(TRAY.filter(k => ORDER.indexOf(k) >= G.built && !(G.fly && G.fly.kind === k))
+    .map(k => ({ img:ICONS[k], label:PART_LABEL[k], id:'p-'+k, click:b => placePart(k, b) })));
+}
+function startBuild(){
+  reset('prep'); setTrack(0); G.step = 'build';
+  Object.assign(PART_LABEL, VT().labels);
+  if (!SH()) PART_LABEL.tank = D.far ? 'Iso tankki' : 'Tankki';
+  Object.assign(HINT, VT().hint);
+  makeIcons();
+  say(VT().intro);
+  buildControls();
+}
+function placePart(k, b){
+  if (G.fly || G.step !== 'build') return;
+  const need = ORDER[G.built];
+  if (k !== need){
+    sfx.nope();
+    b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+    say(HINT[need]);
+    const nb = document.getElementById('p-' + need); if (nb) nb.classList.add('hint');
+    return;
+  }
+  const r = b.getBoundingClientRect();
+  G.fly = { kind:k, t:0, x0:r.left + r.width/2, y0:r.top + r.height*.7 };
+  sfx.pick(); buildControls();
+}
+function slotBottom(k, L){ return L.rb - slotOff(k, L); }
+function partPlaced(){
+  const L = lay(), k = G.fly.kind;
+  G.fly = null; G.built++;
+  sfx.clunk(); sparkle(L.rx, slotBottom(k, L) - L.RH*.12, 12);
+  if (G.built === 1) say(VT().p1);
+  if (G.built === 2) say(SH() ? VT().p2 : 'Tankki paikallaan! ' + (D.far ? 'Iso tankki riittää pitkälle matkalle. ' : '') + 'Lopuksi kapseli huipulle. Siellä astronautti istuu.');
+  if (G.built === 3){ say(VT().p3); sfx.win(); later(3200, fuelStep); }
+  buildControls();
+}
+
+/* ---------- fuel ---------- */
+function fuelStep(){
+  G.step = 'fuel';
+  say((SH() ? 'Sukkula' : 'Raketti') + ' tarvitsee polttoainetta ja happea, jotta syntyy tulta. Täytä tankit pitämällä nappeja pohjassa!');
+  fuelControls();
+}
+function fuelControls(){
+  const l = [];
+  if (G.fuel < 1) l.push({ icon:'⛽', label:'Polttoaine', cls:'hold', hold:'fuel', tap(){ if (G.step==='fuel') G.fuel = Math.min(1, G.fuel + .04); } });
+  if (G.ox < 1) l.push({ icon:'🫧', label:'Happi', cls:'hold oxb', hold:'ox', tap(){ if (G.step==='fuel') G.ox = Math.min(1, G.ox + .04); } });
+  setControls(l);
+}
+function tankFull(which){
+  if (G.fuel >= 1 && G.ox >= 1){
+    G.step = 'fueled'; setControls([]); sfx.win();
+    say('Polttoaine ja happi täynnä!'); later(2400, crewStep);
+  } else {
+    sfx.pick(); say(which === 'fuel' ? 'Polttoaine täynnä! Nyt happi.' : 'Happi täynnä! Nyt polttoaine.'); fuelControls();
+  }
+}
+
+/* ---------- crew ---------- */
+function crewStep(){
+  G.step = 'crew'; G.astro = 'ground';
+  say('Napauta astronauttia, niin hän nousee kyytiin!');
+  setControls([{ icon:'🧑‍🚀', label:'Kyytiin', click: climbIn }]);
+}
+function climbIn(){
+  if (G.astro !== 'ground' || G.step !== 'crew') return;
+  G.astro = 'walk'; G.ap = 0; sfx.pick(); setControls([]);
+  say('Hissillä ylös torniin!');
+}
+
+/* ---------- systems ---------- */
+const SYS = [
+  ['power','⚡','Virta','Virta päällä! Valot toimivat.'],
+  ['radio','📡','Radio','Radio päällä! Lennonjohto kuulee meidät.'],
+  ['engines','🔥','Moottorit','Moottorit valmiina!']
+];
+function systemsStep(){
+  G.step = 'sys';
+  say('Järjestelmätarkistus! Laita päälle virta, radio ja moottorit.');
+  sysControls();
+}
+function sysControls(){
+  setControls(SYS.map(([k, ic, lb, msg]) => ({
+    icon: G.sys[k] ? '✅' : ic, label: lb, cls: G.sys[k] ? 'check' : '',
+    click(){
+      if (G.sys[k] || G.step !== 'sys') return;
+      G.sys[k] = true; sfx[k]();
+      if (k === 'radio') G.radioT = T;
+      if (k === 'engines'){ G.engT = T; const L = lay(); for (let i=0;i<10;i++) smokePuff(L); }
+      if (Object.values(G.sys).every(Boolean)){ G.step = 'sysDone'; say('Kaikki järjestelmät valmiina!'); later(2400, startLaunch); }
+      else say(msg);
+      sysControls();
+    }
+  })));
+}
+
+/* ---------- launch ---------- */
+function startLaunch(){
+  G.scene = 'launch'; G.step = 'button'; setTrack(1);
+  say('Kohde: ' + D.name + '! Onko kaikki valmiina? Paina isoa punaista nappia!');
+  setControls([{ icon:'NYT!', label:'', aria:'Laukaisu', cls:'red', click: countdown }]);
+}
+function countdown(){
+  if (G.step !== 'button') return;
+  setControls([]); G.step = 'count'; G.count = 5;
+  const tick = () => {
+    if (G.count > 0){ big(String(G.count), .9); say(String(G.count)); sfx.beep(); G.count--; later(1000, tick); }
+    else { big('Lähtö!', 1.6); say('Lähtö!'); sfx.zero(); G.step = 'lift'; G.vy = 0; loopSet(rumble, .5); }
+  };
+  tick();
+}
+function dropBooster(){
+  if (G.step !== 'coast1') return;
+  setControls([]); sfx.clunk();
+  G.boost = { wy: G.ry - G.cam, vy: 0, rot: 0, sep: 0 };
+  G.step = 'lift2'; G.stageT = 0; loopSet(rumble, .25);
+  say(SH() ? 'Kantoraketit irti! Sukkulan moottorit jatkavat!' : 'Kantoraketti irti! Ylävaiheen moottori päälle!');
+}
+function dropTank(){
+  if (G.step !== 'coast2t') return;
+  setControls([]); sfx.clunk();
+  G.etDrop = { wy: G.ry - G.cam, vy: 0, rot: 0 };
+  G.step = 'lift3'; G.stageT = 0; loopSet(rumble, .2);
+  say('Tankki irti! Nyt sukkula lentää yksin!');
+}
+
+/* ---------- trip ---------- */
+function startTrip(){
+  const L = lay();
+  G.scene = 'trip'; setTrack(2); G.step = 'panels';
+  G.ry = G.ry - L.hb; G.rx = W/2; G.vx = 0; G.cam = 0; G.shake = 0; G.boost = null;
+  G.events = pickEvents(); G.evIdx = 0; G.ev = null;
+  loopSet(rumble, 0);
+  say('Olemme avaruudessa! Avaa aurinkopaneelit, niin saadaan sähköä.');
+  setControls([{ icon:'☀️', label:'Avaa paneelit', cls:'go', click: openPanels }]);
+}
+function openPanels(){
+  if (G.panelsOpen) return;
+  G.panelsOpen = true; setControls([]); sfx.power();
+  say('Aurinko antaa meille virtaa! Akku latautuu.');
+  later(3200, courseStep);
+}
+function thrusterControls(){
+  return [
+    { icon:'◀', label:'Vasen', cls:'hold', hold:'L' },
+    { icon:'▶', label:'Oikea', cls:'hold', hold:'R' }
+  ];
+}
+function courseStep(){
+  G.step = 'course'; G.driftT = 1.5; G.drift = W*.14*(Math.random() < .5 ? -1 : 1);
+  say('Lennetään ' + D.ill + '! ' + (D.far ? 'Matka on pitkä. ' : '') + 'Pidä ' + (SH() ? 'sukkula' : 'raketti') + ' katkoviivalla ohjausmoottoreiden avulla.');
+  setControls(thrusterControls());
+}
+function antennaTip(L){
+  const w = L.w, yC = G.ry - L.ht, hc = L.hc;
+  const bx = G.rx + w*.22, by = yC - hc*.62;
+  return G.bent ? { x: bx + w*.45, y: by + w*.08 } : { x: bx + w*.25, y: by - w*.45 };
+}
+/* ---------- trip events: 1–2 picked at random per flight ---------- */
+const EVENT_POOL = ['antenna','dust','cold','hot','debris','bolt'];
+function pickEvents(){
+  const pool = EVENT_POOL.slice().sort(() => Math.random() - .5);
+  const n = D.far ? 3 : 2;
+  return n === 2 ? [{ kind:pool[0], at:.33 }, { kind:pool[1], at:.68 }] : [{ kind:pool[0], at:.25 }, { kind:pool[1], at:.5 }, { kind:pool[2], at:.75 }];
+}
+function boltPos(L){ return { x: G.rx - L.w*.3, y: G.ry - L.ht*.12 }; }
+function startEvent(kind){
+  G.step = 'event'; G.ev = { kind, phase:'start', t:0, n:0 }; setControls([]);
+  if (kind === 'antenna'){ G.ev.phase = 'incoming'; G.rock = { t:0 }; }
+  else if (kind === 'dust'){
+    G.dust = 1; sfx.bonk();
+    say('Avaruuspölyä aurinkopaneeleissa! Akku tyhjenee. Puhdista paneelit!');
+    setControls([{ icon:'🧽', label:'Puhdista', cls:'go', click: evAct }]);
+  }
+  else if (kind === 'cold'){
+    G.frostGoal = 1; sfx.nope();
+    say('Brr! Kapselissa on kylmä. Laita lämmitys päälle!');
+    setControls([{ icon:'🌡️', label:'Lämmitys', cls:'go', click: evAct }]);
+  }
+  else if (kind === 'hot'){
+    G.temp = 1; sfx.nope();
+    say('Moottori on liian kuuma! Pidä jäähdytysnappia pohjassa.');
+    setControls([{ icon:'❄️', label:'Jäähdytä', cls:'hold oxb', hold:'cool', tap(){ if (G.ev && G.ev.kind === 'hot') G.temp = Math.max(0, G.temp - .06); } }]);
+  }
+  else if (kind === 'debris'){
+    G.debris = [0,1,2].map(i => ({ x: W*(.25 + .25*i) + rand(-U*3, U*3), y: -U*10 - i*U*6, vx:0, vy:0, hit:false, rot:rand(0,6), delay:i*.45 }));
+    say('Avaruusromua edessä! Laita suojakilpi päälle!');
+    setControls([{ icon:'🛡️', label:'Suojakilpi', cls:'go', click: evAct }]);
+  }
+  else if (kind === 'bolt'){
+    G.bolt = 1; sfx.clunk();
+    say('Ruuvi on löystynyt! Kiristä se kolmella napautuksella.');
+    setControls([{ icon:'🔩', label:'Kiristä', cls:'go', click: evAct }]);
+  }
+}
+function evAct(){
+  const e = G.ev; if (!e || G.step !== 'event') return;
+  if (e.kind === 'antenna'){ if (e.phase !== 'fault') return; e.phase = 'fixing'; e.t = 0; setControls([]); sfx.pick(); say('Korjataan antennia…', false); }
+  else if (e.kind === 'bolt'){
+    if (e.n >= 3) return;
+    e.n++; sfx.clunk(); G.boltRot += 1.2;
+    const p = boltPos(lay()); sparkle(p.x, p.y, 5);
+    say(['Yksi!','Kaksi!','Kolme!'][e.n - 1]);
+    if (e.n >= 3){ setControls([]); G.bolt = 0; later(900, () => evDone('Tiukalla! Hyvää työtä, insinööri!')); }
+  }
+  else if (e.phase === 'start'){
+    e.phase = 'working'; e.t = 0; setControls([]);
+    if (e.kind === 'cold'){ G.frostGoal = 0; sfx.power(); }
+    else if (e.kind === 'debris') sfx.power();
+    else sfx.pick();
+  }
+}
+const fixAntenna = evAct;
+function evDone(msg){
+  if (G.step !== 'event') return;
+  G.ev = null; G.debris = []; G.step = 'wait'; sfx.radio(); say(msg);
+  later(2800, () => { G.step = 'course'; setControls(thrusterControls()); say('Pidä ' + (SH() ? 'sukkula' : 'raketti') + ' katkoviivalla!'); });
+}
+
+/* ---------- land ---------- */
+function startLand(){
+  G.scene = 'land'; setTrack(3); G.step = 'legs'; G.rx = W/2; G.vx = 0;
+  G.legs = 0; G.legsOut = false; G.panels = 0;
+  Object.assign(G.land, { y:H*.45, vy:0, state:'hover', bounces:0, saidBoing:false });
+  say(D.fact + ' Laske ensin laskeutumisjalat alas.');
+  setControls([{ icon:'🦿', label:'Jalat alas', cls:'go', click: legsDown }]);
+}
+function legsDown(){
+  if (G.legsOut) return;
+  G.legsOut = true; sfx.clunk(); setControls([]);
+  say('Jalat alhaalla! Hidasta vauhtia pitämällä nappia pohjassa. Varovasti!');
+  later(2600, () => {
+    G.land.state = 'fall'; G.step = 'fall';
+    setControls([{ icon:'🔥', label:'Hidasta', cls:'hold', hold:'thrust' }]);
+  });
+}
+function landed(soft){
+  G.land.state = 'landed'; setControls([]); loopSet(hiss, 0);
+  dust(W/2, lay().gy, 30);
+  say(soft ? 'Täydellinen laskeutuminen! Hienoa työtä, insinööri!' : 'Perillä! Jalat ottivat töyssyn vastaan.');
+  sfx.win(); later(2400, startDone);
+}
+function startDone(){
+  G.scene = 'done'; G.astro = 'out'; G.ap = 0; G.flag = 0; G.flagDone = false;
+  G.jump = { y:0, vy:0 }; G.jumped = false;
+  say('Ulos vain, astronautti!');
+  setControls([{ icon:'🔁', label:'Uudestaan', cls:'go', click: startMap }]);
+}
+function big(text, dur){ G.bigText = text; G.bigT = 0; G.bigDur = dur; }
+
+/* ---------- map ---------- */
+let missions = 0;
+function startMap(){
+  if (missions++ === 0) D = DESTS.find(d => d.iss);
+  else { const prev = D, opts = DESTS.filter(d => d !== prev); D = opts[Math.floor(Math.random()*opts.length)]; }
+  reset('map'); setTrack(0);
+  G.mapAng = MAP_ORDER.map(() => rand(0, Math.PI*2));
+  const di = MAP_ORDER.indexOf(D.key);
+  if (di >= 0) G.mapAng[di] = G.mapAng[2] + (di > 2 ? 1.6 : 1.2);
+  if (D.iss) say('Tänään lennetään kansainväliselle avaruusasemalle! Se kiertää Maata aivan lähellä, joten sinne lennetään avaruussukkulalla!');
+  else say('Tänään lennetään ' + D.ill + '! Katso karttaa: tuossa on meidän reittimme.' + (D.far ? ' Matka on pitkä, joten rakennetaan iso polttoainetankki.' : ''));
+  setControls([{ icon:'🔧', label:'Rakentamaan', cls:'go', click: startBuild }]);
+}
+function mapLabel(text, x, y){
+  ctx.save();
+  const fsz = Math.max(13, U*3.6);
+  ctx.font = `800 ${fsz}px "Baloo 2","Trebuchet MS",system-ui,sans-serif`;
+  const w = ctx.measureText(text).width + fsz, h = fsz*1.5;
+  const lx = clamp(x - w/2, 4, W - w - 4);
+  ink(2); rr(lx, y, w, h, h/2); fs('#FFFFFF');
+  ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, lx + w/2, y + h*.55);
+  ctx.restore();
+}
+function mapRocket(x, y, ang){
+  ctx.save(); ctx.translate(x, y); ctx.rotate(ang + Math.PI/4);
+  ctx.font = `${Math.max(20, U*6)}px system-ui,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🚀', 0, 0);
+  ctx.restore();
+}
+function drawMap(){
+  sky('#120E3D', '#2A1E6B'); starField(.7, 0);
+  const cx = W/2, cy = H*.5, R = Math.min(W*.45, H*.32), ps = Math.max(.8, U/4.5);
+  if (D.iss){
+    const er = R*.38; drawEarthBall(cx, cy, er);
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(-.3);
+    ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(0, 0, R*.8, R*.36, 0, 0, 7); ctx.stroke(); ctx.restore();
+    const a = -.15, ex = Math.cos(a)*R*.8, ey = Math.sin(a)*R*.36;
+    const ix = cx + ex*Math.cos(-.3) - ey*Math.sin(-.3), iy = cy + ex*Math.sin(-.3) + ey*Math.cos(-.3);
+    const sx = cx - er*.3, sy = cy - er*.95, kx = cx - er*.6, ky = iy - R*.35;
+    ctx.save(); ctx.setLineDash([U*1.6, U*1.2]); ctx.lineDashOffset = -T*U*6; ctx.strokeStyle = '#3FD6B0'; ctx.lineWidth = Math.max(3, U*.7);
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(kx, ky, ix, iy); ctx.stroke(); ctx.restore();
+    const t = (T*.25) % 1, u = 1 - t;
+    const qx = u*u*sx + 2*u*t*kx + t*t*ix, qy = u*u*sy + 2*u*t*ky + t*t*iy;
+    const dx = 2*u*(kx - sx) + 2*t*(ix - kx), dy = 2*u*(ky - sy) + 2*t*(iy - ky);
+    drawISS(ix, iy + U*2, Math.max(16, U*4.5));
+    ctx.save(); ctx.strokeStyle = `rgba(255,217,61,${.5 + .5*Math.sin(T*4)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(ix, iy - U*1.5, Math.max(24, U*7), 0, 7); ctx.stroke(); ctx.restore();
+    mapRocket(qx, qy, Math.atan2(dy, dx));
+    mapLabel('Maa', cx, cy + er + U*2);
+    mapLabel('Avaruusasema', ix, iy + Math.max(26, U*7));
+    return;
+  }
+  const orb = i => R*(.16 + .12*i);
+  ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.22)'; ctx.lineWidth = 1.5;
+  for (let i=0;i<8;i++){ ctx.beginPath(); ctx.arc(cx, cy, orb(i), 0, 7); ctx.stroke(); }
+  ctx.restore();
+  ctx.fillStyle = 'rgba(255,217,61,.3)'; ctx.beginPath(); ctx.arc(cx, cy, 16*ps, 0, 7); ctx.fill();
+  ctx.fillStyle = '#FFD93D'; ctx.beginPath(); ctx.arc(cx, cy, 10*ps, 0, 7); ctx.fill();
+  const di = MAP_ORDER.indexOf(D.key), aE = G.mapAng[2], aD = G.mapAng[di];
+  const pt = t => { const r = lerp(orb(2), orb(di), t), a = lerp(aE, aD, t); return [cx + Math.cos(a)*r, cy + Math.sin(a)*r]; };
+  ctx.save(); ctx.setLineDash([U*1.6, U*1.2]); ctx.lineDashOffset = -T*U*6; ctx.strokeStyle = '#3FD6B0'; ctx.lineWidth = Math.max(3, U*.7);
+  ctx.beginPath(); for (let i=0;i<=40;i++){ const [x, y] = pt(i/40); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); ctx.restore();
+  MAP_ORDER.forEach((k, i) => {
+    const x = cx + Math.cos(G.mapAng[i])*orb(i), y = cy + Math.sin(G.mapAng[i])*orb(i), r = MAP_SIZE[k]*ps*1.2;
+    if (k === 'earth') drawEarthBall(x, y, r); else drawPlanetBall(k, x, y, r);
+  });
+  const [dx0, dy0] = pt(1), [ex0, ey0] = pt(0);
+  ctx.save(); ctx.strokeStyle = `rgba(255,217,61,${.5 + .5*Math.sin(T*4)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(dx0, dy0, MAP_SIZE[D.key]*ps*1.2 + U*2.5, 0, 7); ctx.stroke(); ctx.restore();
+  const t = (T*.22) % 1, [rx, ry] = pt(t), [rx2, ry2] = pt(Math.min(1, t + .01));
+  mapRocket(rx, ry, Math.atan2(ry2 - ry, rx2 - rx));
+  mapLabel('Maa', ex0, ey0 + U*3);
+  mapLabel(D.name, dx0, dy0 + MAP_SIZE[D.key]*ps*1.2 + U*2);
+}
+
+/* ---------- ISS docking ---------- */
+function drawISS(x, y, s){
+  const lw = Math.max(1.2, Math.min(U*.4, s*.04));
+  ctx.save(); ink(lw);
+  const ty = y - s*.75;
+  for (const sx of [-1.15, -.82, .82, 1.15]) for (const dy of [-1, 1]){
+    const px = x + sx*s - s*.08, py = dy < 0 ? ty - s*.5 : ty + s*.04;
+    rr(px, py, s*.16, s*.46, 1); fs('#E8A93A');
+    ctx.strokeStyle = 'rgba(43,27,90,.35)'; ctx.beginPath(); ctx.moveTo(px + s*.08, py); ctx.lineTo(px + s*.08, py + s*.46); ctx.stroke(); ink(lw);
+  }
+  for (const sx of [-.32, .32]){ rr(x + sx*s - s*.06, ty - s*.32, s*.12, s*.28, 1); fs('#FFFFFF'); }
+  rr(x - s*1.25, ty - s*.04, s*2.5, s*.08, 1); fs('#C9C4E4');
+  rr(x - s*.12, ty - s*.25, s*.24, s*.92, s*.08); fs('#F6F4FF');
+  rr(x - s*.42, ty + s*.24, s*.84, s*.18, s*.08); fs('#F6F4FF');
+  rr(x - s*.09, y - s*.09, s*.18, s*.09, 2); fs(GRAY);
+  ctx.restore();
+}
+function drawEarthArc(){
+  const r = Math.max(W, H)*1.1, cx = W/2, cy = H*.9 + r;
+  ctx.save();
+  ctx.fillStyle = 'rgba(120,190,255,.25)'; ctx.beginPath(); ctx.arc(cx, cy, r + U*3, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.fillStyle = '#4D9BFF'; ctx.fill();
+  ctx.save(); ctx.clip();
+  ctx.fillStyle = '#58C26B'; ctx.beginPath(); ctx.ellipse(W*.22, H*.95, W*.22, H*.04, -.1, 0, 7); ctx.ellipse(W*.82, H*.99, W*.25, H*.05, .1, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath(); ctx.ellipse(W*.55, H*.93, W*.18, H*.012, 0, 0, 7); ctx.fill();
+  ctx.restore(); ctx.restore();
+}
+function startDock(){
+  G.scene = 'dock'; G.step = 'dock'; setTrack(3);
+  G.dk = { x: W/2 + (Math.random() < .5 ? -1 : 1)*W*rand(.15, .25), y: H*.8, vx:0, vy:0, tries:0, done:false, nag:-9, aligned:false, slow:true };
+  G.issX = W/2;
+  say('Nyt telakointi! Ohjaa sukkula viivan kohdalle ja paina Ylös. Hitaasti!');
+  setControls([
+    { icon:'◀', label:'Vasen', cls:'go', hold:'L' },
+    { icon:'▲', label:'Ylös', cls:'go', hold:'U' },
+    { icon:'▶', label:'Oikea', cls:'go', hold:'R' }
+  ]);
+}
+function startDockDone(){
+  G.scene = 'dockdone'; G.flip = 0; G.flipping = false; G.flipped = false;
+  confetti(110); sfx.win();
+  say('Hurraa! Telakoiduit avaruusasemaan! Napauta astronauttia, niin hän tekee kuperkeikan!');
+  setControls([{ icon:'🔁', label:'Uudestaan', cls:'go', click: startMap }]);
+}
+function updateDock(dt, L){
+  const d = G.dk, portY = H*.34, s = Math.max(50, U*16), up = L.ht + L.hc;
+  G.issX = W/2 + Math.sin(T*.45)*W*.1;
+  const issX = G.issX;
+  G.dkFlame = 0;
+  if (G.scene === 'dock' && !d.done){
+    let dir = 0, upOn = !!G.keyUp;
+    if (G.hold){ if (G.holdWhich === 'L') dir -= 1; else if (G.holdWhich === 'R') dir += 1; else if (G.holdWhich === 'U') upOn = true; }
+    dir = clamp(dir + G.keyDir, -1, 1);
+    d.vx += dir*W*.3*dt; d.vx *= Math.exp(-2.2*dt);
+    d.x = clamp(d.x + d.vx*dt, L.RH*.5, W - L.RH*.5);
+    if (upOn){ d.vy -= H*.1*dt; G.dkFlame = 1; } else d.vy *= Math.exp(-.6*dt);
+    d.vy = clamp(d.vy, -H*.14, H*.08);
+    d.y += d.vy*dt;
+    if (d.y > H*.84){ d.y = H*.84; d.vy = Math.min(d.vy, 0); }
+    if (dir && Math.random() < dt*30) emit({ x:d.x - dir*L.w*.55, y:d.y - L.ht - L.hc*.25, vx:-dir*rand(80,160), vy:rand(-20,20), r:U*1.2, grow:U*2, life:.5, col:'#FFFFFF', kind:'smoke' });
+    const tip = d.y - up, tol = L.w*.3 + d.tries*U*1.5;
+    d.aligned = Math.abs(d.x - issX) < tol; d.slow = -d.vy < H*.065;
+    if (tip <= portY + U){
+      if (Math.abs(d.x - issX) > s*1.3){
+        d.y = portY + up + U; d.vy = Math.max(0, d.vy);
+        if (T - d.nag > 5){ d.nag = T; say('Ohjaa sukkula viivan kohdalle!'); }
+      } else if (d.aligned && d.slow){
+        d.done = true; d.vx = d.vy = 0; setControls([]); sfx.clunk(); sparkle(issX, portY, 16);
+        say('Telakointi onnistui! Hienoa työtä, insinööri!'); later(2600, startDockDone);
+      } else {
+        d.tries++; d.y = portY + up + U*3; d.vy = H*.07; d.vx += (d.x < issX ? -1 : 1)*W*.05;
+        sfx.bonk(); sparkle(d.x, portY, 6);
+        say(!d.aligned ? 'Pom! Sukkula oli sivussa. Yritä uudestaan!' : 'Pom! Liian kovaa. Mene hitaammin!');
+      }
+    }
+  } else if (d.done){ d.x = issX; d.y = portY + up; }
+  if (G.scene === 'dockdone'){
+    G.ax = issX + L.RH*.7; G.ay = portY + L.RH*.6 + Math.sin(T*1.1)*U*2;
+    if (G.flipping){ G.flip += dt*Math.PI*2/1.2; if (G.flip >= Math.PI*2){ G.flip = 0; G.flipping = false; } }
+    if (Math.random() < dt*1.2) confetti(2);
+  }
+}
+function drawDock(L){
+  const d = G.dk, s = Math.max(50, U*16), portY = H*.34, issX = G.issX;
+  sky('#120E3D', '#2A1E6B'); starField(.85, 0); drawEarthArc();
+  if (G.scene === 'dock' && !d.done){
+    ctx.save(); ctx.setLineDash([U*2, U*1.6]); ctx.lineDashOffset = -T*U*6; ctx.lineWidth = Math.max(3, U*.8);
+    ctx.strokeStyle = d.aligned ? '#3FD6B0' : '#FFC83D';
+    ctx.beginPath(); ctx.moveTo(issX, portY); ctx.lineTo(issX, H); ctx.stroke(); ctx.restore();
+  }
+  drawISS(issX, portY, s);
+  const lc = d.done || (d.aligned && d.slow) ? '#3FD6B0' : d.aligned ? '#FFC83D' : '#FF4D4D';
+  ctx.save(); ink(2); ctx.beginPath(); ctx.arc(issX + s*.24, portY - s*.05, Math.max(5, U*1.4), 0, 7); fs(lc); ctx.restore();
+  drawUpper(d.x, d.y, L.RH, { astro: G.scene === 'dock', light:true, panels:1, flame: G.dkFlame ? .7 : 0, tilt: G.scene === 'dock' && !d.done ? clamp(d.vx/W*.4, -.15, .15) : 0 });
+  if (G.scene === 'dockdone'){
+    ctx.save(); ctx.translate(G.ax, G.ay - L.ah*.5); ctx.rotate(G.flip + Math.sin(T*1.3)*.2);
+    drawAstronaut(0, L.ah*.5, L.ah, { wave:true }); ctx.restore();
+    if (!G.flipped) drawHand(G.ax, G.ay - L.ah*1.2);
+  }
+}
+
+/* ---------- particles ---------- */
+function emit(p){ if (parts.length < 700) parts.push(Object.assign({ x:0,y:0,vx:0,vy:0,life:1,age:0,r:4,grow:0,col:'#fff',kind:'dot',g:0,rot:0,vr:0,world:false }, p)); }
+function sparkle(x,y,n){ for (let i=0;i<n;i++){ const a = rand(0,6.28), s = rand(60,220); emit({ x,y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, r:rand(4,8), life:rand(.5,.9), col:['#FFD93D','#FFFFFF','#FF6FA8','#3FD6B0'][i%4], kind:'spark', rot:rand(0,6), vr:rand(-6,6) }); } }
+function dust(x,y,n){ for (let i=0;i<n;i++) emit({ x:x+rand(-1,1)*U*10, y, vx:rand(-1,1)*U*30, vy:-rand(0,1)*U*8, r:U*2, grow:U*4, life:rand(.8,1.4), col:'#E6E0F7', kind:'smoke' }); }
+function confetti(n){ const cols=['#FF4D4D','#FFC83D','#FF6FA8','#3FD6B0','#4D7CFF','#FFFFFF']; for (let i=0;i<n;i++) emit({ x:rand(0,W), y:rand(-H*.2,0), vx:rand(-40,40), vy:rand(H*.12,H*.3), g:H*.05, r:rand(5,9), life:rand(2.5,4), col:cols[i%cols.length], kind:'conf', rot:rand(0,6), vr:rand(-8,8) }); }
+function smokePuff(L){
+  emit({ x:L.rx + rand(-1,1)*L.RH*.25, y:L.gy - U*2, vx:rand(-1,1)*L.RH*1.1, vy:-rand(0,1)*L.RH*.3, r:U*3, grow:U*7, life:rand(1.2,2), col:isDark() ? '#C9C3E6' : '#FFFFFF', kind:'smoke', world:true });
+}
+
+/* ---------- input ---------- */
+function astroHit(x,y,L){ return Math.abs(x - G.ax) < L.ah*.9 && y > G.ay - L.ah*1.3 && y < G.ay + L.ah*.3; }
+cv.addEventListener('pointerdown', e => {
+  ac(); const x = e.clientX, y = e.clientY, L = lay();
+  if (G.scene === 'prep' && G.step === 'crew' && G.astro === 'ground' && astroHit(x,y,L)) climbIn();
+  else if (G.scene === 'trip'){
+    if (G.step === 'event'){ if (G.ev && G.ev.kind === 'antenna' && G.ev.phase === 'fault'){ const a = antennaTip(L); if (Math.hypot(x - a.x, y - a.y) < Math.max(50, U*12)) fixAntenna(); } }
+    else { G.drag = true; G.ptrX = x; }
+  }
+  else if (G.scene === 'dockdone' && !G.flipping && Math.hypot(x - G.ax, y - (G.ay - L.ah*.5)) < L.ah){ G.flipping = true; G.flip = 0; G.flipped = true; sfx.boing(); }
+  else if (G.scene === 'land' && G.land.state === 'fall'){ G.hold = true; G.holdSrc = 'cv'; G.holdWhich = 'thrust'; }
+  else if (G.scene === 'done' && G.astro === 'play' && astroHit(x,y,L) && G.jump.y === 0){ G.jump.vy = H*.55; G.jumped = true; sfx.boing(); }
+});
+cv.addEventListener('pointermove', e => { if (G.drag) G.ptrX = e.clientX; });
+const up = () => { G.drag = false; if (G.holdSrc === 'cv') G.hold = false; };
+cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up); cv.addEventListener('pointerleave', up);
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp') G.keyUp = true;
+  if (e.key === 'ArrowLeft') G.keyDir = -1;
+  if (e.key === 'ArrowRight') G.keyDir = 1;
+  if (e.key === ' ' && e.target.tagName !== 'BUTTON' && G.scene === 'land' && G.land.state === 'fall'){ e.preventDefault(); G.hold = true; G.holdSrc = 'key'; G.holdWhich = 'thrust'; }
+});
+addEventListener('keyup', e => {
+  if (e.key === 'ArrowUp') G.keyUp = false;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') G.keyDir = 0;
+  if (e.key === ' ' && G.holdSrc === 'key') G.hold = false;
+});
+
+/* ---------- update ---------- */
+function update(dt){
+  T += dt; const L = lay();
+  if (G.bigText){ G.bigT += dt; if (G.bigT > G.bigDur) G.bigText = ''; }
+
+  if (G.scene === 'title'){ G.ax = L.ax0; G.ay = L.gy; }
+
+  if (G.scene === 'prep'){
+    if (G.fly){ G.fly.t += dt/.75; if (G.fly.t >= 1) partPlaced(); }
+
+    if (G.step === 'fuel'){
+      const k = G.holdWhich;
+      if (G.hold && (k === 'fuel' || k === 'ox') && G[k] < 1){
+        G[k] = Math.min(1, G[k] + dt/(2.4*tankK()));
+        G.glugT -= dt; if (G.glugT <= 0){ sfx.glug(); G.glugT = .2; }
+      }
+      if (G.fuel >= 1 && !G.fuelDone){ G.fuelDone = true; tankFull('fuel'); }
+      else if (G.ox >= 1 && !G.oxDone){ G.oxDone = true; tankFull('ox'); }
+    }
+
+    const s = G.astro, feetWin = L.winY + L.ah*.8;
+    if (s === 'ground'){ G.ax = L.ax0; G.ay = L.gy; }
+    else if (s === 'walk'){ G.ap += dt/1.2; G.ax = lerp(L.ax0, L.towerX, ease(G.ap)); G.ay = L.gy; if (G.ap >= 1){ G.astro = 'lift'; G.ap = 0; } }
+    else if (s === 'lift'){ G.ap += dt/1.6; G.ax = L.towerX; G.ay = lerp(L.gy, feetWin, ease(G.ap)); if (G.ap >= 1){ G.astro = 'enter'; G.ap = 0; } }
+    else if (s === 'enter'){ G.ap += dt/.7; G.ax = lerp(L.towerX, L.rx, ease(G.ap)); G.ay = feetWin;
+      if (G.ap >= 1){ G.astro = 'in'; sfx.pick(); sparkle(L.rx, L.winY, 12); say('Astronautti kyydissä! Turvavyöt kiinni!'); later(2200, systemsStep); } }
+  }
+
+  if (G.scene === 'launch'){
+    if (G.step === 'button' || G.step === 'count'){
+      G.ry = L.rb; G.cam = 0;
+      if (G.step === 'count' && G.count <= 2 && Math.random() < dt*25) smokePuff(L);
+    } else {
+      if (G.step === 'lift') G.vy = Math.min(G.vy + H*.45*dt, H*1.3);
+      else if (G.step === 'coast1' || G.step === 'coast2t') G.vy = lerp(G.vy, H*.3, Math.min(1, dt*1.5));
+      else G.vy = Math.min(G.vy + H*.55*dt, H*1.5);
+      G.alt += G.vy*dt; G.stageT = (G.stageT || 0) + dt;
+      let ry = L.rb - G.alt, cam = 0; const lock = H*.55;
+      if (ry < lock){ cam = lock - ry; ry = lock; }
+      G.ry = ry; G.cam = cam;
+      G.shake = reduceMotion || G.step !== 'lift' ? 0 : Math.max(0, 1 - G.alt/(H*.8)) * U*1.1;
+      if (G.step === 'lift') loopSet(rumble, .45*Math.max(.2, 1 - G.alt/(H*2)));
+      if (G.alt < H*.7) for (let i=0;i<3;i++) if (Math.random() < dt*40) smokePuff(L);
+      const fy = G.step === 'lift' ? G.ry + L.RH*.2 : G.ry - L.hb + L.RH*.12;
+      if (G.step !== 'coast1' && Math.random() < dt*40) emit({ x:L.rx + rand(-1,1)*L.RH*.05, y:fy, vx:rand(-40,40), vy:rand(150,320), r:rand(2,4), life:.5, col:Math.random()<.5?'#FFD93D':'#FF8A1F' });
+      if (!G.saidSpace && cam > H*.5){ G.saidSpace = true; say('Ylös, ylös, ylös!'); }
+      if (G.step === 'lift' && cam > H*.95){
+        G.step = 'coast1'; loopSet(rumble, 0);
+        say(SH() ? 'Kantorakettien polttoaine loppui! Pudota ne napauttamalla.' : 'Kantoraketin polttoaine loppui! Pudota se napauttamalla.');
+        setControls([{ icon:'⬇️', label:'Pudota', cls:'go', click: dropBooster }]);
+      }
+      if (SH() && G.step === 'lift2' && G.stageT > 3){
+        G.step = 'coast2t'; loopSet(rumble, 0);
+        say('Iso tankki on tyhjä! Pudota se napauttamalla.');
+        setControls([{ icon:'⬇️', label:'Pudota tankki', cls:'go', click: dropTank }]);
+      }
+      if (((G.step === 'lift2' && !SH() && cam > H*2.9) || (G.step === 'lift3' && G.stageT > 2.5))){ G.step = 'coast2'; loopSet(rumble, 0); later(500, startTrip); }
+      if (G.boost){ G.boost.vy += H*.5*dt; G.boost.wy += G.boost.vy*dt; G.boost.rot += dt*.9; G.boost.sep += dt*W*.12; if (G.boost.wy + G.cam > H*1.5) G.boost = null; }
+      if (G.etDrop){ G.etDrop.vy += H*.5*dt; G.etDrop.wy += G.etDrop.vy*dt; G.etDrop.rot += dt*.6; if (G.etDrop.wy + G.cam > H*1.6) G.etDrop = null; }
+    }
+  }
+
+  if (G.scene === 'trip'){
+    G.ry = lerp(G.ry, H*.7, Math.min(1, dt*1.5));
+    G.scroll += H*.22*dt; G.planetY += dt*.03;
+    if (G.panelsOpen){ G.panels = Math.min(1, G.panels + dt/1.2); if (G.dust > .3) G.batt = Math.max(.15, G.batt - dt/1.5); else if (G.panels > .5) G.batt = Math.min(1, G.batt + dt/2.4); }
+    G.frost = lerp(G.frost, G.frostGoal, Math.min(1, dt*2));
+    if (!(G.ev && G.ev.kind === 'debris')) G.shield = Math.max(0, G.shield - dt*1.5);
+
+    let dir = 0;
+    if (G.step === 'course'){
+      if (G.hold) dir += G.holdWhich === 'L' ? -1 : G.holdWhich === 'R' ? 1 : 0;
+      dir += G.keyDir;
+      if (G.drag && Math.abs(G.ptrX - G.rx) > U*3) dir += Math.sign(G.ptrX - G.rx);
+      dir = clamp(dir, -1, 1);
+      G.driftT -= dt;
+      if (G.driftT <= 0){ G.driftT = rand(2.5, 4); G.drift = W*rand(.12,.18)*(Math.random() < .5 ? -1 : 1); }
+      G.vx += (G.drift + dir*W*.45)*dt;
+      if (dir && Math.random() < dt*30) emit({ x:G.rx - dir*L.w*.55, y:G.ry - L.ht - L.hc*.25, vx:-dir*rand(80,160), vy:rand(-20,20), r:U*1.2, grow:U*2, life:.5, col:'#FFFFFF', kind:'smoke' });
+    }
+    G.vx *= Math.exp(-(G.step === 'course' ? 1.8 : 4)*dt);
+    G.rx = clamp(G.rx + G.vx*dt, L.RH*.6, W - L.RH*.6);
+    if (G.rx <= L.RH*.6 || G.rx >= W - L.RH*.6) G.vx = 0;
+    G.tilt = clamp(G.vx/W*.6, -.3, .3);
+
+    if (G.step === 'course'){
+      G.near = Math.abs(G.rx - W/2) < L.RH*.35;
+      if (G.near){ G.prog = Math.min(1, G.prog + dt/(D.far ? 24 : D.iss ? 12 : 16)); G.offT = 0; }
+      else { G.offT += dt; if (G.offT > 2.5 && T - G.lastNag > 6){ G.lastNag = T; say('Ohjaa takaisin katkoviivalle!'); } }
+      if (G.evIdx < G.events.length && G.prog >= G.events[G.evIdx].at) startEvent(G.events[G.evIdx++].kind);
+      if (G.prog >= 1){ G.step = 'arrive'; setControls([]); sfx.win(); say('Perillä! Tuolla on ' + D.name + '.'); later(2600, D.iss ? startDock : startLand); }
+    }
+    if (G.step === 'event' && G.ev){
+      const e = G.ev; e.t += dt;
+      if (e.kind === 'antenna'){
+        if (e.phase === 'incoming'){
+          G.rock.t += dt/1.1;
+          if (G.rock.t >= 1){
+            G.rock = null; G.bent = true; sfx.bonk(); const a = antennaTip(L); sparkle(a.x, a.y, 10);
+            e.phase = 'fault';
+            say('Voi ei! Pieni avaruuskivi taivutti antennin. Korjaa se napauttamalla jakoavainta!');
+            setControls([{ icon:'🔧', label:'Korjaa antenni', cls:'go', click: fixAntenna }]);
+          }
+        } else if (e.phase === 'fixing'){
+          if (Math.random() < dt*12){ const a = antennaTip(L); sparkle(a.x, a.y, 2); }
+          if (Math.random() < dt*6) tone(rand(900,1300), .05, 'square', .05);
+          if (e.t > 1.6){ G.bent = false; G.radioT = T; evDone('Korjattu! Lennonjohto sanoo: hienoa työtä, insinööri!'); }
+        }
+      }
+      else if (e.kind === 'dust' && e.phase === 'working'){
+        G.dust = Math.max(0, G.dust - dt/1.3);
+        if (Math.random() < dt*20) sparkle(G.rx + (Math.random() < .5 ? -1 : 1)*L.w*1.2, G.ry - L.ht - L.hc*.3, 1);
+        if (G.dust <= 0) evDone('Puhdasta! Akku latautuu taas.');
+      }
+      else if (e.kind === 'cold' && e.phase === 'working'){
+        if (Math.random() < dt*25) emit({ x:G.rx + rand(-1,1)*L.w*.5, y:G.ry - L.ht - L.hc*.2, vx:rand(-15,15), vy:-rand(40,90), r:rand(2,4), life:.9, col:'#FF8A1F' });
+        if (e.t > 1.8) evDone('Ihanan lämmintä! Astronautti voi hyvin.');
+      }
+      else if (e.kind === 'hot'){
+        if (G.hold && G.holdWhich === 'cool'){
+          G.temp = Math.max(0, G.temp - dt/2.2);
+          if (Math.random() < dt*25) emit({ x:G.rx + rand(-1,1)*L.w*.3, y:G.ry + L.RH*.04, vx:rand(-40,40), vy:-rand(20,60), r:U*1.5, grow:U*3, life:1, col:'#FFFFFF', kind:'smoke' });
+        }
+        if (G.temp <= 0 && e.phase === 'start'){ e.phase = 'done'; setControls([]); evDone('Moottori jäähtyi. Hienoa!'); }
+      }
+      else if (e.kind === 'debris'){
+        if (e.phase !== 'start') G.shield = Math.min(1, G.shield + dt*2);
+        const cx = G.rx, cy = G.ry - L.RH*.45, R = L.RH*.72;
+        for (const d of G.debris){
+          d.rot += dt*2;
+          if (d.hit){ d.x += d.vx*dt; d.y += d.vy*dt; continue; }
+          if (e.phase === 'start' || e.t < d.delay){ d.y = lerp(d.y, H*.24, Math.min(1, dt*1.5)); continue; }
+          const dx = cx - d.x, dy = cy - d.y, dist = Math.hypot(dx, dy) || 1;
+          d.x += dx/dist*H*.5*dt; d.y += dy/dist*H*.5*dt;
+          if (dist < R){ d.hit = true; d.vx = -dx/dist*H*.6 + rand(-60,60); d.vy = -dy/dist*H*.6; sfx.bonk(); sparkle(d.x, d.y, 8); }
+        }
+        if (e.phase === 'working' && G.debris.every(d => d.hit)){ e.phase = 'done'; later(900, () => evDone('Kilpi suojasi raketin!')); }
+      }
+    }
+  }
+
+  if (G.scene === 'land'){
+    const l = G.land, touch = L.gy - L.legLen;
+    if (G.legsOut) G.legs = Math.min(1, G.legs + dt/1);
+    if (l.state === 'hover'){ l.y = H*.45 + Math.sin(T*2)*U; }
+    else if (l.state === 'fall'){
+      l.vy += (H*.07 - (G.hold ? H*.24 : 0))*dt;
+      l.vy = clamp(l.vy, -H*.05, H*.17);
+      l.y += l.vy*dt;
+      if (l.y < H*.36){ l.y = H*.36; l.vy = Math.max(l.vy, 0); }
+      loopSet(hiss, G.hold ? .16 : 0);
+      if (G.hold && l.y > touch - L.RH*.6 && Math.random() < dt*30) dust(W/2, L.gy, 1);
+      if (l.y >= touch){
+        l.y = touch;
+        if (l.vy <= H*.075 || l.bounces >= 2) landed(l.bounces === 0);
+        else {
+          l.bounces++; l.vy = -l.vy*.45; sfx.boing(); dust(W/2, L.gy, 10);
+          if (!l.saidBoing){ l.saidBoing = true; say('Pomps! Jalat joustavat!'); }
+        }
+      }
+    }
+  }
+
+  if (G.scene === 'done'){
+    const fx = L.rx - L.RH*.62;
+    if (G.astro === 'out'){ G.ap += dt/1.4; G.ax = lerp(L.rx - L.w*.3, fx, ease(G.ap)); if (G.ap >= 1){ G.astro = 'plant'; G.ap = 0; } }
+    else if (G.astro === 'plant'){
+      G.ax = fx; G.flag = Math.min(1, G.flag + dt/.8);
+      if (G.flag >= 1 && !G.flagDone){ G.flagDone = true; G.astro = 'play'; confetti(110); sfx.win(); say('Hurraa! Laskeuduit ' + D.gen + ' pinnalle! Napauta astronauttia, niin hän hyppää!'); }
+    } else G.ax = fx;
+    if (G.jump.y > 0 || G.jump.vy > 0){
+      G.jump.vy -= H*.38*dt; G.jump.y += G.jump.vy*dt;
+      if (G.jump.y <= 0){ G.jump.y = 0; G.jump.vy = 0; dust(G.ax, moonY(G.ax, L.gy), 4); }
+    }
+    G.ay = moonY(G.ax, L.gy) - G.jump.y;
+    if (G.astro === 'play' && Math.random() < dt*1.2) confetti(2);
+  }
+
+  if (G.scene === 'dock' || G.scene === 'dockdone') updateDock(dt, L);
+  for (const p of parts){ p.age += dt; p.vy += p.g*dt; p.x += p.vx*dt; p.y += p.vy*dt; p.r += p.grow*dt; p.rot += p.vr*dt; if (p.kind === 'smoke') p.vx *= .97; }
+  for (let i = parts.length-1; i >= 0; i--) if (parts[i].age > parts[i].life) parts.splice(i,1);
+}
+
+/* ---------- drawing primitives ---------- */
+function rr(x,y,w,h,r){ ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
+function fs(fill){ ctx.fillStyle = fill; ctx.fill(); ctx.stroke(); }
+function ink(lw){ ctx.lineWidth = lw; ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; }
+function starPath(x,y,r,rot){ ctx.beginPath(); for (let i=0;i<10;i++){ const a = rot + i*Math.PI/5 - Math.PI/2, q = i%2 ? r*.46 : r; ctx.lineTo(x + Math.cos(a)*q, y + Math.sin(a)*q); } ctx.closePath(); }
+function sky(top, bot){ const g = ctx.createLinearGradient(0,0,0,H); g.addColorStop(0, top); g.addColorStop(1, bot); ctx.fillStyle = g; ctx.fillRect(-20,-20,W+40,H+40); }
+function starField(alpha, scroll){
+  if (alpha <= 0) return;
+  ctx.fillStyle = '#FFFFFF';
+  for (const s of field){
+    const y = ((s.y*H + scroll*s.d) % H + H) % H;
+    ctx.globalAlpha = alpha * (.55 + .45*Math.sin(T*2 + s.ph));
+    ctx.beginPath(); ctx.arc(s.x*W, y, s.r*s.d*1.3, 0, 7); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+function flame(top, hw, L){
+  L *= (.85 + Math.random()*.3);
+  ctx.beginPath(); ctx.moveTo(-hw, top); ctx.quadraticCurveTo(-hw*1.3, top + L*.55, 0, top + L); ctx.quadraticCurveTo(hw*1.3, top + L*.55, hw, top); ctx.closePath();
+  ctx.fillStyle = '#FF8A1F'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-hw*.55, top); ctx.quadraticCurveTo(-hw*.75, top + L*.35, 0, top + L*.62); ctx.quadraticCurveTo(hw*.75, top + L*.35, hw*.55, top); ctx.closePath();
+  ctx.fillStyle = '#FFE15A'; ctx.fill();
+}
+function shade(x,y,w,h){ ctx.fillStyle = 'rgba(43,27,90,.09)'; ctx.fillRect(x + w*.62, y, w*.38, h); }
+
+/* rocket parts: each drawn with (x, y) = bottom-center of that part's body */
+function partBooster(x, y, h, o={}){
+  const w = h*.3, hb = h*.3;
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ink(Math.max(2, h*.02));
+  if (o.flame > 0) flame(h*.06, w*.34, h*.42*o.flame);
+  for (const s of [-1,1]){ ctx.beginPath(); ctx.moveTo(s*w*.5, -hb*.75); ctx.lineTo(s*w*.98, -hb*.12); ctx.lineTo(s*w*.98, h*.05); ctx.lineTo(s*w*.5, 0); ctx.closePath(); fs(RED); }
+  ctx.beginPath(); ctx.moveTo(-w*.28, 0); ctx.lineTo(w*.28, 0); ctx.lineTo(w*.36, h*.06); ctx.lineTo(-w*.36, h*.06); ctx.closePath();
+  fs(o.glow ? '#FFB36B' : GRAY);
+  rr(-w/2, -hb, w, hb, w*.06); ctx.fillStyle = WHITE; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = RED; ctx.fillRect(-w/2, -hb*.26, w, hb*.26);
+  ctx.fillStyle = INK; for (let i=0;i<4;i+=2) ctx.fillRect(-w/2 + w*i/4, -hb*.66, w/4, hb*.13);
+  for (let i=1;i<4;i+=2) ctx.fillRect(-w/2 + w*i/4, -hb*.53, w/4, hb*.13);
+  shade(-w/2, -hb, w, hb); ctx.restore();
+  rr(-w/2, -hb, w, hb, w*.06); ctx.stroke();
+  ctx.restore();
+}
+function partTank(x, y, h, o={}){
+  const w = h*.3, ht = h*.36*tankK(), lw = Math.max(2, h*.02);
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ink(lw);
+  if (o.legs > 0){
+    for (const s of [-1,1]){
+      const fx = s*(w*.45 + w*.6*o.legs), fy = h*.12*o.legs;
+      ctx.lineWidth = lw*1.8; ctx.beginPath(); ctx.moveTo(s*w*.38, -ht*.3); ctx.lineTo(fx, fy); ctx.stroke();
+      ctx.lineWidth = lw; rr(fx - w*.13, fy - lw*1.2, w*.26, lw*2.6, lw); fs(GRAY);
+    }
+  }
+  if (o.nozzle){
+    if (o.flame > 0) flame(h*.045, w*.22, h*.32*o.flame);
+    ctx.beginPath(); ctx.moveTo(-w*.17, 0); ctx.lineTo(w*.17, 0); ctx.lineTo(w*.24, h*.045); ctx.lineTo(-w*.24, h*.045); ctx.closePath();
+    fs(o.hot > 0 ? mixc(GRAY, Math.sin(T*10) > 0 ? '#FF4D4D' : '#FF8A1F', o.hot) : GRAY);
+  }
+  rr(-w/2, -ht, w, ht, w*.05); ctx.fillStyle = WHITE; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = '#C9C4E4'; ctx.fillRect(-w/2, -ht, w, ht*.07); ctx.fillRect(-w/2, -ht*.07, w, ht*.07); shade(-w/2, -ht, w, ht); ctx.restore();
+  rr(-w/2, -ht, w, ht, w*.05); ctx.stroke();
+  for (const [wx, lvl, col] of [[-w*.33, o.fuel ?? 1, '#FFC83D'], [w*.09, o.ox ?? 1, '#4DB8FF']]){
+    const ww = w*.24, wy = -ht*.84, wh = ht*.68;
+    rr(wx, wy, ww, wh, ww*.35); ctx.fillStyle = '#E9E6F7'; ctx.fill();
+    ctx.save(); ctx.clip(); ctx.fillStyle = col; ctx.fillRect(wx, wy + wh*(1 - lvl), ww, wh*lvl + 1); ctx.restore();
+    rr(wx, wy, ww, wh, ww*.35); ctx.lineWidth = lw*.8; ctx.stroke(); ctx.lineWidth = lw;
+  }
+  ctx.restore();
+}
+function partCapsule(x, y, h, o={}){
+  const w = h*.3, hc = h*.34, lw = Math.max(2, h*.02);
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ink(lw);
+  if (o.panels > 0){
+    const p = o.panels, py = -hc*.3, ph = hc*.32;
+    for (const s of [-1,1]){
+      const x0 = s*w*.5, x1 = s*(w*.5 + w*.18*p), pw = w*1.15*p;
+      ctx.beginPath(); ctx.moveTo(x0, py); ctx.lineTo(x1, py); ctx.stroke();
+      const px = s < 0 ? x1 - pw : x1;
+      rr(px, py - ph/2, pw, ph, 2); fs('#4D7CFF');
+      ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1;
+      ctx.beginPath(); for (let i=1;i<4;i++){ ctx.moveTo(px + pw*i/4, py - ph/2); ctx.lineTo(px + pw*i/4, py + ph/2); } ctx.moveTo(px, py); ctx.lineTo(px + pw, py); ctx.stroke();
+      if (o.dust > 0){
+        ctx.fillStyle = `rgba(150,125,95,${o.dust*.75})`; rr(px, py - ph/2, pw, ph, 2); ctx.fill();
+        ctx.fillStyle = `rgba(110,90,70,${o.dust*.8})`;
+        for (let k=0;k<4;k++){ ctx.beginPath(); ctx.arc(px + pw*(.15 + .23*k), py + ph*(k%2 ? .15 : -.2), ph*.16, 0, 7); ctx.fill(); }
+      }
+      ink(lw);
+    }
+  }
+  if (!o.noBody){
+  const body = new Path2D();
+  body.moveTo(-w/2, 0); body.lineTo(-w/2, -hc*.22);
+  body.bezierCurveTo(-w/2, -hc*.7, -w*.18, -hc*.96, 0, -hc);
+  body.bezierCurveTo(w*.18, -hc*.96, w/2, -hc*.7, w/2, -hc*.22);
+  body.lineTo(w/2, 0); body.closePath();
+  ctx.fillStyle = WHITE; ctx.fill(body);
+  ctx.save(); ctx.clip(body); ctx.fillStyle = RED; ctx.fillRect(-w, -hc, 2*w, hc*.24); ctx.fillStyle = '#C9C4E4'; ctx.fillRect(-w, -hc*.07, 2*w, hc*.07); shade(-w/2, -hc, w, hc); ctx.restore();
+  ctx.stroke(body);
+  }
+  // antenna
+  const bx = w*.22, by = -hc*.62;
+  const tx = o.bent ? bx + w*.45 : bx + w*.25, ty = o.bent ? by + w*.08 : by - w*.45;
+  ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(tx, ty); ctx.stroke();
+  ctx.beginPath(); ctx.arc(tx, ty, w*.07, 0, 7);
+  fs(o.bent ? (Math.sin(T*10) > 0 ? '#FF4D4D' : '#FFB3B3') : '#FFD93D');
+  if (o.radio > 0){
+    ctx.save(); ctx.strokeStyle = `rgba(63,214,176,${o.radio})`; ctx.lineWidth = lw;
+    for (let i=1;i<=3;i++){ ctx.beginPath(); ctx.arc(tx, ty, w*.12*i + ((T*40) % (w*.12)), -1.3, .2); ctx.stroke(); }
+    ctx.restore(); ink(lw);
+  }
+  // window
+  const wy = -hc*.45, wr = w*.21;
+  ctx.beginPath(); ctx.arc(0, wy, wr*1.28, 0, 7); fs('#C9C4E4');
+  ctx.beginPath(); ctx.arc(0, wy, wr, 0, 7); ctx.fillStyle = '#9FE7FF'; ctx.fill();
+  if (o.astro){
+    ctx.save(); ctx.beginPath(); ctx.arc(0, wy, wr, 0, 7); ctx.clip();
+    ctx.beginPath(); ctx.arc(0, wy + wr*.25, wr*.72, 0, 7); ctx.fillStyle = '#FFFFFF'; ctx.fill(); ctx.lineWidth = lw*.7; ctx.stroke();
+    ctx.beginPath(); ctx.arc(0, wy + wr*.25, wr*.5, 0, 7); ctx.fillStyle = '#F2C19B'; ctx.fill();
+    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(-wr*.18, wy + wr*.17, wr*.07, 0, 7); ctx.arc(wr*.18, wy + wr*.17, wr*.07, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(0, wy + wr*.3, wr*.2, .2, Math.PI - .2); ctx.lineWidth = lw*.6; ctx.stroke();
+    ctx.restore(); ink(lw);
+  }
+  if (o.frost > .02){
+    ctx.beginPath(); ctx.arc(0, wy, wr, 0, 7); ctx.fillStyle = `rgba(235,248,255,${o.frost*.85})`; ctx.fill();
+    ctx.save(); ctx.strokeStyle = `rgba(110,170,230,${o.frost})`; ctx.lineWidth = lw*.7;
+    for (let k=0;k<3;k++){ const a = k*Math.PI/3; ctx.beginPath(); ctx.moveTo(Math.cos(a)*wr*.55, wy + Math.sin(a)*wr*.55); ctx.lineTo(-Math.cos(a)*wr*.55, wy - Math.sin(a)*wr*.55); ctx.stroke(); }
+    ctx.restore(); ink(lw);
+  }
+  ctx.beginPath(); ctx.arc(0, wy, wr, 0, 7); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, wy, wr*.7, 3.6, 4.4); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = lw*1.1; ctx.stroke(); ink(lw);
+  // status light
+  ctx.beginPath(); ctx.arc(-w*.3, -hc*.17, w*.06, 0, 7);
+  fs(o.light ? (Math.sin(T*5) > -.3 ? '#3FD6B0' : '#1E8F73') : '#8A86A8');
+  ctx.restore();
+}
+function drawUpper(x, yb, h, o={}){
+  ctx.save(); ctx.translate(x, yb); if (o.tilt) ctx.rotate(o.tilt);
+  if (SH()) partOrbiter(0, 0, h, o);
+  else {
+    partTank(0, 0, h, { nozzle:true, flame:o.flame, legs:o.legs, fuel:o.fuel ?? 1, ox:o.ox ?? 1, hot:o.hot });
+    partCapsule(0, -h*.36*tankK(), h, o);
+  }
+  ctx.restore();
+}
+
+/* ---------- space shuttle parts (space station trips) ---------- */
+const SH = () => !!(D && D.iss);
+function drawPart(k, x, y, h, o={}){
+  if (SH()){ if (k === 'booster') partSRBs(x, y, h, o); else if (k === 'tank') partET(x, y, h, o); else partOrbiter(x, y, h, o); }
+  else { if (k === 'booster') partBooster(x, y, h, o); else if (k === 'tank') partTank(x, y, h, o); else partCapsule(x, y, h, o); }
+}
+function srb(x, y, h, hs, rot, fl, glow){
+  const w = h*.3, bw = w*.42, lw = Math.max(2, h*.02);
+  ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot); ink(lw);
+  if (fl > 0) flame(h*.05, bw*.45, h*.45*fl);
+  ctx.beginPath(); ctx.moveTo(-bw*.3, 0); ctx.lineTo(bw*.3, 0); ctx.lineTo(bw*.45, h*.05); ctx.lineTo(-bw*.45, h*.05); ctx.closePath(); fs(glow ? '#FFB36B' : GRAY);
+  const p = new Path2D();
+  p.moveTo(-bw/2, 0); p.lineTo(-bw/2, -hs*.86); p.quadraticCurveTo(-bw/2, -hs, 0, -hs); p.quadraticCurveTo(bw/2, -hs, bw/2, -hs*.86); p.lineTo(bw/2, 0); p.closePath();
+  ctx.fillStyle = WHITE; ctx.fill(p);
+  ctx.save(); ctx.clip(p); ctx.fillStyle = RED; ctx.fillRect(-bw, -hs, bw*2, hs*.12); ctx.fillStyle = INK; ctx.fillRect(-bw, -hs*.14, bw*2, hs*.04); ctx.fillRect(-bw, -hs*.5, bw*2, hs*.03); shade(-bw/2, -hs, bw, hs); ctx.restore();
+  ctx.stroke(p);
+  ctx.restore();
+}
+function partSRBs(x, y, h, o={}){
+  const w = h*.3, hs = h*.3 + h*.36*tankK() + h*.34*.35;
+  for (const s of [-1,1]) srb(x + s*(w*.95 + (o.sep || 0)), y, h, hs, s*(o.rot || 0), o.flame || 0, o.glow);
+}
+function partET(x, y, h, o={}){
+  const w = h*.3, hb = h*.3, ht = h*.36*tankK(), hc = h*.34, he = hb + ht + hc*.85, ew = w*1.15, lw = Math.max(2, h*.02);
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ink(lw);
+  const p = new Path2D();
+  p.moveTo(-ew/2, 0); p.lineTo(-ew/2, -he*.8); p.bezierCurveTo(-ew/2, -he*.95, -ew*.15, -he, 0, -he); p.bezierCurveTo(ew*.15, -he, ew/2, -he*.95, ew/2, -he*.8); p.lineTo(ew/2, 0); p.closePath();
+  ctx.fillStyle = '#E8873A'; ctx.fill(p);
+  ctx.save(); ctx.clip(p); ctx.fillStyle = 'rgba(120,50,10,.2)'; ctx.fillRect(-ew, -he*.62, ew*2, he*.03); ctx.fillRect(-ew, -he*.3, ew*2, he*.03); shade(-ew/2, -he, ew, he); ctx.restore();
+  ctx.stroke(p);
+  for (const [wx, lvl, col] of [[-ew*.36, o.fuel ?? 1, '#FFC83D'], [ew*.08, o.ox ?? 1, '#4DB8FF']]){
+    const ww = ew*.28, wy = -hb*.88, wh = hb*.72;
+    rr(wx, wy, ww, wh, ww*.35); ctx.fillStyle = '#E9E6F7'; ctx.fill();
+    ctx.save(); ctx.clip(); ctx.fillStyle = col; ctx.fillRect(wx, wy + wh*(1 - lvl), ww, wh*lvl + 1); ctx.restore();
+    rr(wx, wy, ww, wh, ww*.35); ctx.lineWidth = lw*.8; ctx.stroke(); ctx.lineWidth = lw;
+  }
+  ctx.restore();
+}
+function partOrbiter(x, y, h, o={}){
+  const w = h*.3, ht = h*.36*tankK(), hc = h*.34, ho = ht + hc, lw = Math.max(2, h*.02);
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ink(lw);
+  if (o.flame > 0) for (const ex of [-w*.16, w*.16, 0]){ ctx.save(); ctx.translate(ex, 0); flame(h*.04, w*.09, h*.28*o.flame); ctx.restore(); }
+  for (const ex of [-w*.16, 0, w*.16]){
+    ctx.beginPath(); ctx.moveTo(ex - w*.06, 0); ctx.lineTo(ex + w*.06, 0); ctx.lineTo(ex + w*.09, h*.04); ctx.lineTo(ex - w*.09, h*.04); ctx.closePath();
+    fs(o.hot > 0 ? mixc(GRAY, Math.sin(T*10) > 0 ? '#FF4D4D' : '#FF8A1F', o.hot) : GRAY);
+  }
+  const wing = new Path2D();
+  wing.moveTo(-w*.3, -ho*.55); wing.lineTo(-w*.42, -ho*.42); wing.lineTo(-w*1.25, -ho*.07); wing.lineTo(-w*1.2, 0); wing.lineTo(w*1.2, 0); wing.lineTo(w*1.25, -ho*.07); wing.lineTo(w*.42, -ho*.42); wing.lineTo(w*.3, -ho*.55); wing.closePath();
+  ctx.fillStyle = WHITE; ctx.fill(wing); ctx.stroke(wing);
+  ctx.save(); ctx.lineWidth = lw*2.6; ctx.strokeStyle = '#3A3550'; ctx.beginPath(); ctx.moveTo(-w*.42, -ho*.42); ctx.lineTo(-w*1.22, -ho*.08); ctx.moveTo(w*.42, -ho*.42); ctx.lineTo(w*1.22, -ho*.08); ctx.stroke(); ctx.restore(); ink(lw);
+  const fw = w*.34, fh = fw*11/18, fx = -w*.95, fy = -ho*.12;
+  rr(fx, fy, fw, fh, 1); ctx.fillStyle = '#FFFFFF'; ctx.fill();
+  ctx.fillStyle = '#002F6C'; ctx.fillRect(fx + fw*5/18, fy, fw*3/18, fh); ctx.fillRect(fx, fy + fh*4/11, fw, fh*3/11);
+  ctx.lineWidth = Math.max(1, lw*.5); rr(fx, fy, fw, fh, 1); ctx.stroke(); ctx.lineWidth = lw;
+  const body = new Path2D();
+  body.moveTo(-w*.32, 0); body.lineTo(-w*.32, -ho*.7);
+  body.bezierCurveTo(-w*.32, -ho*.92, -w*.12, -ho, 0, -ho);
+  body.bezierCurveTo(w*.12, -ho, w*.32, -ho*.92, w*.32, -ho*.7);
+  body.lineTo(w*.32, 0); body.closePath();
+  ctx.fillStyle = WHITE; ctx.fill(body);
+  ctx.save(); ctx.clip(body); ctx.fillStyle = '#3A3550'; ctx.fillRect(-w, -ho, 2*w, ho*.06);
+  ctx.strokeStyle = 'rgba(43,27,90,.3)'; ctx.lineWidth = lw*.7; ctx.beginPath(); ctx.moveTo(0, -ho*.08); ctx.lineTo(0, -ho*.55); ctx.stroke();
+  shade(-w*.32, -ho, w*.64, ho); ctx.restore();
+  ink(lw); ctx.stroke(body);
+  partCapsule(0, -ht, h, Object.assign({}, o, { noBody:true, rot:0 }));
+  ctx.restore();
+}
+function slotOff(k, L){ return SH() ? (k === 'capsule' ? L.hb : 0) : (k === 'booster' ? 0 : k === 'tank' ? L.hb : L.hb + L.ht); }
+function ghostPart(k, L, a){
+  const yb = slotBottom(k, L);
+  ctx.save(); ctx.globalAlpha = a;
+  if (!SH()){ const hgt = k === 'booster' ? L.hb : k === 'tank' ? L.ht : L.hc; ghost(L.rx, yb, L.w*1.1, hgt*1.05); }
+  else if (k === 'booster'){ const hs = L.hb + L.ht + L.hc*.35; for (const s of [-1,1]) ghost(L.rx + s*L.w*.95, yb, L.w*.55, hs); }
+  else if (k === 'tank') ghost(L.rx, yb, L.w*1.25, L.hb + L.ht + L.hc*.85);
+  else ghost(L.rx, yb, L.w*2.5, L.ht + L.hc);
+  ctx.restore();
+}
+
+function drawAstronaut(x, y, s, o={}){
+  ctx.save(); ctx.translate(x, y); if (o.scale) ctx.scale(o.scale, o.scale);
+  ctx.globalAlpha = o.alpha ?? 1;
+  const lw = Math.max(2, s*.045); ink(lw);
+  const step = o.walk ? Math.sin(T*12)*s*.05 : 0;
+  rr(-s*.3, -s*.74, s*.6, s*.42, s*.08); fs('#D8D4EE');
+  rr(-s*.21, -s*.32 + Math.max(0,step), s*.18, s*.32 - Math.max(0,step), s*.05); fs('#FFFFFF');
+  rr(s*.03, -s*.32 + Math.max(0,-step), s*.18, s*.32 - Math.max(0,-step), s*.05); fs('#FFFFFF');
+  rr(-s*.24, -s*.08, s*.22, s*.09, s*.04); fs('#6C63A8');
+  rr(s*.02, -s*.08, s*.22, s*.09, s*.04); fs('#6C63A8');
+  const arm = (x0, y0, x1, y1) => {
+    ctx.lineWidth = s*.14 + lw*2; ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+    ctx.lineWidth = s*.14; ctx.strokeStyle = '#FFFFFF'; ctx.stroke(); ink(lw);
+  };
+  arm(-s*.2, -s*.55, -s*.34, -s*.32);
+  if (o.wave){ const a = Math.sin(T*8)*.35; arm(s*.2, -s*.55, s*.2 + Math.sin(.6 + a)*s*.3, -s*.55 - Math.cos(.6 + a)*s*.3); }
+  else arm(s*.2, -s*.55, s*.34, -s*.32);
+  rr(-s*.24, -s*.64, s*.48, s*.36, s*.13); fs('#FFFFFF');
+  rr(-s*.09, -s*.55, s*.18, s*.1, s*.03); fs(RED);
+  ctx.beginPath(); ctx.arc(0, -s*.82, s*.25, 0, 7); fs('#FFFFFF');
+  ctx.beginPath(); ctx.ellipse(0, -s*.81, s*.18, s*.14, 0, 0, 7); fs('#9FE7FF');
+  ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(-s*.06, -s*.83, s*.025, 0, 7); ctx.arc(s*.06, -s*.83, s*.025, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, -s*.79, s*.06, .3, Math.PI - .3); ctx.lineWidth = lw*.8; ctx.stroke();
+  ctx.beginPath(); ctx.arc(s*.05, -s*.86, s*.1, 3.8, 4.5); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = lw; ctx.stroke();
+  ctx.restore();
+}
+
+function drawPlanet(x, y, r){
+  ctx.save(); ink(Math.max(2, r*.05));
+  ctx.beginPath(); ctx.ellipse(x, y, r*1.7, r*.42, -.3, 0, 7); ctx.strokeStyle = '#FFD93D'; ctx.lineWidth = r*.16; ctx.stroke();
+  ink(Math.max(2, r*.05)); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); fs('#FF9ACB');
+  ctx.beginPath(); ctx.ellipse(x, y, r*1.7, r*.42, -.3, -.05, Math.PI + .05); ctx.strokeStyle = '#FFD93D'; ctx.lineWidth = r*.16; ctx.stroke();
+  ctx.restore();
+}
+function drawEarthBall(x, y, r){
+  ctx.save(); ink(Math.max(2, r*.06));
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = '#4D9BFF'; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = '#58C26B';
+  ctx.beginPath(); ctx.arc(x - r*.4, y - r*.2, r*.45, 0, 7); ctx.arc(x + r*.45, y + r*.35, r*.4, 0, 7); ctx.fill();
+  ctx.restore(); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke(); ctx.restore();
+}
+function drawPlanetBall(key, x, y, r){
+  const P = BODIES[key], lw = Math.max(1.5, Math.min(U*.5, r*.08));
+  ctx.save(); ink(lw);
+  if (P.rings){ ctx.beginPath(); ctx.ellipse(x, y, r*1.8, r*.45, -.25, 0, 7); ctx.strokeStyle = P.rings; ctx.lineWidth = r*.2; ctx.stroke(); ink(lw); }
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = P.col; ctx.fill();
+  ctx.save(); ctx.clip();
+  if (P.bands){ ctx.fillStyle = P.bands; for (const k of [-.6,-.2,.25,.62]) ctx.fillRect(x - r, y + r*k, r*2, r*.14); }
+  if (P.spot){ ctx.fillStyle = P.spot; ctx.beginPath(); ctx.ellipse(x + r*.3, y + r*.42, r*.2, r*.1, 0, 0, 7); ctx.fill(); }
+  if (P.dots){ ctx.fillStyle = P.dots; ctx.beginPath(); ctx.arc(x - r*.35, y - r*.2, r*.18, 0, 7); ctx.arc(x + r*.3, y + r*.3, r*.14, 0, 7); ctx.arc(x + r*.12, y - r*.5, r*.1, 0, 7); ctx.fill(); }
+  if (P.cap){ ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.ellipse(x, y - r*.95, r*.45, r*.18, 0, 0, 7); ctx.fill(); }
+  ctx.fillStyle = 'rgba(43,27,90,.18)'; ctx.beginPath(); ctx.arc(x + r*1.25, y, r*1.05, 0, 7); ctx.fill();
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke();
+  if (P.rings){ ctx.beginPath(); ctx.ellipse(x, y, r*1.8, r*.45, -.25, -.08, Math.PI + .08); ctx.strokeStyle = P.rings; ctx.lineWidth = r*.2; ctx.stroke(); }
+  ctx.restore();
+}
+function drawMoonBall(x, y, r){
+  ctx.save(); ink(Math.max(2, U*.5));
+  ctx.beginPath(); ctx.arc(x, y, r, 0, 7); fs('#E6E0F7');
+  ctx.fillStyle = '#C3BBE0'; ctx.beginPath(); ctx.arc(x - r*.3, y - r*.2, r*.2, 0, 7); ctx.arc(x + r*.35, y + r*.25, r*.15, 0, 7); ctx.fill();
+  ctx.restore();
+}
+function drawCloud(x, y, s, a){
+  ctx.fillStyle = `rgba(255,255,255,${a})`;
+  ctx.beginPath(); ctx.arc(x, y, s*.5, 0, 7); ctx.arc(x + s*.5, y - s*.2, s*.6, 0, 7); ctx.arc(x + s, y, s*.45, 0, 7); ctx.rect(x, y - s*.1, s, s*.5); ctx.fill();
+}
+function groundTank(x, gy, w, h, lvl, col){
+  rr(x - w/2, gy - h, w, h, w/2); ctx.fillStyle = WHITE; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = col; ctx.fillRect(x - w/2, gy - h*lvl, w, h*lvl + 1); ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fillRect(x - w*.3, gy - h, w*.14, h); ctx.restore();
+  rr(x - w/2, gy - h, w, h, w/2); ctx.stroke();
+}
+function hose(x0, y0, x1, y1, flowing, col){
+  const c1x = x0 - U*5, c1y = y0 + U*7, c2x = x1 + U*6, c2y = y1 + U*8;
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.bezierCurveTo(c1x, c1y, c2x, c2y, x1, y1);
+  ctx.lineWidth = U*1.5; ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = U*.8; ctx.strokeStyle = GRAY; ctx.stroke();
+  if (flowing) for (let i=0;i<4;i++){
+    const t = (T*1.4 + i/4) % 1, u = 1 - t;
+    const bx = u*u*u*x0 + 3*u*u*t*c1x + 3*u*t*t*c2x + t*t*t*x1, by = u*u*u*y0 + 3*u*u*t*c1y + 3*u*t*t*c2y + t*t*t*y1;
+    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(bx, by, U*.6, 0, 7); ctx.fill();
+  }
+}
+
+function drawEarthWorld(L, cam){
+  const dark = isDark(), mix = clamp(cam/(H*2.2), 0, 1);
+  sky(mixc(dark ? '#26306E' : '#4FC3FF', '#120E3D', mix), mixc(dark ? '#6A5DB8' : '#BDEBFF', '#2A1E6B', mix));
+  starField(Math.max(dark ? .45 : 0, mix), 0);
+  const sy = H*.2 + cam*.15;
+  if (dark){ ctx.fillStyle = 'rgba(255,244,204,.18)'; ctx.beginPath(); ctx.arc(W*.84, sy, U*10, 0, 7); ctx.fill(); ctx.fillStyle = '#F3EEDB'; ctx.beginPath(); ctx.arc(W*.84, sy, U*6, 0, 7); ctx.fill(); }
+  else { ctx.fillStyle = 'rgba(255,217,61,.3)'; ctx.beginPath(); ctx.arc(W*.84, sy, U*11, 0, 7); ctx.fill(); ctx.fillStyle = '#FFD93D'; ctx.beginPath(); ctx.arc(W*.84, sy, U*7, 0, 7); ctx.fill(); }
+  for (const c of clouds){ const x = ((c.x*W + T*12*c.s) % (W + U*40)) - U*20; drawCloud(x, c.y*H + cam*.6, U*14*c.s, dark ? .22 : .9); }
+  if (cam > H*2.6) return;
+  ctx.save(); ctx.translate(0, cam);
+  const gy = L.gy;
+  ctx.fillStyle = dark ? '#3E8F64' : '#8EDB7A';
+  ctx.beginPath(); ctx.ellipse(W*.18, gy + U*2, W*.35, U*14, 0, Math.PI, 0); ctx.ellipse(W*.85, gy + U*2, W*.3, U*10, 0, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = dark ? '#2F7A55' : '#6CCB5F'; ctx.fillRect(-20, gy, W + 40, H*3);
+  ink(Math.max(2, U*.5));
+  rr(L.rx - L.RH*.5, gy - L.padH, L.RH, L.padH + 2, U*.8); fs('#B9B5D6');
+  const tx = L.towerX, tw = U*4.2, top = L.winY - L.RH*.14;
+  ctx.lineWidth = Math.max(2, U*.55);
+  ctx.beginPath(); ctx.moveTo(tx - tw, gy); ctx.lineTo(tx - tw, top); ctx.moveTo(tx + tw, gy); ctx.lineTo(tx + tw, top); ctx.stroke();
+  ctx.strokeStyle = RED; ctx.lineWidth = Math.max(2, U*.45); ctx.beginPath();
+  const n = 7; for (let i=0;i<n;i++){ const y0 = gy - (gy - top)*i/n, y1 = gy - (gy - top)*(i+1)/n; ctx.moveTo(tx - tw, y0); ctx.lineTo(tx + tw, y1); ctx.moveTo(tx - tw, y1); ctx.lineTo(tx + tw, y1); }
+  ctx.stroke();
+  ink(Math.max(2, U*.5));
+  rr(tx - tw*1.6, top - U*2, tw*3.2, U*2, U*.6); fs(RED);
+  if (G.scene === 'prep' && G.astro === 'lift'){ rr(tx - tw*1.2, G.ay, tw*2.4, U*1.2, U*.4); fs('#FFC83D'); }
+  // ground tanks + hoses
+  const tw2 = U*7, th = L.RH*.42, preLift = G.scene !== 'launch' || G.step === 'button' || G.step === 'count';
+  const rf = G.scene === 'prep' ? G.fuel : 1, ro = G.scene === 'prep' ? G.ox : 1;
+  if (G.built >= 2 && preLift){
+    const tankY = L.rb - L.hb - L.ht*.5;
+    hose(L.oxX - tw2/2, gy - th*.25, L.rx + L.w*.5, tankY + L.ht*.15, G.step === 'fuel' && G.hold && G.holdWhich === 'ox', '#4DB8FF');
+    hose(L.fuelX - tw2/2, gy - th*.4, L.rx + L.w*.5, tankY - L.ht*.15, G.step === 'fuel' && G.hold && G.holdWhich === 'fuel', '#FFC83D');
+    ink(Math.max(2, U*.5));
+  }
+  groundTank(L.fuelX, gy, tw2, th, G.scene === 'title' ? 1 : 1 - rf*.8, '#FFC83D');
+  groundTank(L.oxX, gy, tw2, th*.85, G.scene === 'title' ? 1 : 1 - ro*.8, '#4DB8FF');
+  ctx.restore();
+}
+
+function drawMoonGround(L){
+  const gy = L.gy;
+  ctx.save(); ink(Math.max(2, U*.55));
+  ctx.beginPath(); ctx.moveTo(-20, moonY(-20, gy)); ctx.quadraticCurveTo(W/2, gy - U*3, W + 20, moonY(W + 20, gy)); ctx.lineTo(W + 20, H + 20); ctx.lineTo(-20, H + 20); ctx.closePath(); fs(D.ground);
+  for (const c of craters){
+    const cx = c.x*W, cy = moonY(cx, gy) + (H - gy)*c.dy, r = W*c.r*.6 + U*2;
+    ctx.beginPath(); ctx.ellipse(cx, cy, r, r*.35, 0, 0, 7); ctx.fillStyle = D.crater[0]; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx, cy - r*.05, r*.8, r*.25, 0, 0, Math.PI); ctx.fillStyle = D.crater[1]; ctx.fill();
+  }
+  ctx.restore();
+}
+function drawFlag(x, gy, h, p){
+  if (p <= 0) return;
+  ctx.save(); ink(Math.max(2, U*.55));
+  const top = gy - h*p;
+  ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x, top); ctx.stroke();
+  const fw = h*.6, fh = fw*11/18;
+  const flagPath = () => { ctx.beginPath(); ctx.moveTo(x, top);
+    for (let i=0;i<=8;i++) ctx.lineTo(x + fw*i/8, top + Math.sin(T*4 + i*.8)*fh*.05);
+    for (let i=8;i>=0;i--) ctx.lineTo(x + fw*i/8, top + fh + Math.sin(T*4 + i*.8)*fh*.05);
+    ctx.closePath(); };
+  flagPath(); ctx.fillStyle = '#FFFFFF'; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = '#002F6C';
+  ctx.fillRect(x + fw*5/18, top - fh, fw*3/18, fh*3);
+  ctx.fillRect(x - 2, top + fh*4/11, fw + 4, fh*3/11);
+  ctx.restore();
+  flagPath(); ctx.stroke();
+  ctx.restore();
+}
+function drawGauges(L){
+  // trajectory: Earth at bottom, Moon at top, rocket marker = progress
+  const x = U*6 + 8, y0 = H*.62, y1 = H*.3;
+  ctx.save(); ink(Math.max(2, U*.4));
+  ctx.setLineDash([U*1.2, U*1.2]); ctx.strokeStyle = 'rgba(255,255,255,.7)';
+  ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1); ctx.stroke(); ctx.setLineDash([]);
+  drawEarthBall(x, y0 + U*3, U*3); if (D.iss) drawISS(x, y1 - U, U*2.2); else drawPlanetBall(D.key, x, y1 - U*3, U*3);
+  const my = lerp(y0, y1, G.prog);
+  ink(Math.max(2, U*.35)); ctx.beginPath(); ctx.moveTo(x, my - U*2.6); ctx.lineTo(x + U*1.6, my + U*1.6); ctx.lineTo(x - U*1.6, my + U*1.6); ctx.closePath(); fs(RED);
+  // battery
+  const bx = W - U*8 - 8, by = H*.4, bw = U*6, bh = U*12;
+  ink(Math.max(2, U*.45));
+  rr(bx + bw*.3, by - U*1.2, bw*.4, U*1.4, 2); fs('#C9C4E4');
+  rr(bx, by, bw, bh, U*1.2); ctx.fillStyle = '#E9E6F7'; ctx.fill();
+  ctx.save(); ctx.clip(); ctx.fillStyle = G.batt < .3 ? '#FFC83D' : '#3FD6B0'; ctx.fillRect(bx, by + bh*(1 - G.batt), bw, bh*G.batt + 1); ctx.restore();
+  rr(bx, by, bw, bh, U*1.2); ctx.stroke();
+  ctx.font = `${Math.max(16, U*5)}px system-ui,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('⚡', bx + bw/2, by + bh/2);
+  ctx.restore();
+}
+
+function drawParticles(){
+  for (const p of parts){
+    const a = 1 - p.age/p.life, y = p.world ? p.y + G.cam : p.y;
+    ctx.globalAlpha = p.kind === 'smoke' ? a*.75 : a;
+    if (p.kind === 'spark'){ ctx.save(); ctx.lineWidth = 1.5; ctx.strokeStyle = INK; starPath(p.x, y, p.r, p.rot); ctx.fillStyle = p.col; ctx.fill(); ctx.restore(); }
+    else if (p.kind === 'conf'){ ctx.save(); ctx.translate(p.x, y); ctx.rotate(p.rot); ctx.fillStyle = p.col; ctx.fillRect(-p.r/2, -p.r/4, p.r, p.r/2); ctx.restore(); }
+    else { ctx.fillStyle = p.col; ctx.beginPath(); ctx.arc(p.x, y, p.r, 0, 7); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+}
+function drawBig(){
+  const p = G.bigT, sc = 1 + .5*Math.max(0, 1 - p*5);
+  const fsz = Math.min(W*.22, H*.2) * (G.bigText.length > 2 ? .55 : 1);
+  ctx.save(); ctx.translate(W/2, H*.42); ctx.scale(sc, sc);
+  ctx.globalAlpha = clamp((G.bigDur - p)*4, 0, 1);
+  ctx.font = `800 ${fsz}px "Baloo 2","Trebuchet MS",system-ui,sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+  ctx.lineWidth = fsz*.1; ctx.strokeStyle = INK; ctx.strokeText(G.bigText, 0, 0);
+  ctx.fillStyle = '#FFD93D'; ctx.fillText(G.bigText, 0, 0);
+  ctx.restore();
+}
+function drawHand(x, y, glyph='👇'){
+  const b = Math.sin(T*6)*U*1.2;
+  ctx.save(); ctx.font = `${Math.max(32, U*9)}px system-ui,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+  ctx.fillText(glyph, x, y + b); ctx.restore();
+}
+function ghost(x, yb, w, h){
+  ctx.save(); ctx.setLineDash([U*1.5, U*1.2]); ctx.lineWidth = Math.max(2, U*.5);
+  ctx.strokeStyle = isDark() ? 'rgba(255,244,204,.8)' : 'rgba(43,27,90,.55)';
+  ctx.globalAlpha = .6 + .4*Math.sin(T*4);
+  rr(x - w/2, yb - h, w, h, U); ctx.stroke(); ctx.restore();
+}
+
+/* ---------- frame ---------- */
+function draw(){
+  const L = lay(), RH = L.RH;
+  ctx.clearRect(0, 0, W, H);
+  ctx.save();
+  if (G.shake > 0) ctx.translate(rand(-1,1)*G.shake, rand(-1,1)*G.shake);
+  const radio = clamp(1 - (T - G.radioT)/2.5, 0, 1);
+
+  if (G.scene === 'map') drawMap();
+  else if (G.scene === 'title' || G.scene === 'prep' || G.scene === 'launch'){
+    const cam = G.scene === 'launch' ? G.cam : 0;
+    drawEarthWorld(L, cam);
+    const astroIn = G.scene === 'launch' || G.astro === 'in';
+    const capOpts = { astro:astroIn, light:G.sys.power || G.scene === 'launch', radio };
+    if (G.scene === 'launch'){
+      const st = G.step, ry = G.ry;
+      if (G.boost){ if (SH()) partSRBs(L.rx, G.boost.wy + cam, RH, { rot:G.boost.rot*.6, sep:G.boost.sep }); else partBooster(L.rx + G.boost.rot*U*4, G.boost.wy + cam, RH, { rot:G.boost.rot }); }
+      if (G.etDrop) partET(L.rx + G.etDrop.rot*U*4, G.etDrop.wy + cam, RH, { rot:G.etDrop.rot });
+      if (st === 'button' || st === 'count' || st === 'lift' || st === 'coast1'){
+        const shakeX = st === 'count' && G.count <= 1 && !reduceMotion ? rand(-1,1)*U*.4 : 0, x = L.rx + shakeX;
+        drawPart('booster', x, ry - slotOff('booster', L), RH, { flame: st === 'lift' ? 1 : (st === 'count' && G.count <= 1 ? .35 : 0), glow: st === 'count' });
+        drawPart('tank', x, ry - slotOff('tank', L), RH, {});
+        drawPart('capsule', x, ry - slotOff('capsule', L), RH, Object.assign({ flame: SH() && st === 'lift' ? .8 : 0 }, capOpts));
+      } else if (SH() && (st === 'lift2' || st === 'coast2t')){
+        partET(L.rx, ry, RH, {});
+        partOrbiter(L.rx, ry - L.hb, RH, Object.assign({ flame: st === 'lift2' ? .9 : 0 }, capOpts));
+      } else {
+        drawUpper(L.rx, ry - L.hb, RH, Object.assign({ flame: st === 'lift2' || st === 'lift3' ? .9 : .4 }, capOpts));
+      }
+    } else {
+      const glow = G.sys.engines && T - G.engT < 3;
+      if (G.built > 0) drawPart('booster', L.rx, slotBottom('booster', L), RH, { glow });
+      if (G.built > 1) drawPart('tank', L.rx, slotBottom('tank', L), RH, { fuel:G.fuel, ox:G.ox });
+      if (G.built > 2) drawPart('capsule', L.rx, slotBottom('capsule', L), RH, capOpts);
+      if (G.scene === 'prep' && G.step === 'build' && G.built < 3){
+        if (!G.fly) ghostPart(ORDER[G.built], L, 1);
+        for (let i = G.built + 1; i < 3; i++) ghostPart(ORDER[i], L, .35);
+      }
+      if (G.fly){
+        const f = G.fly, t = ease(f.t), tgt = slotBottom(f.kind, L);
+        const x = lerp(f.x0, L.rx, t), y = lerp(f.y0, tgt, t) - Math.sin(Math.PI*f.t)*H*.12;
+        ctx.save(); ctx.translate(x, y); const sc = lerp(.55, 1, t); ctx.scale(sc, sc);
+        drawPart(f.kind, 0, 0, RH, f.kind === 'tank' ? { fuel:0, ox:0 } : {});
+        ctx.restore();
+      }
+    }
+    if (!astroIn){
+      const s = G.astro;
+      drawAstronaut(G.ax, G.ay, L.ah, { wave: s === 'ground', walk: s === 'walk', scale: s === 'enter' ? 1 - .6*G.ap : 1, alpha: s === 'enter' ? 1 - G.ap : 1 });
+      if (G.scene === 'prep' && G.step === 'crew' && s === 'ground') drawHand(G.ax, G.ay - L.ah*1.15);
+    }
+  }
+  else if (G.scene === 'trip'){
+    sky('#120E3D', '#2A1E6B');
+    starField(.5, G.scroll*.4); starField(.9, G.scroll);
+    const mr = lerp(U*4, U*22, G.prog), my = lerp(H*.08, H*.24, G.prog);
+    if (D.iss){ drawEarthArc(); drawISS(W/2, my + mr*.55, mr*.9); } else drawPlanetBall(D.key, W/2, my, mr);
+    if (['course','event','wait','arrive'].includes(G.step)){
+      ctx.save(); ctx.setLineDash([U*2, U*1.6]); ctx.lineDashOffset = -T*U*8; ctx.lineWidth = Math.max(3, U*.8);
+      ctx.strokeStyle = G.near ? '#3FD6B0' : '#FFC83D';
+      ctx.beginPath(); ctx.moveTo(W/2, H*.95); ctx.lineTo(W/2, my + mr); ctx.stroke(); ctx.restore();
+    }
+    drawGauges(L);
+    if (G.rock){
+      const a = antennaTip(L), t = G.rock.t;
+      const x = lerp(W + U*6, a.x, t), y = lerp(H*.2, a.y, t);
+      ctx.save(); ink(Math.max(2, U*.4)); ctx.translate(x, y); ctx.rotate(T*4);
+      ctx.beginPath(); ctx.moveTo(-U*2, -U); ctx.lineTo(0, -U*2); ctx.lineTo(U*2, -U*.5); ctx.lineTo(U*1.5, U*1.6); ctx.lineTo(-U*1.2, U*1.8); ctx.closePath(); fs('#9E96B8');
+      ctx.restore();
+    }
+    const flameV = G.step === 'course' ? .55 : .25;
+    for (const d of G.debris){
+      ctx.save(); ink(Math.max(2, U*.45)); ctx.translate(d.x, d.y); ctx.rotate(d.rot); const s = U*1.6;
+      ctx.beginPath(); ctx.moveTo(-s*2, -s); ctx.lineTo(0, -s*2.2); ctx.lineTo(s*2.2, -s*.4); ctx.lineTo(s*1.6, s*1.8); ctx.lineTo(-s*1.3, s*2); ctx.closePath(); fs('#9E96B8');
+      ctx.restore();
+    }
+    const ev = G.ev;
+    drawUpper(G.rx, G.ry, RH, { panels:G.panels, bent:G.bent, astro:true, light:true, radio, flame:flameV, tilt:G.tilt, dust:G.dust, frost:G.frost, hot:G.temp });
+    if (G.shield > 0){
+      const cy = G.ry - RH*.45, R = RH*.72;
+      ctx.save(); ctx.globalAlpha = G.shield;
+      const gr = ctx.createRadialGradient(G.rx, cy, R*.6, G.rx, cy, R);
+      gr.addColorStop(0, 'rgba(63,214,176,0)'); gr.addColorStop(1, 'rgba(63,214,176,.45)');
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(G.rx, cy, R, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#3FD6B0'; ctx.lineWidth = Math.max(2, U*.6); ctx.stroke(); ctx.restore();
+    }
+    if (G.bolt || (ev && ev.kind === 'bolt')){
+      const p = boltPos(L), r = Math.max(9, U*2.6), wob = G.bolt ? Math.sin(T*18)*U*.5 : 0;
+      ctx.save(); ink(Math.max(1.5, U*.35));
+      if (G.bolt){ ctx.strokeStyle = `rgba(255,77,77,${.5 + .5*Math.sin(T*8)})`; ctx.lineWidth = Math.max(2, U*.6); ctx.beginPath(); ctx.arc(p.x, p.y, r*1.8, 0, 7); ctx.stroke(); ink(Math.max(1.5, U*.35)); }
+      ctx.translate(p.x + wob, p.y); ctx.rotate(G.boltRot);
+      ctx.beginPath(); for (let k=0;k<6;k++){ const a = k*Math.PI/3; ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r); } ctx.closePath(); fs('#C9C4E4');
+      ctx.beginPath(); ctx.moveTo(-r*.5, 0); ctx.lineTo(r*.5, 0); ctx.stroke();
+      ctx.restore();
+      if (G.bolt) drawHand(p.x - L.w*.9, p.y + Math.max(16, U*4.5), '👉');
+    }
+    if (ev && ev.kind === 'hot'){
+      const tx = G.rx + L.w*.95, ty0 = G.ry, th = L.ht*.9, tw = Math.max(10, U*2.6);
+      ctx.save(); ink(Math.max(2, U*.4));
+      rr(tx - tw/2, ty0 - th, tw, th, tw/2); ctx.fillStyle = '#F6F4FF'; ctx.fill();
+      ctx.save(); ctx.clip(); ctx.fillStyle = mixc('#4DB8FF', '#FF4D4D', G.temp); ctx.fillRect(tx - tw/2, ty0 - th*G.temp, tw, th*G.temp + 1); ctx.restore();
+      rr(tx - tw/2, ty0 - th, tw, th, tw/2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(tx, ty0 + tw*.4, tw*.85, 0, 7); fs(mixc('#4DB8FF', '#FF4D4D', G.temp));
+      ctx.restore();
+    }
+    if (ev && ev.kind === 'antenna' && ev.phase === 'fault'){ const a = antennaTip(L); drawHand(a.x, a.y - U*3); }
+    if (ev && ev.kind === 'antenna' && ev.phase === 'fixing'){
+      const a = antennaTip(L);
+      ctx.save(); ctx.translate(a.x + U*4, a.y - U*2); ctx.rotate(Math.sin(T*14)*.6);
+      ctx.font = `${Math.max(28, U*8)}px system-ui,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🔧', 0, 0); ctx.restore();
+    }
+  }
+  else if (G.scene === 'land' || G.scene === 'done'){
+    sky(D.sky[0], D.sky[1]); if (D.stars) starField(.85, 0);
+    if (D.skyObj === 'sun' || D.skyObj === 'bigsun'){
+      const sr = D.skyObj === 'bigsun' ? U*10 : U*3.5;
+      ctx.fillStyle = 'rgba(255,217,61,.3)'; ctx.beginPath(); ctx.arc(W*.8, H*.3, sr*1.6, 0, 7); ctx.fill();
+      ctx.fillStyle = '#FFD93D'; ctx.beginPath(); ctx.arc(W*.8, H*.3, sr, 0, 7); ctx.fill();
+    } else if (BODIES[D.skyObj]) drawPlanetBall(D.skyObj, W*.76, H*.33, Math.max(40, U*15));
+    drawMoonGround(L);
+    if (G.scene === 'land'){
+      const l = G.land, near = clamp(1 - (L.gy - l.y)/(H*.25), 0, 1);
+      ctx.fillStyle = 'rgba(43,27,90,.25)'; ctx.beginPath(); ctx.ellipse(W/2, L.gy, RH*.3*(.4 + near*.6), U*1.2, 0, 0, 7); ctx.fill();
+      drawUpper(W/2, l.y, RH, { astro:true, light:true, legs:G.legs, flame: G.hold && l.state === 'fall' ? .9 : 0 });
+    } else {
+      drawFlag(L.rx - RH*.95, moonY(L.rx - RH*.95, L.gy), RH*.55, G.flag);
+      drawUpper(W/2, L.gy - L.legLen, RH, { astro:false, light:true, legs:1 });
+      drawAstronaut(G.ax, G.ay, L.ah, { walk: G.astro === 'out', wave: G.astro === 'play' && G.jump.y === 0 });
+      if (G.astro === 'play' && G.jump.y === 0 && !G.jumped) drawHand(G.ax, G.ay - L.ah*1.15);
+    }
+  }
+  else if (G.scene === 'dock' || G.scene === 'dockdone') drawDock(L);
+  drawParticles();
+  if (G.bigText) drawBig();
+  ctx.restore();
+}
+
+let last = performance.now();
+function loop(now){
+  const dt = Math.min(.05, (now - last)/1000); last = now;
+  update(dt); draw();
+  requestAnimationFrame(loop);
+}
+startTitle();
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
