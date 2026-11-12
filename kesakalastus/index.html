@@ -66,10 +66,14 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
     <button id="bLure" class="spinOnly">Q Lippa</button>
     <button id="bGear" class="spinOnly">V Hidas</button>
     <button id="bTwitch" class="spinOnly">X Nykäise</button>
+    <button id="bTime" class="titleOnly">A Aika</button>
+    <button id="bWeather" class="titleOnly">S Sää</button>
+    <button id="bWait" class="gameOnly">T Odota tunti</button>
     <button id="bMinus">− <span class="adj">Jarru</span></button>
     <button id="bPlus">+ <span class="adj">Jarru</span></button>
     <button id="bMute" aria-pressed="false">Ääni päällä</button>
     <button id="bMusic">N Musiikki: Auto</button>
+    <button id="bGuide">O Opas</button>
   </div>
   <div class="panels">
     <section class="panel">
@@ -82,11 +86,15 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
         <li><b>Väsytys:</b> kun kala syöksyy ja jarru luistaa, älä kelaa – kelaaminen luistavaa jarrua vastaan kiertää siimaa ja lisää kireyttä. Kelaa, kun kala lepää. Pidä siima kireällä, kun kala ui sinua kohti, tai se karistaa koukun. Liian tiukka jarru katkaisee siiman syöksyn alussa, liian löysä antaa kalan viedä siimaa kivikkoon. <kbd>↑</kbd><kbd>↓</kbd> säätävät jarrua.</li>
         <li><b>Hauki:</b> pieni kala koukussa houkuttelee joskus hauen. Hauki pitää saaliista kiinni ilman koukkua – liian kova veto saa sen päästämään irti.</li>
         <li><b>Hauen hyppy:</b> hauki voi hypätä pinnalle ravistelemaan päätään. Älä kelaa (tai nosta onkea) hypyn aikana – kireältä siimalta se ravistaa koukun helpommin irti.</li>
+        <li><b>Aika ja sää:</b> ahven syö aamulla ja illalla, kuha yöllä, lahna aamuyöllä, salakka keskipäivän auringossa. Pilvinen ja tuulinen sää piristää syöntiä, kirkas keskipäivä hiljentää ja ajaa kalat syvemmälle. Paras hetki on ennen sadetta tai ukkosta, kun ilmanpaine laskee (punainen nuoli sääkuvakkeen vieressä). Ukkosen aikana syönti loppuu. Tuuli heiluttaa kohoa ja lyhentää heittoa. Huonolla syönnillä kalat näykkivät pidempään ja ottavat arasti.</li>
+        <li><b>Legendat:</b> järvessä elää seitsemän harvinaista jättiläistä: Mörköhauki, Körmyniska, Kuhakaani, Päänsärki, Kahen kilon siika, Dalai Lahna ja Suklaamonni. Kalastusoppaassa (<kbd>O</kbd>) on huhut ja – ensimmäisen saaliin jälkeen – tarkat tiedot. Kukin liikkuu omina kellonaikoinaan, mutta syö vain oikeissa olosuhteissa ja oikealla välineellä. Suuri varjo syvällä tarkoittaa, että legenda on liikkeellä mutta ei syö; iso pyörre pinnassa, että se syö nyt – jos väline on oikea. Alkuvalikon tekstinauha kertoo kylän huhut. Legenda vapautetaan, ja se kasvaa hieman joka kerta; saalismäärä näkyy roomalaisena numerona nimessä. Siika on arka: koho vain värähtää, ja pehmeä suu repeää, jos nostat liian kovaa. Päänsärki näykkii loputtomasti – liian aikainen vastaisku säikäyttää sen tiehensä.</li>
+        <li><b>Kalastusopas:</b> <kbd>O</kbd> avaa oppaan, joka pysäyttää pelin. Selaa nuolilla, välilyönnillä tai napauttamalla näytön reunoja.</li>
+        <li><b>Alkuvalikko:</b> <kbd>A</kbd> valitsee kellonajan, <kbd>S</kbd> sään (vaihteleva tai kiinteä). Kalastaessa <kbd>T</kbd> odottaa tunnin.</li>
         <li><b>Mato-onki:</b> ei kelaa. Seuraa kohoa: nykäykset ovat näykkimistä, tee vastaisku, kun koho painuu pinnan alle. Lahna nostaa kohon kyljelleen. <kbd>↑</kbd><kbd>↓</kbd> säätävät kohon syvyyttä.</li>
         <li><b>Ongen väsytys:</b> pidä pohjassa nostaaksesi vapaa, päästä irti antaaksesi periksi, kun kala syöksyy. Jos vapa osoittaa suoraan kalaan liian kauan, siima katkeaa tai kala pääsee kaislikkoon. Älä nosta syöksyvää kalaa, mutta älä myöskään jätä lepäävää kalaa löysälle – se voi irrota.</li>
         <li><kbd>1</kbd> virveli, <kbd>2</kbd> mato-onki, <kbd>M</kbd> ääni päälle tai pois.</li>
         <li><b>Pisteet:</b> saalis saa pisteitä suhteessa lajinsa suurimpaan kokoon (100 p = lajin maksimi), joten iso ahven voi voittaa keskikokoisen hauen. Kymmenen parasta pääsee huippulistalle. <kbd>Esc</kbd> palaa alkuvalikkoon.</li>
-        <li><kbd>N</kbd> musiikki: automaattinen (haitari päivällä, kitara yöllä), haitari, kitara tai pois.</li>
+        <li><kbd>N</kbd> musiikki: automaattinen (jenkka aamulla, haitari päivällä, kitara yöllä), haitari, kitara, jenkka tai pois.</li>
       </ul>
     </section>
     <section class="panel">
@@ -94,6 +102,8 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
       <div id="log"><p class="empty">Ei vielä saalista. Ahvenet syövät kaislikon reunalla.</p></div>
       <h2 style="margin-top:12px">Huippusaaliit</h2>
       <div id="top"><p class="empty">Lista on vielä tyhjä.</p></div>
+      <h2 style="margin-top:12px">Legendat</h2>
+      <div id="legends"><p class="empty">Huhujen mukaan järvessä on seitsemän legendaa.</p></div>
       <h2 style="margin-top:12px">Omat ennätykset</h2>
       <div id="recs"><p class="empty">Ei vielä ennätyksiä.</p></div>
     </section>
@@ -198,6 +208,10 @@ const SPECIES = {
             back:'#56707f', side:'#dfe6ea', belly:'#ffffff', fin:'#b0b8bc', pat:'none', deep:.2, lenK:1},
   kiiski: {fi:'Kiiski', acc:'kiisken', min:.01, max:.1,  skew:1.8, rods:['pole'],        dmin:1.6,dmax:7,   str:.7,   speed:.3, sense:3, interest:.7, win:1.0,nib:[0,2], hook:.85, bottom:true, K:1.2,
             back:'#584826', side:'#a08a5a', belly:'#d8cca0', fin:'#786a40', pat:'speck', deep:.27, lenK:1},
+  monni:  {fi:'Monni',  acc:'monnin',  min:20,  max:40,  skew:1,   rods:[],            dmin:3,  dmax:9,   str:1,    speed:.3, sense:3, interest:.5, hook:.6, K:.6,
+            back:'#4a2a12', side:'#6e4220', belly:'#c89a6a', fin:'#3a200c', pat:'none', deep:.2, lenK:2.0, barbels:true, analLong:true},
+  siika:  {fi:'Siika',  acc:'siian',   min:.3,  max:1.2, skew:2.5, rods:['pole'],        dmin:2.4,dmax:7,   str:.95,  speed:.5, sense:2.6, interest:.5, win:.5, nib:[1,3], hook:.7, soft:1.1, subtle:true, K:1.0,
+            back:'#4a5a66', side:'#c8d0d6', belly:'#f0f2f2', fin:'#8a96a0', pat:'none', deep:.24, lenK:1.1},
 };
 const ROD = { spin:{line:5.0}, pole:{line:2.0} };
 
@@ -215,10 +229,10 @@ const GEARS = { slow: 1.5, fast: 3.0 };
 
 // ---------- sprites ----------
 const spriteCache = new Map();
-function makeSprite(sp, len) {
-  const key = sp + ':' + len;
+function makeSprite(sp, len, legend) {
+  const key = sp + ':' + len + ':' + (legend || '');
   if (spriteCache.has(key)) return spriteCache.get(key);
-  const S = SPECIES[sp];
+  const S = legend ? Object.assign({}, SPECIES[sp], LEGENDS[legend].look) : SPECIES[sp];
   const L = Math.max(5, Math.round(len));
   const Hh = Math.max(3, Math.round(L * S.deep));
   const c = document.createElement('canvas');
@@ -252,18 +266,27 @@ function makeSprite(sp, len) {
     }
     if (bt > 0.32 && bt < 0.62) px(i, y0 - 1, sp === 'ahven' && bt < 0.45 ? '#20280e' : S.fin);
     if (bt > 0.42 && bt < 0.54) px(i, y1, S.fin);
+    if (S.analLong && bt > 0.3 && bt < 0.95) px(i, y1, S.fin);
     if (bt > 0.6 && bt < 0.66 && L > 9) px(i, y1, S.fin);
   }
   const ex = L - 1 - Math.max(1, Math.round(L * 0.07));
   const ey = Math.round(mid - Hh * 0.14);
-  px(ex, ey, sp === 'sarki' ? '#c0201a' : '#000');
+  px(ex, ey, S.eye || (sp === 'sarki' ? '#c0201a' : '#000'));
   if (L > 30) { px(ex + 1, ey, '#000'); px(ex, ey - 1, sp === 'sarki' ? '#e04030' : '#ddd'); }
   px(L - 1, Math.round(mid), '#1a1a12');
+  if (S.barbels) { // catfish whiskers hanging from the mouth
+    const m0 = Math.round(mid);
+    for (let j = 1; j <= 4; j++) { px(L - 2, m0 + j, '#2a1808'); if (j < 4) px(L - 5, m0 + 1 + j, '#2a1808'); }
+  }
+  if (S.scars) for (let k = 0; k < 4; k++) { // old battle scars
+    const sx0 = Math.round(L * (0.3 + 0.12 * k)), sy0 = Math.round(mid - Hh * 0.2 + (k % 2));
+    for (let j = 0; j < 3; j++) px(sx0 + j, sy0 + j, '#d8d0a8');
+  }
   spriteCache.set(key, c);
   return c;
 }
-const spriteLen = f => Math.round(clamp(5 + 11 * Math.cbrt(f.w) * SPECIES[f.sp].lenK, 5, 40));
-const lengthCm = f => Math.round(Math.cbrt(100 * f.w * 1000 / SPECIES[f.sp].K));
+const spriteLen = f => { const lk = (f.legend && LEGENDS[f.legend].look.lenK) || SPECIES[f.sp].lenK; return Math.round(clamp(5 + 11 * Math.cbrt(f.w) * lk, 5, f.legend ? 64 : 40)); };
+const lengthCm = f => Math.round(Math.cbrt(100 * f.w * 1000 / (f.legend ? LEGENDS[f.legend].K : SPECIES[f.sp].K)));
 
 // ---------- audio ----------
 let AC = null, muted = false, noiseBuf = null;
@@ -271,6 +294,7 @@ function audioInit() {
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } }
   if (AC && AC.state === 'suspended') AC.resume();
   musicStart();
+  ambientStart();
 }
 function tone(freq, dur, type = 'square', vol = 0.05, slide = 0) {
   if (!AC || muted) return;
@@ -305,6 +329,9 @@ const sfx = {
   pike: () => { tone(110, 0.5, 'square', 0.06, -40); setTimeout(() => tone(98, 0.6, 'square', 0.06, -40), 250); },
   catch: () => [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => tone(f, 0.14, 'square', 0.05), i * 110)),
   lose: () => [392, 330, 262].forEach((f, i) => setTimeout(() => tone(f, 0.18, 'triangle', 0.07), i * 150)),
+  legend: () => [98, 92, 82].forEach((f, i) => setTimeout(() => tone(f, 0.7, 'sawtooth', 0.06, -8), i * 380)),
+  swirl: () => noise(0.9, 0.12, 400),
+  thunder: () => { noise(2.4, 0.28, 160); noise(0.7, 0.12, 900); },
   loon: () => { tone(560, 1.0, 'sine', 0.03, 320); setTimeout(() => tone(880, 1.3, 'sine', 0.025, -260), 1000); },
 };
 
@@ -321,11 +348,11 @@ const SONG_MEL = [
 const STEPS = SONG_CH.length * 6;
 const MEL = new Array(STEPS).fill(null);
 { let s = 0; for (const [n, l] of SONG_MEL) { if (n) MEL[s] = { n, l }; s += l; } }
-const MUSIC_MODES = ['auto', 'haitari', 'kitara', 'pois'];
-const MUSIC_LABEL = { auto: 'Auto', haitari: 'Haitari', kitara: 'Kitara', pois: 'Pois' };
+const MUSIC_MODES = ['auto', 'haitari', 'kitara', 'jenkka', 'pois'];
+const MUSIC_LABEL = { auto: 'Auto', haitari: 'Haitari', kitara: 'Kitara', jenkka: 'Jenkka', pois: 'Pois' };
 let musicMode = 'auto';
 try { const m = localStorage.getItem('kesakalastus.music'); if (MUSIC_MODES.includes(m)) musicMode = m; } catch (e) {}
-let musicGain = null, musicNext = 0, musicStep = 0, musicTimer = null;
+let musicGain = null, musicNext = 0, musicStep = 0, musicTimer = null, musicSong = 'valssi';
 const MUSIC_VOL = 0.45;
 const mfreq = m => 440 * Math.pow(2, (m - 69) / 12);
 function musicStart() {
@@ -334,18 +361,21 @@ function musicStart() {
   musicNext = AC.currentTime + 0.1;
   musicTimer = setInterval(musicTick, 40);
 }
-const musicInstrument = () => musicMode === 'auto' ? (isNight() ? 'kitara' : 'haitari') : musicMode;
+const musicInstrument = () => { if (musicMode !== 'auto') return musicMode; const h = hourNow(); return isNight() ? 'kitara' : h >= 4 && h < 11 ? 'jenkka' : 'haitari'; };
 function musicTick() {
   if (!AC) return;
   if (musicMode === 'pois' || muted || AC.state !== 'running') { musicNext = AC.currentTime + 0.1; return; }
   if (musicNext < AC.currentTime) musicNext = AC.currentTime + 0.05; // tab was throttled: resync, don't burst
   while (musicNext < AC.currentTime + 0.2) {
-    const inst = musicInstrument(), eighth = inst === 'kitara' ? 0.3 : 0.22;
-    playStep(inst, musicStep, musicNext, eighth);
-    musicNext += eighth; musicStep = (musicStep + 1) % STEPS;
+    const inst = musicInstrument(), song = inst === 'jenkka' ? 'jenkka' : 'valssi';
+    if (song !== musicSong) { musicSong = song; musicStep = 0; }
+    const stepDur = inst === 'kitara' ? 0.3 : inst === 'jenkka' ? 0.115 : 0.22;
+    playStep(inst, musicStep, musicNext, stepDur);
+    musicNext += stepDur; musicStep = (musicStep + 1) % (song === 'jenkka' ? J_STEPS : STEPS);
   }
 }
 function playStep(inst, s, t, e) {
+  if (inst === 'jenkka') return playJenkka(s, t, e);
   const bar = Math.floor(s / 6), pos = s % 6, ch = CHORDS[SONG_CH[bar]], mel = MEL[s];
   if (inst === 'haitari') {
     // waltz left hand: bass on 1 (root / fifth alternating), chord on 2 and 3
@@ -371,25 +401,100 @@ function reed(t, m, dur, vol, cut) { // musette accordion: three reeds slightly 
   out.gain.setValueAtTime(vol, t + Math.max(0.03, dur - 0.04)); out.gain.linearRampToValueAtTime(0.0001, t + dur + 0.05);
 }
 const ksCache = new Map();
-function ksBuffer(m) { // Karplus-Strong plucked string, rendered once per pitch
-  if (ksCache.has(m)) return ksCache.get(m);
+function ksBuffer(m, bright) { // Karplus-Strong plucked string, rendered once per pitch (bright = kantele)
+  const key = m + (bright ? 'k' : '');
+  if (ksCache.has(key)) return ksCache.get(key);
   const sr = AC.sampleRate, N = Math.max(2, Math.round(sr / mfreq(m))), len = Math.round(sr * 2.2);
   const buf = AC.createBuffer(1, len, sr), d = buf.getChannelData(0), ring = new Float32Array(N);
   let prev = 0;
-  for (let i = 0; i < N; i++) { const r = Math.random() * 2 - 1; ring[i] = 0.5 * (r + prev); prev = ring[i]; }
-  const decay = m > 70 ? 0.994 : 0.997;
+  for (let i = 0; i < N; i++) { const r = Math.random() * 2 - 1; ring[i] = bright ? r * 0.8 : 0.5 * (r + prev); prev = ring[i]; }
+  const decay = bright ? 0.998 : m > 70 ? 0.994 : 0.997; // kantele rings longer
   let idx = 0;
   for (let i = 0; i < len; i++) {
     const nx = (idx + 1) % N, v = ring[idx];
     d[i] = v; ring[idx] = decay * 0.5 * (v + ring[nx]); idx = nx;
   }
-  ksCache.set(m, buf);
+  buf.ksRate = (N + 0.5) * mfreq(m) / sr; // the string loop is N + 0.5 samples long: correct the pitch on playback
+  ksCache.set(key, buf);
   return buf;
 }
-function pluck(t, m, vol) {
+function pluck(t, m, vol, bright) {
   const s = AC.createBufferSource(), gn = AC.createGain();
-  s.buffer = ksBuffer(m); gn.gain.value = vol;
+  s.buffer = ksBuffer(m, bright); s.playbackRate.value = s.buffer.ksRate || 1; gn.gain.value = vol;
   s.connect(gn); gn.connect(musicGain); s.start(t); s.stop(t + 2.2);
+}
+// jenkka: original tune in D major, 4/4, sixteenth-note steps (16 per bar), form A A' B B' (32 bars, about a minute)
+// fiddle lead with vibrato, kantele off-beat sparkle and runs in the gaps (thirds under the melody on the last pass),
+// plucked bass on 1 and 3, accordion on 2 and 4, foot stomp
+Object.assign(CHORDS, { D: { b: 50, c: [54, 57, 62] }, A7: { b: 45, c: [55, 61, 64] }, Em: { b: 40, c: [55, 59, 64] } });
+const JA = ['D', 'D', 'A7', 'D', 'G', 'D', 'A7', 'D'], JB = ['G', 'D', 'Em', 'A7', 'G', 'D', 'A7', 'D'];
+const J_CH = [...JA, ...JA, ...JB, ...JB];
+const jA = [
+  [[69,2],[74,2],[78,3],[76,1],[74,4],[78,2],[81,2]],
+  [[81,3],[79,1],[78,2],[76,2],[78,4],[74,4]],
+  [[73,2],[76,2],[81,3],[79,1],[76,2],[73,2],[79,4]],
+  [[78,3],[76,1],[74,4],[69,4],[0,4]],
+  [[71,2],[74,2],[79,3],[78,1],[74,2],[76,2],[79,4]],
+  [[69,2],[74,2],[78,3],[76,1],[74,2],[78,2],[81,4]],
+];
+const J_BARS = [
+  ...jA, [[79,1],[78,1],[76,2],[73,2],[76,2],[81,3],[79,1],[76,4]], [[74,4],[78,2],[76,2],[74,4],[0,4]],
+  [[69,1],[71,1],[74,2],[78,3],[76,1],[74,4],[78,2],[81,2]], ...jA.slice(1),
+  [[79,2],[76,2],[73,2],[69,2],[73,2],[76,2],[79,4]], [[74,6],[69,2],[74,4],[0,4]],
+];
+const jB = [
+  [[83,3],[81,1],[79,2],[83,2],[86,4],[83,4]],
+  [[81,3],[79,1],[78,2],[81,2],[86,4],[81,4]],
+  [[79,2],[78,2],[76,2],[79,2],[83,3],[81,1],[79,4]],
+  [[76,2],[73,2],[69,2],[73,2],[81,4],[0,4]],
+  [[83,3],[81,1],[79,2],[83,2],[86,3],[85,1],[83,4]],
+  [[81,2],[78,2],[74,2],[78,2],[81,3],[83,1],[81,4]],
+];
+J_BARS.push(...jB, [[79,2],[76,2],[71,2],[73,2],[76,2],[79,2],[78,2],[76,2]], [[74,4],[69,2],[66,2],[62,4],[0,4]]);
+J_BARS.push(...jB, [[79,2],[76,2],[73,2],[76,2],[81,2],[79,2],[76,2],[73,2]], [[74,8],[0,8]]);
+const J_STEPS = J_CH.length * 16;
+const JMEL = new Array(J_STEPS).fill(null), JREST = new Array(J_STEPS).fill(false);
+{ let s = 0; for (const bar of J_BARS) for (const [n, l] of bar) { if (n) JMEL[s] = { n, l }; else for (let i = 0; i < l; i++) JREST[s + i] = true; s += l; } }
+const DMAJ = new Set([2, 4, 6, 7, 9, 11, 1]);
+function thirdBelow(n) { let k = n, steps = 0; while (steps < 2) { k--; if (DMAJ.has(((k % 12) + 12) % 12)) steps++; } return k; }
+function fiddle(t, m, dur) {
+  const f = mfreq(m), out = AC.createGain(), lp = AC.createBiquadFilter(), pk = AC.createBiquadFilter();
+  lp.type = 'lowpass'; lp.frequency.value = 3600;
+  pk.type = 'peaking'; pk.frequency.value = 1100; pk.Q.value = 1.2; pk.gain.value = 6;
+  const vib = AC.createOscillator(), vg = AC.createGain();
+  vib.frequency.value = 5.6;
+  vg.gain.setValueAtTime(0, t); vg.gain.linearRampToValueAtTime(dur > 0.3 ? 9 : 3, t + Math.min(0.25, dur)); // vibrato swells in on long notes
+  vib.connect(vg);
+  for (const c of [-4, 4]) {
+    const o = AC.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = c;
+    vg.connect(o.detune); o.connect(lp); o.start(t); o.stop(t + dur + 0.1);
+  }
+  vib.start(t); vib.stop(t + dur + 0.1);
+  lp.connect(pk); pk.connect(out); out.connect(musicGain);
+  const v = 0.065, end = t + Math.max(0.06, dur * 0.92);
+  out.gain.setValueAtTime(0.0001, t); out.gain.linearRampToValueAtTime(v, t + 0.035);
+  out.gain.linearRampToValueAtTime(v * 0.8, t + Math.min(0.15, dur * 0.5));
+  out.gain.setValueAtTime(v * 0.8, end); out.gain.linearRampToValueAtTime(0.0001, end + 0.06);
+}
+function stomp(t) {
+  const o = AC.createOscillator(), gn = AC.createGain();
+  o.type = 'sine'; o.frequency.setValueAtTime(110, t); o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+  gn.gain.setValueAtTime(0.09, t); gn.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+  o.connect(gn); gn.connect(musicGain); o.start(t); o.stop(t + 0.16);
+}
+function playJenkka(s, t, e) {
+  const bar = Math.floor(s / 16), pos = s % 16, ch = CHORDS[J_CH[bar]], mel = JMEL[s];
+  if (pos === 0) pluck(t, ch.b, 0.42);
+  if (pos === 8) pluck(t, ch.b + 7 > 52 ? ch.b - 5 : ch.b + 7, 0.36);
+  if (pos === 0 || pos === 8) stomp(t);
+  if (pos === 4 || pos === 12) for (const n of ch.c) reed(t, n, e * 1.1, 0.003, 1200); // accordion off-beats stay in the background
+  if (pos % 4 === 2 && !JREST[s]) pluck(t, ch.c[(pos >> 2) % 3] + 12, 0.2, true); // off-beat sparkle
+  if (JREST[s]) { const run = [ch.c[0], ch.c[1], ch.c[2], ch.c[0] + 12]; pluck(t, run[pos % 4] + 12, 0.38, true); } // kantele run fills the gap
+  if (mel) {
+    fiddle(t, mel.n, e * mel.l);
+    pluck(t, mel.n, 0.16, true); // kantele doubles the melody for a clear attack
+    if (bar >= 24) pluck(t + 0.01, thirdBelow(mel.n), 0.3, true); // last pass: kantele harmony a third below
+  }
 }
 function syncMusicBtn() { document.getElementById('bMusic').textContent = 'N Musiikki: ' + MUSIC_LABEL[musicMode]; }
 function cycleMusic() {
@@ -427,7 +532,7 @@ let lure = { m: 0, d: 0, moving: false, onBottom: false, reeling: false, pauseT:
 let fly = null, chargeT = 0, chargeP = 0, twitchCd = 0, followShown = false;
 let fishes = [], fight = null, strike = null, bite = null, snag = null, card = null, msg = null;
 let worm = true, twist = 0;
-let gameMin = 20 * 60 + 30;
+let gameMin = 19 * 60;
 let particles = [], floatDip = 0, floatTwitch = 0;
 let tip = { x: 56, y: 30 };
 let reelTick = 0, dragTick = 0, ambientT = 20;
@@ -437,9 +542,283 @@ const hourNow = () => gameMin / 60;
 const isNight = () => { const h = hourNow(); return h >= 22 || h < 4; };
 function showMsg(text, col = '#fff', dur = 2.2) { msg = { text, col, t: dur, dur }; }
 
+// ---------- weather & fish activity ----------
+// Game time runs 1 game minute per real second, so weather durations below are in game minutes.
+const WEATHERS = {
+  selkea:  { fi: 'Selkeä',   cloud: 0,   wind: .1,  rain: 0,  dark: 0 },
+  pilvi:   { fi: 'Pilvinen', cloud: .85, wind: .25, rain: 0,  dark: .07 },
+  tuuli:   { fi: 'Tuulinen', cloud: .45, wind: 1,   rain: 0,  dark: .03 },
+  sade:    { fi: 'Sade',     cloud: 1,   wind: .4,  rain: .7, dark: .12 },
+  ukkonen: { fi: 'Ukkonen',  cloud: 1,   wind: .8,  rain: 1,  dark: .22 },
+};
+const WEATHER_MODES = ['vaihteleva', 'selkea', 'pilvi', 'tuuli', 'sade', 'ukkonen'];
+const WX_NEXT = {
+  selkea:  [['pilvi', .45], ['tuuli', .3], ['selkea', .25]],
+  pilvi:   [['sade', .3], ['selkea', .3], ['tuuli', .15], ['ukkonen', .12], ['pilvi', .13]],
+  tuuli:   [['pilvi', .4], ['selkea', .4], ['sade', .2]],
+  sade:    [['pilvi', .5], ['sade', .2], ['selkea', .2], ['tuuli', .1]],
+  ukkonen: [['sade', .6], ['pilvi', .4]],
+};
+let weatherMode = 'vaihteleva', weather = 'selkea', weatherNext = 'pilvi', weatherLeft = 120, weatherDur = 120;
+let wx = { cloud: 0, wind: .1, rain: 0, dark: 0 }; // smoothed values that drive visuals and sound
+let stormPhase = 'front', flash = 0, flashT = 6, bolt = null, frontWarned = false, fade = 0;
+const ACT = {};
+const pickWx = from => { let r = Math.random(); for (const [k, p] of WX_NEXT[from]) { r -= p; if (r <= 0) return k; } return WX_NEXT[from][0][0]; };
+const pickStartWx = () => ['selkea', 'selkea', 'pilvi', 'tuuli', 'sade'][Math.floor(Math.random() * 5)];
+// a thunderstorm starts as a front (dark clouds, falling pressure, fish feed hard), then breaks
+const stormNow = () => weather === 'ukkonen' && stormPhase === 'storm';
+const frontNow = () => (weather === 'ukkonen' && stormPhase === 'front') ||
+  (weatherMode === 'vaihteleva' && (weatherNext === 'sade' || weatherNext === 'ukkonen') && weather !== 'sade' && weather !== 'ukkonen' && weatherLeft < 60);
+function setWeather(k, snap) {
+  weather = k;
+  weatherDur = weatherLeft = k === 'ukkonen' ? rnd(60, 90) : rnd(70, 180);
+  weatherNext = weatherMode === 'vaihteleva' ? pickWx(k) : k;
+  stormPhase = 'front'; frontWarned = false;
+  if (snap) wx = wxTargets();
+}
+function wxTargets() {
+  const W0 = WEATHERS[weather];
+  const t = { cloud: W0.cloud, wind: W0.wind, rain: W0.rain, dark: W0.dark };
+  if (weather === 'ukkonen' && stormPhase === 'front') { t.rain = 0; t.wind = .45; t.dark = .15; }
+  if (frontNow() && weather !== 'ukkonen') { t.cloud = Math.max(t.cloud, .75); t.dark = Math.max(t.dark, .06); }
+  return t;
+}
+function updateWeather(dtMin) {
+  weatherLeft -= dtMin;
+  if (weather === 'ukkonen') {
+    const ph = weatherLeft < weatherDur * 0.45 ? 'storm' : 'front';
+    if (ph !== stormPhase) { stormPhase = ph; if (ph === 'storm' && state !== 'title') showMsg('Ukkonen! Syönti loppui', '#ff9a4a', 2.6); }
+  }
+  if (weatherLeft <= 0) setWeather(weatherMode === 'vaihteleva' ? weatherNext : weather);
+  if (!frontWarned && frontNow() && state !== 'title') { frontWarned = true; showMsg('Ilmanpaine laskee - kalat syövät!', '#9cd8ff', 2.6); }
+}
+function makeBolt() {
+  const pts = []; let x = rnd(90, 300), y = 0;
+  pts.push([x, y]);
+  while (y < WATER_Y - 8) { x += rnd(-6, 6); y = Math.min(WATER_Y - 8, y + rnd(5, 10)); pts.push([x, y]); }
+  return pts;
+}
+function updateWx(dt) {
+  const T = wxTargets(), k = Math.min(1, dt * 0.25);
+  for (const key in T) wx[key] = lerp(wx[key], T[key], k);
+  if (stormNow()) {
+    flashT -= dt;
+    if (flashT <= 0) { flash = 1; bolt = makeBolt(); flashT = rnd(5, 18); setTimeout(() => sfx.thunder(), rnd(300, 2200)); }
+  }
+  flash = Math.max(0, flash - dt * 3);
+}
+// feeding activity by hour (cyclic, starts at 0 h) and by weather; 1 = normal
+const TIME_ACT = {
+  ahven:   [[0, .35], [4, .7], [6, 1.4], [9, 1.1], [12, .6], [15, .6], [18, 1.2], [21, 1.3], [23, .6]],
+  hauki:   [[0, .4], [4, .9], [7, 1.2], [11, .8], [14, .6], [18, 1.1], [21, 1.2], [23, .6]],
+  kuha:    [[0, 1.5], [3, 1.3], [5, .9], [8, .35], [13, .25], [18, .45], [21, 1.0], [23, 1.5]],
+  sarki:   [[0, .6], [4, .9], [7, 1.1], [12, .8], [17, 1.0], [20, 1.3], [23, .8]],
+  lahna:   [[0, 1.2], [3, 1.4], [6, 1.1], [9, .6], [14, .45], [19, .9], [22, 1.2]],
+  monni:   [[0, 1]],
+  salakka: [[0, .3], [5, .7], [9, 1.1], [13, 1.4], [17, 1.2], [21, .7], [23, .4]],
+  kiiski:  [[0, 1.1], [6, .9], [12, .8], [18, .9], [22, 1.1]],
+  siika:   [[0, 1.3], [3, 1.4], [6, .8], [10, .3], [16, .3], [20, .7], [22, 1.1]],
+};
+const WX_ACT = {
+  pilvi: { ahven: 1.15, hauki: 1.35, kuha: 1.4, sarki: 1.1, lahna: 1.1, salakka: .9, kiiski: 1, siika: 1.1, monni: 1 },
+  tuuli: { ahven: 1.3, hauki: 1.45, kuha: 1.25, sarki: 1, lahna: .9, salakka: .8, kiiski: 1, siika: .7, monni: 1 },
+  sade:  { ahven: 1.25, hauki: 1, kuha: 1.15, sarki: 1.3, lahna: 1.15, salakka: .7, kiiski: 1.1, siika: 1, monni: 1 },
+  front: { ahven: 1.6, hauki: 1.7, kuha: 1.5, sarki: 1.4, lahna: 1.4, salakka: 1.2, kiiski: 1.2, siika: 1.2, monni: 1 },
+};
+function curve(pts, h) {
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[i], b = pts[(i + 1) % pts.length], bh = i + 1 < pts.length ? b[0] : b[0] + 24;
+    if (h >= a[0] && h < bh) return lerp(a[1], b[1], (h - a[0]) / (bh - a[0]));
+  }
+  return pts[0][1];
+}
+const brightSun = () => weather === 'selkea' && sunAlt(hourNow()) > 30;
+function activity(sp) {
+  let a = curve(TIME_ACT[sp], hourNow());
+  if (stormNow()) return a * 0.3;
+  if (frontNow()) a *= WX_ACT.front[sp];
+  else if (WX_ACT[weather]) a *= WX_ACT[weather][sp];
+  if (brightSun()) a *= sp === 'salakka' ? 1.25 : sp === 'kuha' ? 0.5 : 0.65;
+  return a;
+}
+function updateActs() { for (const k in SPECIES) ACT[k] = activity(k); }
+function activityText() {
+  const list = Object.keys(SPECIES).filter(k => SPECIES[k].rods.includes(rod));
+  const a = list.reduce((s, k) => s + ACT[k], 0) / list.length;
+  return a > 1.15 ? ['Hyvä syönti!', '#9cff7a'] : a > 0.75 ? ['Kohtalainen syönti', '#ffd84a'] : ['Hiljaista', '#ff9a4a'];
+}
+const TIME_PRESETS = [5 * 60, 12 * 60, 19 * 60, 23 * 60 + 30];
+let timePreset = 2;
+function newTrip() {
+  fishes = []; for (let i = 0; i < 14; i++) spawnFish(true);
+  twist = 0; updateActs(); for (const k in legendCools) legendCools[k] = Math.min(legendCools[k], 30); legendGap = Math.min(legendGap, 30);
+  const [t, c] = activityText();
+  showMsg(t, c, 2.2);
+}
+function cycleTime() {
+  if (state !== 'title') return;
+  timePreset = (timePreset + 1) % TIME_PRESETS.length;
+  gameMin = TIME_PRESETS[timePreset]; renderSky(); titleT = 0;
+}
+function cycleWeather() {
+  if (state !== 'title') return;
+  weatherMode = WEATHER_MODES[(WEATHER_MODES.indexOf(weatherMode) + 1) % WEATHER_MODES.length];
+  setWeather(weatherMode === 'vaihteleva' ? pickStartWx() : weatherMode, true);
+  renderSky(); titleT = 0;
+}
+function waitHour() {
+  if (state !== 'idle') { if (state !== 'title') showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  gameMin = (gameMin + 60) % 1440;
+  updateWeather(60); wx = wxTargets(); renderSky();
+  fishes = fishes.filter(f => f.legend && !f.leaving && LEGENDS[f.legend].season());
+  for (let i = fishes.length; i < 14; i++) spawnFish(true);
+  updateActs(); fade = 1; for (const k in legendCools) legendCools[k] -= 60; legendGap -= 60;
+  const [t, c] = activityText();
+  showMsg('Kello ' + clockStr() + ' - ' + t, c, 2.8);
+}
+// clouds: pre-rendered pixel blobs, a light and a dark version of each
+const clouds = [];
+function makeCloudSprite(w, h, cols, seed) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const x = c.getContext('2d');
+  for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) {
+    const nx = (xx - w / 2) / (w / 2), ny = (yy - h * 0.7) / (h * 0.7);
+    const v = nx * nx + ny * ny * 1.6 - (yy < h * 0.6 ? 0.22 * Math.sin(xx * 0.45 + seed) : 0);
+    if (v < 1 && (v < 0.75 || (xx + yy) % 2 === 0)) { x.fillStyle = yy > h * 0.72 ? cols[1] : cols[0]; x.fillRect(xx, yy, 1, 1); }
+  }
+  return c;
+}
+function buildClouds() {
+  for (let i = 0; i < 7; i++) {
+    const w = Math.round(rnd(30, 62)), h = Math.round(rnd(10, 18)), seed = rnd(0, 6);
+    clouds.push({ x0: rnd(0, W + 100), y: Math.round(rnd(6, 40)), light: makeCloudSprite(w, h, ['#e8eaee', '#b8bcc6'], seed), dark: makeCloudSprite(w, h, ['#5a5e6a', '#3a3c48'], seed) });
+  }
+}
+function drawWxIcon(x, y) {
+  const r = (dx, dy, w, h, c) => { g.fillStyle = c; g.fillRect(x + dx, y + dy, w, h); };
+  const cloud = (c1, c2) => { r(1, 2, 6, 3, c1); r(2, 1, 3, 1, c1); r(1, 5, 7, 1, c2); r(7, 3, 1, 2, c2); };
+  switch (weather) {
+    case 'selkea':
+      if (sunAlt(hourNow()) < -2) { r(2, 1, 3, 1, '#f0f0c8'); r(1, 2, 2, 4, '#f0f0c8'); r(2, 6, 3, 1, '#f0f0c8'); }
+      else { r(2, 2, 4, 4, '#ffd84a'); r(3, 1, 2, 6, '#ffd84a'); r(1, 3, 6, 2, '#ffd84a'); }
+      break;
+    case 'pilvi': cloud('#d8dce4', '#9aa0aa'); break;
+    case 'tuuli': r(0, 2, 6, 1, '#c8e8f0'); r(6, 1, 1, 1, '#c8e8f0'); r(1, 4, 7, 1, '#c8e8f0'); r(0, 6, 5, 1, '#c8e8f0'); r(5, 7, 1, 1, '#c8e8f0'); break;
+    case 'sade': cloud('#b8bcc6', '#7a808a'); r(2, 7, 1, 1, '#6ab0ff'); r(5, 7, 1, 1, '#6ab0ff'); r(3, 8, 1, 1, '#6ab0ff'); break;
+    case 'ukkonen': cloud('#6a6e7a', '#44464e'); r(4, 6, 1, 1, '#ffe04a'); r(3, 7, 2, 1, '#ffe04a'); r(3, 8, 1, 1, '#ffe04a'); break;
+  }
+  if (frontNow()) { r(10, 1, 1, 4, '#ff6a4a'); r(9, 4, 3, 1, '#ff6a4a'); r(10, 5, 1, 1, '#ff6a4a'); }
+}
+// rain and wind ambience: looping filtered noise
+let ambRain = null, ambWind = null;
+function ambientStart() {
+  if (!AC || ambRain) return;
+  const len = AC.sampleRate * 2, buf = AC.createBuffer(1, len, AC.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const mk = (type, freq) => {
+    const s = AC.createBufferSource(), f = AC.createBiquadFilter(), gn = AC.createGain();
+    s.buffer = buf; s.loop = true; f.type = type; f.frequency.value = freq; gn.gain.value = 0;
+    s.connect(f); f.connect(gn); gn.connect(AC.destination); s.start();
+    return gn;
+  };
+  ambRain = mk('highpass', 2500); ambWind = mk('lowpass', 380);
+}
+function ambientUpdate(now) {
+  if (!ambRain) return;
+  const t = AC.currentTime, on = muted ? 0 : 1;
+  ambRain.gain.setTargetAtTime(on * wx.rain * 0.05, t, 0.5);
+  ambWind.gain.setTargetAtTime(on * wx.wind * (0.05 + 0.03 * Math.sin(now * 0.7)), t, 0.5);
+}
+
+// ---------- legendary fish ----------
+// Rare named giants. Each appears only under its own conditions and only takes the right tackle.
+// Caught legends are released: the catch count becomes a Roman numeral in the name and the fish grows a little each time.
+const LEGENDS = {
+  morko: { info: 'HÄMÄRÄ, PILVI TAI TUULI. LUSIKKA TAI VAAPPU YLI 18 METRIIN. TIUKKA JARRU.', fi: 'Mörköhauki', short: 'MÖRKÖHAUKI', sp: 'hauki', w: [11, 14], K: .65, base: 8, stamK: .42, grow: 1.25, zone: [22, 34], depth: 2.2,
+    rods: ['spin'], hint: 'HUHU: HAUKI JOKA VEI KOIRAN',
+    look: { back: '#1a2a12', side: '#46642a', belly: '#c8c8a0', fin: '#6a5a2a', eye: '#ffcc33', scars: true, lenK: 1.6 },
+    when: () => { const h = hourNow(); return ((h >= 3.5 && h < 6.5) || (h >= 19.5 && h < 23)) && (weather === 'pilvi' || weather === 'tuuli' || frontNow()) && !stormNow(); },
+    season: () => { const h = hourNow(); return (h >= 3.5 && h < 6.5) || (h >= 19.5 && h < 23); },
+    accept: () => rod === 'spin' && (lureType === 'lusikka' || lureType === 'vaappu') && lure.m > 18 },
+  kormy: { info: 'KIRKAS TYYNI AAMU. JIGI POHJAN TUNTUMASSA.', fi: 'Körmyniska', short: 'KÖRMYNISKA', sp: 'ahven', w: [1.6, 1.9], K: 1.6, base: 4.3, stamK: .4, grow: 1.15, zone: [12, 28], depth: 4,
+    rods: ['spin'], hint: 'HUHU: KYTTYRÄSELKÄ KIRKKAINA AAMUINA',
+    look: { back: '#18280a', side: '#6e8e2a', fin: '#ff4020', deep: .44, eye: '#d02010', lenK: 1.1 },
+    when: () => { const h = hourNow(); return h >= 4 && h < 8.5 && weather === 'selkea' && wx.wind < 0.4; },
+    season: () => { const h = hourNow(); return h >= 4 && h < 8.5; },
+    accept: () => rod === 'spin' && lureType === 'jigi' && lure.d > bottomDepth(lure.m) - 1.2 },
+  siika: { info: 'KESKIYÖ, TYYNI. MATO-ONKI, KOHO YLI 3 METRIN. NOSTA HELLÄSTI.', fi: 'Kahen kilon siika', short: '2 KG SIIKA', sp: 'siika', w: [2.0, 2.2], K: 1.0, base: 2.0, stamK: .7, grow: 1.08, zone: [6.5, 10], depth: 3,
+    rods: ['pole'], hint: 'HUHU: SYÖ KUN KUKAAN EI KATSO',
+    look: { back: '#33424e', side: '#e2e8ee', deep: .27 },
+    when: () => { const h = hourNow(); return (h >= 23 || h < 4) && (weather === 'selkea' || weather === 'pilvi') && wx.wind < 0.4; },
+    season: () => { const h = hourNow(); return h >= 23 || h < 4; },
+    accept: () => rod === 'pole' && lure.d >= 2.8 && worm },
+  // takes only a jig falling onto the bottom, has a bony mouth and swims at you to throw the hook
+  // joke legend (name from Kummeli): wakes only in a thunderstorm and only takes a lure left lying still on the bottom
+  // calm and patient: only comes in on a steady, unbroken lift; toggling the rod resets its trust
+  dalai: { fi: 'Dalai Lahna', short: 'DALAI LAHNA', sp: 'lahna', w: [5, 6], K: 1.5, base: 1.8, stamK: .5, grow: 1.1, zone: [6, 9.5], depth: 9,
+    rods: ['pole'], hint: 'HUHU: AAMU-USVASSA POHJAN RAUHASSA', zen: true, note: 'Mieli on tyyni.',
+    info: 'TYYNI AAMU-USVA. MATO POHJASSA. NOSTA TASAISESTI, ÄLÄ HÄTÄILE.',
+    look: { back: '#6a4a14', side: '#e0a830', belly: '#f4d88a', fin: '#b0441e', deep: .46, eye: '#3a2a10' },
+    when: () => { const h = hourNow(); return h >= 3 && h < 7 && (weather === 'selkea' || weather === 'pilvi') && wx.wind < 0.3; },
+    season: () => { const h = hourNow(); return h >= 3 && h < 7; },
+    accept: () => rod === 'pole' && worm && lure.d >= bottomDepth(lure.m) - 0.1 },
+  suklaa: { info: 'UKKONEN. ANNA UISTIMEN LEVÄTÄ POHJASSA. TIUKKA JARRU.', fi: 'Suklaamonni', short: 'SUKLAAMONNI', sp: 'monni', w: [25, 35], K: .6, base: 6.5, stamK: .22, grow: 1.15, zone: [10, 30], depth: 9,
+    rods: ['spin'], hint: 'HUHU: UKKOSELLA POHJASSA MAKOILEE', deadStick: true, hook: .6, wrap: .004, note: 'Ei mahtunut haaviin!',
+    look: {},
+    when: () => stormNow(),
+    season: () => weather === 'ukkonen',
+    accept: () => rod === 'spin' && lure.onBottom && !actionHeld },
+  kaani: { info: 'SATEINEN YÖ. JIGI, JOKA PUTOAA POHJAAN AIVAN SEN VIEREEN.', fi: 'Kuhakaani', short: 'KUHAKAANI', sp: 'kuha', w: [7, 9], K: .85, base: 6, stamK: .45, grow: 1.2, zone: [18, 34], depth: 6,
+    rods: ['spin'], hint: 'HUHU: KAANI ODOTTAA POHJASSA', dropOnly: true, hook: .45, chargeK: .25,
+    look: { back: '#262e2c', side: '#76867f', fin: '#c8a040', eye: '#f0f0d0', lenK: 1.35 },
+    when: () => { const h = hourNow(); return (h >= 22.5 || h < 3) && (weather === 'pilvi' || weather === 'sade' || frontNow()) && !stormNow(); },
+    season: () => { const h = hourNow(); return h >= 22.5 || h < 3; },
+    accept: () => rod === 'spin' && lureType === 'jigi' && lure.d > bottomDepth(lure.m) - 2 },
+  // nibbles endlessly with a tiny take window; striking early scares it off for good
+  paansarki: { info: 'ILTASADE. MATALA KOHO. ODOTA OIKEAA OTTIA, ÄLÄ NÄYKKIMISTÄ.', fi: 'Päänsärki', short: 'PÄÄNSÄRKI', sp: 'sarki', w: [1.3, 1.6], K: 1.25, base: 1.6, stamK: .7, grow: 1.12, zone: [5.5, 8.5], depth: 1.0,
+    rods: ['pole'], hint: 'HUHU: ILTASATEELLA KAISLOJEN LUONA', nib: [6, 10], win: .35,
+    look: { back: '#22344a', side: '#d0d6da', fin: '#ff2a10', eye: '#ff2010', deep: .34 },
+    when: () => { const h = hourNow(); return h >= 18 && h < 22.5 && (weather === 'sade' || weather === 'pilvi'); },
+    season: () => { const h = hourNow(); return h >= 18 && h < 22.5; },
+    accept: () => rod === 'pole' && worm && lure.d <= 1.6 },
+};
+let legendBook = {};
+try { legendBook = JSON.parse(localStorage.getItem('kesakalastus.legends') || '{}') || {}; } catch (e) { legendBook = {}; }
+const saveLegends = () => { try { localStorage.setItem('kesakalastus.legends', JSON.stringify(legendBook)); } catch (e) {} };
+const roman = n => { let s = ''; for (const [v, r] of [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]) while (n >= v) { s += r; n -= v; } return s; };
+const legendName = (k, n) => LEGENDS[k].fi + (n > 1 ? ' ' + roman(n) : '');
+const legendCools = {}; let omen = null, legendGap = 30; // per legend: seconds of play (= game minutes) until it can show up again
+function legendStep(dt) {
+  if (omen) { omen.t += dt; if (omen.t > 4) omen = null; }
+  if (state === 'title') return;
+  const present = fishes.filter(f => f.legend);
+  legendGap -= dt;
+  if (legendGap > 0 || present.length) return; // one legend at a time, with a few minutes' gap between visits
+  for (const k in LEGENDS) { // each legend has its own cooldown; at most two show up at once
+    legendCools[k] = (legendCools[k] || 0) - dt;
+    if (legendCools[k] > 0) continue;
+    const L = LEGENDS[k];
+    // shows itself during its hours whatever the weather; a bit sooner when it would actually bite your tackle
+    // a legend that would bite your current rod shows up readily; others only occasionally pass by
+    const rate = L.when() ? (L.rods.includes(rod) ? 40 : 200) : 400;
+    if (L.season() && Math.random() < dt / rate) { spawnLegend(k); return; }
+  }
+}
+function spawnLegend(k) {
+  const L = LEGENDS[k], n = (legendBook[k] && legendBook[k].n) || 0;
+  const m = rnd(L.zone[0], L.zone[1]);
+  const f = spawnFish(true, L.sp, m);
+  f.legend = k; f.legendT = 0; f.cool = 0; f.chase = false; f.passing = !L.when();
+  f.w = +(rnd(L.w[0], L.w[1]) * Math.min(L.grow, 1 + 0.04 * n)).toFixed(2);
+  f.d = clamp(L.depth, 0.5, bottomDepth(m) - 0.2); f.tdep = f.d;
+  legendCools[k] = 1200; legendGap = 180; // the same legend returns after ~20 min of play; any legend after 3 min
+  if (L.when()) { omen = { x: Math.round(mToX(m)), t: 0 }; showMsg('Iso pyörre pinnassa...', '#9cd8ff', 2.4); sfx.swirl(); } // feeding
+  else showMsg('Suuri varjo liikkuu syvällä...', '#9cd8ff', 2.4); // just passing through
+}
+
 // ---------- fish population ----------
 function pickSpecies() {
-  const w = { ahven: 3, sarki: 3, salakka: 2, kiiski: 1.4, lahna: 1.1, hauki: 1.0, kuha: isNight() ? 1.6 : 0.35 };
+  const w = { ahven: 3, sarki: 3, salakka: 2, kiiski: 1.4, lahna: 1.1, hauki: 1.0, kuha: isNight() ? 1.6 : 0.35, siika: isNight() ? 0.8 : 0.3 };
   let tot = 0; for (const k in w) tot += w[k];
   let r = Math.random() * tot;
   for (const k in w) { r -= w[k]; if (r <= 0) return k; }
@@ -481,7 +860,7 @@ function updateFishes(dt) {
     f.cool -= dt; f.wob += dt * 6;
     if (f.leaving) { f.vx = Math.abs(f.vx) || 0.5; f.m += Math.max(0.6, S.speed * 1.5) * dt; if (f.m > scene.maxM) fishes.splice(i, 1); continue; }
     let target = null, spd = S.speed;
-    if (state === 'fishing' && !busy && f.cool <= 0 && !snag) {
+    if (state === 'fishing' && !busy && f.cool <= 0 && !snag && (!f.legend || (LEGENDS[f.legend].accept() && LEGENDS[f.legend].when()))) {
       const dx = lure.m - f.m, dd = (lure.d - f.d) * 1.5, dist = Math.hypot(dx, dd);
       if (rod === 'spin' && S.rods.includes('spin')) {
         const moving = lureMovingSpin();
@@ -489,8 +868,8 @@ function updateFishes(dt) {
         const ap = LURES[lureType].appeal[f.sp] || 1;
         const sense = S.sense * nightK;
         if (!f.chase && moving && dist < sense) {
-          if (Math.random() < Math.min(0.95, S.interest * ap * nightK * S.spd[gear === 'fast' ? 1 : 0])) { f.chase = true; f.lostInt = 0; f.followT = 0; }
-          else f.cool = rnd(3, 7);
+          if (Math.random() < Math.min(0.95, S.interest * ap * ACT[f.sp] * S.spd[gear === 'fast' ? 1 : 0]) * (f.legend ? 0.6 : 1)) { f.chase = true; f.lostInt = 0; f.followT = 0; }
+          else f.cool = f.legend ? rnd(20, 40) : rnd(4, 9) / Math.max(0.25, Math.min(1, ACT[f.sp])); // uninterested fish ignore the lure longer when feeding is slow
         }
         if (f.chase) {
           f.followT += dt;
@@ -499,21 +878,21 @@ function updateFishes(dt) {
           spd = Math.min(S.burst, dist * 4 + lureSpd);
           if (!moving) { f.lostInt += dt; if (f.lostInt > 1.2 && Math.random() < dt * 0.8) { f.chase = false; f.cool = rnd(3, 6); } }
           else f.lostInt = 0;
-          if (dist > sense * 1.9 || f.followT > 5) { f.chase = false; f.cool = rnd(4, 8); }
+          if (dist > sense * 1.9 || f.followT > (f.legend ? 15 : 5)) { f.chase = false; f.cool = rnd(4, 8); }
           const sm = S.spd[gear === 'fast' ? 1 : 0];
-          if (f.chase && dist < 0.55 && moving && Math.random() < dt * S.aggr * ap * sm * (actionHeld ? 0.02 : 0.04)) { startStrike(f); continue; }
+          if (f.chase && dist < 0.55 && moving && !(f.legend && LEGENDS[f.legend].dropOnly) && Math.random() < dt * S.aggr * ap * sm * (actionHeld ? 0.02 : 0.04)) { startStrike(f); continue; }
           if (f.chase && !followShown && dist < 1.5 && lure.m < 7 && f.followT > 1.5) { followShown = true; showMsg('Kala seuraa perässä!', '#9cd8ff', 1.6); }
         }
       } else if (rod === 'pole' && S.rods.includes('pole') && worm) {
         if (!f.chase && dist < S.sense) {
-          if (Math.random() < S.interest) f.chase = true; else f.cool = rnd(4, 9);
+          if (Math.random() < Math.min(0.95, S.interest * ACT[f.sp]) * (f.legend ? 0.6 : 1)) f.chase = true; else f.cool = f.legend ? rnd(20, 40) : rnd(4, 9) / Math.max(0.25, Math.min(1, ACT[f.sp]));
         }
         if (f.chase) {
           target = lure; spd = S.speed * 0.8;
           if (dist < 0.3) { startBite(f); continue; }
         }
       }
-    } else if (f.chase && state !== 'fishing') f.chase = false;
+    } else if (f.chase && (state !== 'fishing' || (f.legend && !(LEGENDS[f.legend].accept() && LEGENDS[f.legend].when())))) f.chase = false;
 
     if (target) {
       const dx = target.m - f.m, dd = target.d - f.d, dist = Math.hypot(dx, dd) || 1;
@@ -525,16 +904,26 @@ function updateFishes(dt) {
       if (f.turnT <= 0) {
         f.vx = (Math.random() < .5 ? -1 : 1) * S.speed * rnd(.3, .9);
         const [lo, hi] = depthRange(S, clamp(f.m, 0, 36));
-        f.tdep = S.bottom ? hi : rnd(lo, hi);
+        f.tdep = S.bottom ? hi : brightSun() && f.sp !== 'salakka' ? rnd((lo + hi) / 2, hi) : rnd(lo, hi); // bright sun: deeper
         f.turnT = rnd(2, 6);
       }
-      f.m += f.vx * dt;
+      f.m += f.vx * dt * (0.6 + 0.4 * Math.min(1.3, ACT[f.sp]));
       f.d += (f.tdep - f.d) * dt * 0.5;
     }
     const [lo] = depthRange(S, clamp(f.m, 0, 36));
     if (bottomDepth(f.m) < lo + 0.2 || f.m < scene.minFishM) f.vx = Math.abs(f.vx) || 0.3;
     if (f.m > scene.maxM) { if (Math.random() < 0.3) { fishes.splice(i, 1); continue; } f.vx = -Math.abs(f.vx); }
     f.d = clamp(f.d, 0.15, bottomDepth(f.m) - 0.1);
+    if (f.legend) { // legends keep to their haunt and leave after a while (sooner if conditions change)
+      const L = LEGENDS[f.legend];
+      f.legendT += dt * (L.season() ? 1 : 6);
+      if (f.legendT > (f.passing ? 90 : 360)) f.leaving = true; // a passing shadow leaves soon
+      if (!f.chase) {
+        if (f.m < L.zone[0] || f.m > L.zone[1]) f.vx = (f.m < L.zone[0] ? 1 : -1) * (Math.abs(f.vx) || 0.3);
+        f.tdep = clamp(L.depth, 0.5, bottomDepth(f.m) - 0.2);
+      }
+      if (L.deadStick && state === 'fishing' && rod === 'spin' && lure.onBottom && Math.abs(lure.m - f.m) < 10) f.vx = Math.sign(lure.m - f.m || 1) * 0.3;
+    }
   }
 }
 
@@ -547,6 +936,8 @@ function syncButtons() {
   document.querySelectorAll('.adj').forEach(e => { e.textContent = rod === 'spin' ? 'Jarru' : 'Syvyys'; });
   $('bLure').textContent = 'Q ' + LURES[lureType].fi;
   $('bGear').textContent = 'V ' + (gear === 'fast' ? 'Nopea' : 'Hidas');
+  document.querySelectorAll('.titleOnly').forEach(e => { e.hidden = state !== 'title'; });
+  document.querySelectorAll('.gameOnly').forEach(e => { e.hidden = state === 'title'; });
 }
 function setRod(r) {
   if (state === 'card' || state === 'landing') return;
@@ -568,7 +959,7 @@ function press() {
   audioInit();
   if (actionHeld) return;
   actionHeld = true;
-  if (state === 'title') { state = 'idle'; actionHeld = false; return; }
+  if (state === 'title') { state = 'idle'; actionHeld = false; newTrip(); syncButtons(); return; }
   if (state === 'landing') return;
   if (state === 'card') { card = null; state = 'idle'; actionHeld = false; return; }
   if (state === 'idle') {
@@ -588,7 +979,7 @@ function release() {
 }
 function doCast() {
   const p = chargeP, [c0, c1] = scene.cast[rod];
-  const m = c0 + p * c1;
+  const m = c0 + p * c1 * (1 - 0.15 * wx.wind); // headwind shortens the cast
   if (rod === 'spin') twist *= 0.7;
   else if (!worm) worm = true;
   fly = { t: 0, dur: 0.45 + p * 0.6, x0: tip.x, y0: tip.y, x1: mToX(m), m };
@@ -609,11 +1000,18 @@ function lureTrigger(kind) {
   if (state !== 'fishing' || rod !== 'spin' || snag) return;
   const LU = LURES[lureType];
   const base = { twitch: .6, restart: .5, drop: .55 }[kind];
+  if (kind === 'drop') for (const f of fishes) { // Kuhakaani lies in wait on the bottom: a jig dropping next to it is the only trigger
+    const L = f.legend && LEGENDS[f.legend];
+    if (!L || !L.dropOnly || f.cool > 0 || isFightFish(f) || !L.accept() || !L.when()) continue;
+    if (Math.hypot(lure.m - f.m, (lure.d - f.d) * 1.5) < 2.5) { if (Math.random() < 0.35) { startStrike(f); return; } f.cool = rnd(10, 25); }
+  }
   for (const f of fishes) {
     if (!f.chase || isFightFish(f)) continue;
+    if (f.legend && LEGENDS[f.legend].dropOnly && kind !== 'drop') continue;
     if (Math.hypot(lure.m - f.m, (lure.d - f.d) * 1.5) > 1.6) continue;
     let p = base * (LU.appeal[f.sp] || 1) * SPECIES[f.sp].spd[gear === 'fast' ? 1 : 0];
     if (kind === 'drop' && f.sp === 'kuha') p *= 1.5;
+    p *= Math.min(1.5, ACT[f.sp]);
     if (Math.random() < p) { startStrike(f); return; }
   }
   if (kind === 'twitch') {
@@ -687,6 +1085,13 @@ function updSpin(dt) {
       if (wasFalling) lureTrigger('drop');
     }
   }
+  if (state === 'fishing' && lure.onBottom && !actionHeld) { // a lure left still on the bottom: only the catfish cares
+    lure.stillT = (lure.stillT || 0) + dt;
+    if (lure.stillT > 12) for (const f of fishes) {
+      const L = f.legend && LEGENDS[f.legend];
+      if (L && L.deadStick && f.cool <= 0 && L.accept() && L.when() && Math.abs(lure.m - f.m) < 4 && Math.random() < dt * 0.15) { f.m = lure.m; f.d = lure.d; startStrike(f); break; }
+    }
+  } else lure.stillT = 0;
   if (state === 'fishing' && lure.m <= 0.4) state = 'idle';
 }
 function startStrike(f) {
@@ -698,7 +1103,7 @@ function startStrike(f) {
 }
 function resolveStrike() {
   const f = strike.f, S = SPECIES[f.sp];
-  const chance = S.hook * (strike.t < 0.25 ? 1 : 0.85);
+  const chance = ((f.legend && LEGENDS[f.legend].hook) || S.hook) * (strike.t < 0.25 ? 1 : 0.85);
   strike = null;
   if (Math.random() < chance) startFight(f);
   else { f.cool = rnd(5, 9); state = 'fishing'; showMsg('Ohi meni!', '#ffd84a', 1.4); }
@@ -709,7 +1114,10 @@ const poleWormDepth = () => Math.min(floatDepth, bottomDepth(lure.m) - 0.03);
 function startBite(f) {
   const S = SPECIES[f.sp];
   f.chase = false;
-  bite = { f, phase: 'nibble', t: 0, n: Math.round(rnd(S.nib[0], S.nib[1])), next: rnd(0.3, 1.0), win: S.win };
+  const picky = ACT[f.sp] < 0.7; // slow feeding: more nibbling, quicker takes
+  bite = { f, phase: 'nibble', t: 0, n: Math.round(rnd(S.nib[0], S.nib[1])) + (picky ? 2 : 0), next: rnd(0.3, 1.0), win: S.win * (picky ? 0.75 : 1) };
+  const LL = f.legend && LEGENDS[f.legend];
+  if (LL && LL.nib) { bite.n = Math.round(rnd(LL.nib[0], LL.nib[1])); bite.win = LL.win; }
 }
 function updPole(dt) {
   lure.d = lerp(lure.d, poleWormDepth(), dt * 2);
@@ -722,11 +1130,11 @@ function updPole(dt) {
     if (bite.phase === 'nibble') {
       if (bite.t >= bite.next) {
         if (bite.n <= 0) { bite.phase = 'take'; bite.t = 0; sfx.plop(); }
-        else { bite.n--; floatTwitch = 1; sfx.nibble(); bite.next = bite.t + rnd(0.35, 1.1); }
+        else { bite.n--; floatTwitch = S.subtle ? 0.55 : 1; sfx.nibble(); bite.next = bite.t + rnd(0.35, 1.1); }
       }
-      if (bite && Math.random() < dt * 0.06) { f.cool = rnd(3, 6); bite = null; }
+      if (bite && Math.random() < dt * 0.06 / Math.max(0.3, ACT[f.sp])) { f.cool = rnd(3, 6); bite = null; }
     } else {
-      targetDip = S.lift ? -1 : 1;
+      targetDip = S.lift ? -1 : S.subtle ? 0.45 : 1; // siika barely dips the float
       if (bite.t > bite.win) {
         worm = false; f.cool = rnd(6, 10); bite = null;
         showMsg('Mato vietiin! Nosta ja syötitä', '#ffd84a', 2.4);
@@ -744,6 +1152,7 @@ function poleStrike() {
   }
   if (bite && bite.phase === 'nibble') {
     const f = bite.f; bite = null;
+    if (f.legend) { f.leaving = true; f.chase = false; showMsg('Iso kala säikähti...', '#ff9a4a', 2.2); return; }
     if (Math.random() < 0.05) { startFight(f); return; }
     f.cool = rnd(6, 10);
     if (Math.random() < 0.3) worm = false;
@@ -760,15 +1169,17 @@ function startFight(f) {
   fight = { f, base: fishBase(f), stam: 1, mode: 'run', modeT: rnd(.6, 1.4), t: 0,
     tension: 0, L: lure.m, d: 0.75, wormM: lure.m, slack: 0, slackT: 0, over: 0, slipping: false, reedT: 0,
     incoming: null, grab: null, gear: rod === 'pole' ? 'Mato' : LURES[lureType].fi };
-  showMsg('Kala kiinni!', '#9cff7a', 1.2);
+  const L = f.legend && LEGENDS[f.legend];
+  if (L) { fight.base = L.base; fight.stamK = L.stamK; fight.chargeK = L.chargeK || 0; fight.zen = !!L.zen; fight.calmT = 0; fight.lastHeld = actionHeld; fight.legend = f.legend; showMsg('Jokin valtava tarttui!', '#ff9a4a', 2.2); sfx.legend(); }
+  else showMsg('Kala kiinni!', '#9cff7a', 1.2);
   splash(mToX(lure.m), WATER_Y, 4); sfx.splash();
 }
 function modeStep(F, dt, allowCharge) {
   F.modeT -= dt;
   if (F.modeT > 0) return;
   const r = Math.random(), s = F.stam;
-  if (r < 0.12 + 0.45 * s) { F.mode = 'run'; F.modeT = rnd(0.6, 2.4) * (0.5 + s); }
-  else if (allowCharge && r < 0.24 + 0.5 * s && F.L > 5) { F.mode = 'charge'; F.modeT = rnd(0.5, 1.6); }
+  if (r < (0.12 + 0.45 * s) * (F.zen ? 0.5 : 1)) { F.mode = 'run'; F.modeT = rnd(0.6, 2.4) * (0.5 + s); }
+  else if (allowCharge && r < 0.24 + 0.5 * s + (F.chargeK || 0) && F.L > 5) { F.mode = 'charge'; F.modeT = rnd(0.5, 1.6); }
   else { F.mode = 'rest'; F.modeT = rnd(0.7, 2.4); }
 }
 // Pike-grabs-the-hooked-fish event. Returns false if the fight ended.
@@ -777,6 +1188,7 @@ function pikeStep(dt) {
   if (F.grab) {
     const G = F.grab;
     if (G.hooked) return true;
+    G.prey.m = F.f.m; G.prey.d = F.f.d; G.prey.vx = F.f.vx; // the prey travels in the pike's jaws
     const r = F.tension / Math.max(0.3, F.base);
     G.grip -= dt * (0.03 + 0.35 * Math.max(0, r - 0.55));
     if (Math.random() < dt * 0.05) {
@@ -870,7 +1282,7 @@ function fightCommon(F, dt) {
   const line = ROD[rod].line;
   if (F.tension > line) { F.over += dt; if (F.over > 0.15) { lose('Naps! Siima katkesi', true); return false; } }
   else F.over = Math.max(0, F.over - dt);
-  F.stam = Math.max(0, F.stam - dt * (0.02 + 0.07 * Math.min(1.5, F.tension / (F.base + 0.2))) * (F.mode === 'run' ? 1.3 : 1));
+  F.stam = Math.max(0, F.stam - dt * (0.02 + 0.07 * Math.min(1.5, F.tension / (F.base + 0.2))) * (F.mode === 'run' ? 1.3 : 1) * (F.stamK || 1));
   return true;
 }
 function fightSpin(dt) {
@@ -901,7 +1313,7 @@ function fightSpin(dt) {
       F.L += Math.min(6, (pull + crank - drag) * 2 + 0.4) * dt;
       ten = drag * (F.spike > 0 ? 1.3 : 1);
       if (actionHeld) twist = Math.min(2.5, twist + dt * 0.6);
-      if (Math.random() < dt * 0.035) { lose('Kala kietoi siiman kiveen', true); return; }
+      if (Math.random() < dt * (F.legend ? (LEGENDS[F.legend].wrap || 0.012) : 0.035)) { lose('Kala kietoi siiman kiveen', true); return; }
     } else {
       ten = pull + crank;
       if (reel > 0) F.L -= reel * (1 - 0.5 * Math.min(1, pull / Math.max(0.1, drag)));
@@ -933,8 +1345,9 @@ function fightPole(dt) {
   modeStep(F, dt, false);
   const k = 0.35 + 0.65 * F.stam;
   const pull = F.mode === 'run' ? F.base * k : F.base * 0.3 * k;
+  if (F.zen) { if (actionHeld !== F.lastHeld) { F.calmT = 0; F.lastHeld = actionHeld; } else F.calmT += dt; }
   let ten;
-  if (actionHeld) { ten = 0.25 + pull * (F.mode === 'run' ? 1.0 : 0.85); F.d += dt * (pull * 0.13 - 0.24); F.reedT = 0; F.looseT = 0; }
+  if (actionHeld) { ten = 0.25 + pull * (F.mode === 'run' ? 1.0 : 0.85); F.d += dt * (pull * 0.13 - (F.zen && F.calmT < 2.5 ? 0 : 0.24)); F.reedT = 0; F.looseT = 0; }
   else if (F.d < 1) {
     ten = 0.08 + pull * 0.3; F.d += dt * (0.05 + pull * 0.14); F.reedT = 0;
     F.looseT = ten < 0.25 ? (F.looseT || 0) + dt : 0;
@@ -942,10 +1355,12 @@ function fightPole(dt) {
   }
   else {
     ten = 0.1 + pull * 0.85; F.reedT += dt;
-    if (F.reedT > 2.5) { lose('Kala karkasi kaislikkoon'); return; }
+    if (F.reedT > 2.5 && !SPECIES[f.sp].soft) { lose('Kala karkasi kaislikkoon'); return; } // siika runs to open water, not the reeds
   }
   F.d = clamp(F.d, 0, 1);
   F.tension = lerp(F.tension, ten, Math.min(1, dt * 14));
+  const soft = SPECIES[f.sp].soft; // soft mouth: hard lifting tears the hook out
+  if (soft && actionHeld && F.tension > soft && Math.random() < dt * 2.5) { lose('Koukku repesi siian suusta'); return; }
   if (!fightCommon(F, dt)) return;
   const tipM = xToM(tip.x);
   f.m = tipM + (F.wormM - tipM + 1.5) * F.d;
@@ -969,16 +1384,24 @@ function land() {
   }
   if (F.incoming) F.incoming.cool = 10;
   fight = null;
-  const prev = records[f.sp] || 0;
-  const isRec = f.w > prev;
-  if (isRec) { records[f.sp] = f.w; saveRecords(); }
-  const pts = fishPoints(f);
-  const rank = addTop({ sp: f.sp, w: f.w, pts });
-  catches.unshift({ sp: f.sp, w: f.w, cm: lengthCm(f), time: clockStr(), gear: F.gear, note, pts });
+  const L = f.legend && LEGENDS[f.legend];
+  let isRec = false, pts, name = SPECIES[f.sp].fi;
+  if (L) {
+    const b = legendBook[f.legend] = legendBook[f.legend] || { n: 0, best: 0 };
+    b.n++; b.best = Math.max(b.best, f.w); saveLegends();
+    name = legendName(f.legend, b.n); pts = 300; note = L.note || 'Legenda! Vapautettu';
+  } else {
+    const prev = records[f.sp] || 0;
+    isRec = f.w > prev;
+    if (isRec) { records[f.sp] = f.w; saveRecords(); }
+    pts = fishPoints(f);
+  }
+  const rank = addTop(L ? { sp: f.sp, w: f.w, pts, name: L.short } : { sp: f.sp, w: f.w, pts });
+  catches.unshift({ sp: f.sp, name, legend: !!L, w: f.w, cm: lengthCm(f), time: clockStr(), gear: F.gear, note, pts, wx: WEATHERS[weather].fi + (frontNow() ? ' ↓' : '') });
   updateLog();
   f.vx = -1; f.d = 0.3;
   landing = { f, t: 0, type: f.w >= 1 ? 'net' : 'swing', dur: f.w >= 1 ? 1.6 : 0.8, splashed: false,
-    card: { f, rec: isRec, note, pts, rank, t: 0 } };
+    card: { f, name, rec: isRec, note, pts, rank, t: 0 } };
   state = 'landing'; actionHeld = false;
   splash(mToX(1.2), WATER_Y, 8); sfx.splash();
 }
@@ -993,6 +1416,7 @@ function lose(text, broke, who) {
   fight = null; state = 'idle';
   broke ? sfx.snap() : sfx.lose();
   showMsg(text, '#ff6a4a', 2.4);
+  if (f && f.legend) setTimeout(() => showMsg(LEGENDS[f.legend].fi + ' palasi syvyyksiin', '#ff9a4a', 2.4), 2400);
 }
 
 // ---------- clock & sky ----------
@@ -1024,12 +1448,15 @@ function skyColors(h) {
 const sunAlt = h => 22.5 + 30 * Math.cos(2 * Math.PI * (h - 13) / 24);
 const darkness = h => clamp((10 - sunAlt(h)) / 18, 0, 1) * 0.32;
 const skyCv = document.createElement('canvas');
-let skyMin = -99;
+let skyMin = -99, skyCloud = -1;
 const BAYER = [0, 0.5, 0.75, 0.25];
 function renderSky() {
   skyCv.width = W; skyCv.height = WATER_Y;
   const sx = skyCv.getContext('2d');
-  const [top, bot] = skyColors(hourNow());
+  let [top, bot] = skyColors(hourNow());
+  const cg = wx.cloud * 0.75; // overcast greys the sky
+  top = top.map((v, j) => lerp(v, [96, 100, 112][j], cg)); bot = bot.map((v, j) => lerp(v, [150, 152, 158][j], cg));
+  skyCloud = wx.cloud;
   const img = sx.createImageData(W, WATER_Y), d = img.data, steps = 9;
   for (let y = 0; y < WATER_Y; y++) {
     const f = (y / (WATER_Y - 1)) * steps, lo = Math.floor(f), frac = f - lo;
@@ -1175,13 +1602,13 @@ function lurePos() {
     return { x: lerp(fly.x0, fly.x1, t), y: lerp(fly.y0, WATER_Y, t) - Math.sin(Math.PI * t) * (20 + fly.dur * 30) };
   }
   if (state === 'fight' && fight) {
-    if (fight.grab && !fight.grab.hooked) return fishMouth(fight.grab.prey);
+    // while a pike holds the hooked fish, the line runs to the pike's jaws where the prey is drawn
     return fishMouth(fight.f);
   }
   return { x: mToX(lure.m), y: dToY(lure.d) };
 }
 function drawFishAt(f, x, y, alpha, rot) {
-  const spr = makeSprite(f.sp, spriteLen(f));
+  const spr = makeSprite(f.sp, spriteLen(f), f.legend);
   g.globalAlpha = alpha;
   g.save(); g.translate(Math.round(x), Math.round(y));
   if (rot) g.rotate(rot);
@@ -1226,19 +1653,41 @@ function draw() {
   g.drawImage(skyCv, 0, 0);
   const h = hourNow(), alt = sunAlt(h);
   const sx = 160 + Math.sin(2 * Math.PI * (h - 13) / 24) * 150, sy = 76 - alt * 1.15;
+  const sunVis = 1 - wx.cloud * 0.95;
+  g.globalAlpha = sunVis;
   if (alt > -9) {
     g.fillStyle = alt < 4 ? 'rgba(255,170,90,0.25)' : 'rgba(255,240,180,0.18)';
     g.fillRect(sx - 14, Math.min(sy, 76) - 4, 28, 8);
     for (let dy = -5; dy <= 5; dy++) for (let dx = -5; dx <= 5; dx++)
       if (dx * dx + dy * dy <= 26) { g.fillStyle = alt < 6 ? '#ffb46a' : '#fff0b0'; g.fillRect(Math.round(sx + dx), Math.round(sy + dy), 1, 1); }
   }
+  g.globalAlpha = 1;
+  if (wx.cloud > 0.03) {
+    const n = Math.ceil(clouds.length * Math.min(1, wx.cloud * 1.2)), a = Math.min(1, wx.cloud * 1.5), dm = clamp(wx.dark * 5, 0, 1);
+    for (let i = 0; i < n; i++) {
+      const c = clouds[i], x = Math.round(((c.x0 + now * (1.5 + wx.wind * 8)) % (W + 100)) - 60);
+      g.globalAlpha = a * (1 - dm); g.drawImage(c.light, x, c.y);
+      g.globalAlpha = a * dm; g.drawImage(c.dark, x, c.y);
+    }
+    g.globalAlpha = 1;
+  }
   g.drawImage(staticCv, 0, 0);
-  if (darkness(h) > 0.15) { g.fillStyle = '#ffd860'; g.fillRect(218, 72, 3, 3); }
+  if (darkness(h) + wx.dark > 0.15) { g.fillStyle = '#ffd860'; g.fillRect(218, 72, 3, 3); }
   for (let i = 0; i < 26; i++) {
     const x = Math.round((i * 47 + now * (6 + (i % 3) * 3)) % (W - scene.originX)) + scene.originX;
     g.fillStyle = i % 4 === 0 ? '#c8dce0' : '#7aa0a8'; g.fillRect(x, WATER_Y + (i % 2), 3 + (i % 3), 1);
   }
-  if (alt > -6) { g.fillStyle = alt < 6 ? '#ffb46a' : '#fff0b0'; for (let i = 0; i < 4; i++) g.fillRect(Math.round(sx - 3 + Math.sin(now * 3 + i) * 3), WATER_Y + 1 + i * 2, 6 - i, 1); }
+  if (wx.wind > 0.3) for (let x = scene.originX; x < W; x += 3) { // wind chop
+    const cr = Math.sin(x * 0.35 + now * 4 + Math.sin(x * 0.07) * 3);
+    if (cr > 0.4) { g.fillStyle = cr > 0.85 && wx.wind > 0.7 ? '#e8f0f0' : '#9ab8c0'; g.fillRect(x, WATER_Y - Math.round(cr * wx.wind * 1.5), 2, 1); }
+  }
+  if (alt > -6 && sunVis > 0.2) { g.fillStyle = alt < 6 ? '#ffb46a' : '#fff0b0'; for (let i = 0; i < 4; i++) g.fillRect(Math.round(sx - 3 + Math.sin(now * 3 + i) * 3), WATER_Y + 1 + i * 2, 6 - i, 1); }
+  if (omen) { // big swirl where a legend surfaced
+    const r = Math.round(omen.t * 5) + 2, a = Math.max(0, 1 - omen.t / 4);
+    g.fillStyle = `rgba(220,235,240,${a.toFixed(2)})`;
+    g.fillRect(omen.x - r, WATER_Y, 2, 1); g.fillRect(omen.x + r - 1, WATER_Y, 2, 1);
+    g.fillRect(omen.x - Math.round(r / 2), WATER_Y - 1, 1, 1); g.fillRect(omen.x + Math.round(r / 2), WATER_Y - 1, 1, 1);
+  }
   for (const l of lilies) {
     g.fillStyle = '#3e7a2a'; g.fillRect(l.x, WATER_Y - 1, 5, 1);
     g.fillStyle = '#2c5a20'; g.fillRect(l.x + 2, WATER_Y, 1, dToY(bottomDepth(xToM(l.x))) - WATER_Y);
@@ -1254,7 +1703,7 @@ function draw() {
       if (fight.jump) { const p = fight.jump.t / fight.jump.dur; rot = (0.6 - 1.2 * p) * (f.vx < 0 ? 1 : -1) + Math.sin(now * 38) * 0.3; }
       else if (fight.shake > 0) rot = Math.sin(now * 40) * 0.25;
     }
-    drawFishAt(f, Math.min(330, mToX(f.m)), dToY(f.d) + Math.sin(f.wob) * 0.5, vivid ? 1 : clamp(0.85 - f.d * 0.08, 0.35, 0.85), rot);
+    drawFishAt(f, Math.min(330, mToX(f.m)), dToY(f.d) + Math.sin(f.wob) * 0.5, vivid ? 1 : f.legend ? 0.8 : clamp(0.85 - f.d * 0.08, 0.35, 0.85), rot);
   }
   if (prey) { // small fish crosswise in the pike's jaws
     const mth = fishMouth(fight.f);
@@ -1264,7 +1713,7 @@ function draw() {
   }
   for (const r of reeds) {
     const x = Math.round(mToX(r.m)), yb = Math.round(dToY(bottomDepth(r.m))), top = WATER_Y - Math.round(r.h * 8);
-    const sway = Math.sin(now * 1.3 + r.ph) * 1.2;
+    const sway = Math.sin(now * (1.3 + wx.wind * 1.5) + r.ph) * (1.2 + wx.wind * 2.5);
     pixLine(g, x, yb, x + sway, top, '#6a8a3a');
     g.fillStyle = '#5a3a1e'; g.fillRect(Math.round(x + sway), top, 1, 3);
   }
@@ -1302,7 +1751,7 @@ function draw() {
         drawCurve(quadPts(tx, ty, (tx + L.x) / 2, (ty + L.y) / 2 + 4, L.x, L.y, 14), lineCol);
       } else {
         const dip = floatDip, tw = floatTwitch;
-        const fy = WATER_Y - 4 + Math.round(dip > 0 ? dip * 6 : tw * 2);
+        const fy = WATER_Y - 4 + Math.round((dip > 0 ? dip * 6 : tw * 2) + wx.wind * 1.6 * Math.sin(now * 5.3 + Math.sin(now * 1.7) * 2)); // waves bob the float
         drawCurve(quadPts(tx, ty, (tx + flX) / 2, WATER_Y - 6, flX, fy, 12), lineCol);
         const wy = Math.round(L.y);
         pixLine(g, flX, fy + 5, flX, wy, '#9aa8a0');
@@ -1325,9 +1774,35 @@ function draw() {
   for (const p of particles) { g.fillStyle = '#d8ecf0'; g.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); }
   const [mx, my] = scene.mosquito;
   g.fillStyle = '#111'; g.fillRect(Math.round(mx + Math.sin(now * 5.3) * 6 + Math.sin(now * 13) * 2), Math.round(my + Math.cos(now * 4.1) * 5), 1, 1);
-  const dk = darkness(h);
+  // morning mist on calm mornings
+  const hh = hourNow();
+  if ((weather === 'selkea' || weather === 'pilvi') && wx.wind < 0.4 && hh > 2.5 && hh < 7.5) {
+    const ma = 0.32 * Math.sin(Math.PI * (hh - 2.5) / 5);
+    for (let y = 60; y < 90; y++) { const k = 1 - Math.abs(y - 77) / 17; g.fillStyle = `rgba(220,224,228,${(ma * Math.max(0, k)).toFixed(3)})`; g.fillRect(0, y, W, 1); }
+  }
+  if (wx.rain > 0.02) { // rain streaks and rings
+    const n = Math.round(wx.rain * 90), slant = Math.round(wx.wind * 3);
+    g.fillStyle = 'rgba(190,205,220,0.55)';
+    for (let i = 0; i < n; i++) {
+      const x = (hash(i, 1) % W + now * 40 * wx.wind) % W, y = (hash(i, 2) % 200 + now * 230) % (WATER_Y + 6) - 6;
+      pixLine(g, x, y, x - slant, y + 4, 'rgba(190,205,220,0.55)');
+    }
+    g.fillStyle = 'rgba(200,220,230,0.8)';
+    for (let i = 0; i < Math.round(wx.rain * 10); i++) {
+      const ph = now * 1.6 + (hash(i, 3) % 100) / 100, cyc = Math.floor(ph), t = ph - cyc;
+      const x = scene.originX + hash(i, cyc) % (W - scene.originX), rr = Math.round(t * 3) + 1;
+      g.fillRect(x - rr, WATER_Y, 1, 1); g.fillRect(x + rr, WATER_Y, 1, 1);
+    }
+  }
+  const dk = Math.min(0.55, darkness(h) + wx.dark);
   if (dk > 0) { g.fillStyle = `rgba(16,18,58,${dk.toFixed(3)})`; g.fillRect(0, 0, W, H); }
+  if (flash > 0) {
+    if (bolt && flash > 0.55) for (let i = 0; i < bolt.length - 1; i++) pixLine(g, bolt[i][0], bolt[i][1], bolt[i + 1][0], bolt[i + 1][1], '#ffffff');
+    g.fillStyle = `rgba(230,235,255,${(flash * 0.55).toFixed(3)})`; g.fillRect(0, 0, W, H);
+  }
+  if (fade > 0) { g.fillStyle = `rgba(0,0,0,${fade.toFixed(3)})`; g.fillRect(0, 0, W, H); }
   drawHud(now);
+  if (guideOpen) drawGuide();
 }
 
 function drawLanding(now) {
@@ -1359,7 +1834,7 @@ function drawLanding(now) {
     drawFishAt(f, x, y + 2, 1, -1.3 + Math.sin(now * 25) * 0.4);
   }
 }
-const TITLE_SCROLL = 'TERVETULOA MÖKILLE!   AHVENET SYÖVÄT KAISLIKON REUNALLA...   HAUKI VÄIJYY LUMPEIDEN LUONA...   KUHA LIIKKUU YÖLLÄ...   MUISTA HYTTYSMYRKKY!   KIITOS PELAAMISESTA - LAITURISOFT 1996          ';
+const TITLE_SCROLL = 'TERVETULOA MÖKILLE!   AHVENET SYÖVÄT KAISLIKON REUNALLA...   HAUKI VÄIJYY LUMPEIDEN LUONA...   KUHA LIIKKUU YÖLLÄ...   KYLÄLLÄ KERROTAAN: MÖRKÖHAUKI SAALISTAA HÄMÄRISSÄ PILVISELLÄ SÄÄLLÄ KAUKANA RANNASTA...   KÖRMYNISKA KÄY KIRKKAINA AAMUINA POHJAN TUNTUMASSA...   KAHEN KILON SIIKA SYÖ KESKIYÖN JÄLKEEN SYVÄLTÄ...   KUHAKAANI HALLITSEE SYVÄNNETTÄ SATEISINA ÖINÄ...   PÄÄNSÄRKI NÄYKKII ILTASATEELLA KAISLOJEN LUONA - KÄRSIVÄLLISYYTTÄ!   DALAI LAHNA MIETISKELEE AAMU-USVASSA POHJAN RAUHASSA...   JA SUKLAAMONNI... SEN NÄKEE VAIN UKKOSELLA, KUN UISTIN SAA LEVÄTÄ RAUHASSA POHJASSA.   MUISTA HYTTYSMYRKKY!   KIITOS PELAAMISESTA - LAITURISOFT 1996          ';
 function drawTitle(now) {
   g.fillStyle = 'rgba(0,0,24,0.55)'; g.fillRect(0, 0, W, H);
   for (let y = 20; y < 50; y++) { // copper bars
@@ -1379,17 +1854,19 @@ function drawTitle(now) {
   txtC('MÖKKIJÄRVEN KALASTUSPELI', 64, '#9cd8ff');
   const page = Math.floor(titleT / 7) % 2;
   if (page === 0) {
-    if (Math.floor(now * 2) % 2) txtC('PAINA ALOITTAAKSESI', 92, '#ffffff');
-    txt('1 VIRVELI', 76, 114, rod === 'spin' ? '#ffd84a' : '#8a8a8a');
-    txt('2 MATO-ONKI', 172, 114, rod === 'pole' ? '#ffd84a' : '#8a8a8a');
-    txtC('N MUSIIKKI   M ÄÄNI', 130, '#c8c8c0');
-    txtC('(C) 1996 LAITURISOFT', 156, '#9cd8ff');
-  } else {
+    if (Math.floor(now * 2) % 2) txtC('PAINA ALOITTAAKSESI', 84, '#ffffff');
+    txt('1 VIRVELI', 76, 100, rod === 'spin' ? '#ffd84a' : '#8a8a8a');
+    txt('2 MATO-ONKI', 172, 100, rod === 'pole' ? '#ffd84a' : '#8a8a8a');
+    txtC('A AIKA: ' + clockStr(), 116, '#e8e8e0');
+    txtC('S SÄÄ: ' + (weatherMode === 'vaihteleva' ? 'VAIHTELEVA (' + WEATHERS[weather].fi.toUpperCase() + ')' : WEATHERS[weather].fi.toUpperCase()), 128, '#e8e8e0');
+    txtC('O OPAS  N MUSIIKKI  M ÄÄNI', 144, '#c8c8c0');
+    txtC('(C) 1996 LAITURISOFT', 162, '#9cd8ff');
+  } else if (page === 1) {
     txtC('HUIPPUSAALIIT', 80, '#ffd84a');
     if (!topList.length) txtC('EI VIELÄ SAALIITA', 106, '#c8c8c0');
     topList.slice(0, 8).forEach((e, i) => {
       const kg = e.w < 1 ? Math.round(e.w * 1000) + ' G' : e.w.toFixed(2).replace('.', ',') + ' KG';
-      const row = String(i + 1).padStart(2, ' ') + '. ' + SPECIES[e.sp].fi.toUpperCase().padEnd(8, ' ') + kg.padStart(8, ' ') + String(e.pts).padStart(5, ' ') + 'P';
+      const row = String(i + 1).padStart(2, ' ') + '. ' + (e.name || SPECIES[e.sp].fi.toUpperCase()).padEnd(10, ' ') + kg.padStart(8, ' ') + String(e.pts).padStart(5, ' ') + 'P';
       txt(row, 44, 94 + i * 10, i === 0 ? '#ffd84a' : '#e8e8e0');
     });
   }
@@ -1400,14 +1877,15 @@ function drawHud(now) {
   if (state === 'title') { drawTitle(now); return; }
   g.fillStyle = 'rgba(0,0,0,0.5)'; g.fillRect(0, 0, W, 11);
   txt(clockStr(), 3, 2, '#fff');
+  drawWxIcon(45, 1);
   if (rod === 'spin') {
     const n = lureCount[lureType];
-    txt(LURES[lureType].fi.toUpperCase() + ' ' + n, 50, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
-    txt('JARRU ' + fi1(drag), 132, 2, '#9cd8ff');
+    txt(LURES[lureType].fi.toUpperCase() + ' ' + n, 60, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
+    txt('JARRU ' + fi1(drag), 136, 2, '#9cd8ff');
     txt(gear === 'fast' ? 'NOPEA' : 'HIDAS', 276, 2, gear === 'fast' ? '#ff9a4a' : '#9cff7a');
   } else {
-    txt('MATO-ONKI', 50, 2, '#ffd84a');
-    txt('SYVYYS ' + fi1(floatDepth) + 'M', 132, 2, '#9cd8ff');
+    txt('MATO-ONKI', 60, 2, '#ffd84a');
+    txt('SYVYYS ' + fi1(floatDepth) + 'M', 140, 2, '#9cd8ff');
     txt(worm ? 'MATO OK' : 'EI MATOA', 252, 2, worm ? '#ff9ab0' : '#ff6a4a');
   }
   if (rod === 'spin' && twist > 0.6) txt('SIIMA KIERTEELLÄ', 4, 14, Math.floor(now * 3) % 2 ? '#ff8a4a' : '#ffd84a');
@@ -1434,6 +1912,7 @@ function drawHud(now) {
       if (fight.slack > 0.4) txt('LÖYSÄ!', 182, 177, Math.floor(now * 6) % 2 ? '#ff6a4a' : '#fff');
     } else {
       txt(actionHeld ? 'NOSTA' : 'ANNA', 244, 188, actionHeld ? '#ffd84a' : '#9cd8ff');
+      if (fight.zen) { txt('TYYNEYS', 196, 164, '#f4d88a'); g.fillStyle = '#000'; g.fillRect(195, 174, 58, 6); g.fillStyle = '#f4d88a'; g.fillRect(196, 175, Math.round(56 * clamp(actionHeld ? fight.calmT / 2.5 : 0, 0, 1)), 4); }
       if (fight.d >= 1) txt('VAPA SUORANA!', 62, 177, Math.floor(now * 6) % 2 ? '#ff6a4a' : '#fff');
     }
   } else if (state !== 'card') {
@@ -1459,13 +1938,13 @@ function drawCard(now) {
   const f = card.f, S = SPECIES[f.sp];
   const x = 40, y = 26, w = 240, hgt = 148;
   bevelBox(x, y, w, hgt);
-  g.fillStyle = '#000080'; g.fillRect(x + 3, y + 3, w - 6, 11);
-  txt('SAALIS!', x + 6, y + 5, '#fff', false);
+  g.fillStyle = f.legend ? '#806000' : '#000080'; g.fillRect(x + 3, y + 3, w - 6, 11);
+  txt(f.legend ? 'LEGENDA!' : 'SAALIS!', x + 6, y + 5, '#fff', false);
   g.fillStyle = '#3e5a3a'; g.fillRect(x + 8, y + 18, w - 16, 54);
-  const spr = makeSprite(f.sp, Math.min(70, Math.max(26, spriteLen(f) * 2)));
+  const spr = makeSprite(f.sp, Math.min(70, Math.max(26, spriteLen(f) * 2)), f.legend);
   const sc = 2;
   g.drawImage(spr, Math.round(x + w / 2 - spr.width * sc / 2), Math.round(y + 45 - spr.height * sc / 2), spr.width * sc, spr.height * sc);
-  txt(S.fi.toUpperCase(), x + 10, y + 78, '#000', false);
+  txt((card.name || S.fi).toUpperCase(), x + 10, y + 78, '#000', false);
   const ptxt = card.pts + ' P';
   txt(ptxt, x + w - 10 - ptxt.length * 8, y + 78, '#006000', false);
   const kg = f.w < 1 ? Math.round(f.w * 1000) + ' G' : f.w.toFixed(2).replace('.', ',') + ' KG';
@@ -1477,11 +1956,127 @@ function drawCard(now) {
   if (Math.floor(now * 2) % 2) txt('PAINA JATKAAKSESI', x + 10, y + 134, '#404040', false);
 }
 
+// ---------- fishing guide pamphlet (Kalastusopas) ----------
+// Opens over the game and pauses it. Text pages are wrapped and paginated automatically;
+// legend pages reveal full details only after the legend has been caught once.
+let guideOpen = false, guidePage = 0, guidePages = [];
+const GUIDE_A = [
+  ['PERUSTEET', [
+    'HEITÄ PITÄMÄLLÄ VÄLILYÖNTIÄ TAI NÄYTTÖÄ POHJASSA JA PÄÄSTÄ IRTI, KUN VOIMAMITTARI ON TÄYNNÄ.',
+    '1 VIRVELI, 2 MATO-ONKI. NUOLET YLÖS JA ALAS SÄÄTÄVÄT JARRUA TAI KOHON SYVYYTTÄ.',
+    'T ODOTTAA TUNNIN. ESC PALAA ALKUVALIKKOON. O AVAA TÄMÄN OPPAAN. N MUSIIKKI, M ÄÄNI.']],
+  ['VIRVELI', [
+    'Q VAIHTAA UISTINTA, V KELAUSNOPEUTTA, X TAI OIKEA HIIRENNAPPI NYKÄISEE.',
+    'LIPPA: AHVENEN SUOSIKKI. LUSIKKA: HAUELLE. VAAPPU: KELLUU, HARVOIN POHJASSA. JIGI: POMPII POHJAA, KUHA OTTAA VAJOTESSA.',
+    'TASAINEN KELAUS TUO SEURAAJIA. NYKÄISY, TAUKO TAI POHJAKOSKETUS SAA NE ISKEMÄÄN.']],
+  ['VÄSYTYS', [
+    'KUN JARRU LUISTAA, ÄLÄ KELAA: SIIMA KIERTYY JA KIRISTYY. KELAA, KUN KALA LEPÄÄ. PIDÄ SIIMA KIREÄLLÄ, KUN KALA UI SINUA KOHTI.',
+    'LIIAN TIUKKA JARRU KATKAISEE SIIMAN SYÖKSYN ALUSSA, LIIAN LÖYSÄ ANTAA KALAN VIEDÄ SIIMAA KIVIKKOON. TURVARAJA ON NOIN 3,8 KG.',
+    'HAUEN HYPYN AIKANA ÄLÄ KELAA.']],
+  ['MATO-ONKI', [
+    'KOHON NYKÄYKSET OVAT NÄYKKIMISTÄ. TEE VASTAISKU, KUN KOHO PAINUU. LAHNA NOSTAA KOHON KYLJELLEEN.',
+    'PIDÄ POHJASSA NOSTAAKSESI, PÄÄSTÄ IRTI ANTAAKSESI. ÄLÄ NOSTA SYÖKSYVÄÄ KALAA, ÄLÄKÄ JÄTÄ LEPÄÄVÄÄ LÖYSÄLLE.',
+    'VAPA SUORANA EI JOUSTA: SIIMA KATKEAA TAI KALA PÄÄSEE KAISLIKKOON.']],
+];
+const GUIDE_FISH = [
+  ['ahven', 'AAMU JA ILTA'], ['hauki', 'HÄMÄRÄ, PILVI, TUULI'], ['kuha', 'YÖ, POHJA, JIGI'], ['sarki', 'ILTA JA SADE'],
+  ['lahna', 'AAMUYÖ, POHJA'], ['salakka', 'KESKIPÄIVÄ, PINTA'], ['kiiski', 'POHJA, AINA'], ['siika', 'YÖ, SYVÄ KOHO'],
+];
+const GUIDE_B = [
+  ['SÄÄ JA AIKA', [
+    'PILVI JA TUULI PIRISTÄVÄT SYÖNTIÄ, KIRKAS KESKIPÄIVÄ HILJENTÄÄ JA AJAA KALAT SYVEMMÄLLE.',
+    'PARAS HETKI ON ENNEN SADETTA TAI UKKOSTA: PUNAINEN NUOLI SÄÄKUVAKKEEN VIERESSÄ KERTOO PAINEEN LASKUSTA. UKKOSELLA SYÖNTI LOPPUU - LÄHES KAIKILTA.',
+    'ALKUVALIKOSSA A VALITSEE AJAN JA S SÄÄN.']],
+  ['LEGENDAT', [
+    'JÄRVESSÄ ELÄÄ SEITSEMÄN JÄTTILÄISTÄ. KUKIN LIIKKUU OMINA KELLONAIKOINAAN, MUTTA SYÖ VAIN OIKEISSA OLOSUHTEISSA JA OIKEALLA VÄLINEELLÄ.',
+    'SUURI VARJO SYVÄLLÄ: LEGENDA ON LIIKKEELLÄ, MUTTA EI SYÖ. ISO PYÖRRE PINNASSA: SE SYÖ NYT - JOS VÄLINE ON OIKEA.', 'LEGENDA VAPAUTETAAN, JA SE KASVAA HIEMAN JOKA KERTA.',
+    'SEURAAVILLA SIVUILLA KYLÄN HUHUT. TARKAT TIEDOT PALJASTUVAT ENSIMMÄISEN SAALIIN JÄLKEEN.']],
+];
+function wrapText(t, n) {
+  const out = []; let line = '';
+  for (const w of t.split(' ')) {
+    if ((line ? line + ' ' + w : w).length > n) { out.push(line); line = w; } else line = line ? line + ' ' + w : w;
+  }
+  if (line) out.push(line);
+  return out;
+}
+function textPages(sections) {
+  const pages = [];
+  for (const [title, paras] of sections) {
+    const lines = [];
+    paras.forEach((p, i) => { if (i) lines.push(''); lines.push(...wrapText(p, 34)); });
+    for (let i = 0; i < lines.length; i += 13) pages.push({ type: 'text', title, lines: lines.slice(i, i + 13) });
+  }
+  return pages;
+}
+function buildGuide() {
+  return [...textPages(GUIDE_A), { type: 'species', title: 'KALAT' }, ...textPages(GUIDE_B),
+    ...Object.keys(LEGENDS).map(k => ({ type: 'legend', title: 'LEGENDAT', key: k }))];
+}
+function toggleGuide() {
+  if (guideOpen) { guideOpen = false; return; }
+  if (!['title', 'idle', 'fishing', 'card'].includes(state)) { showMsg('Ei nyt - kala on kiinni!', '#ffd84a', 1.2); return; }
+  guidePages = buildGuide(); guidePage = Math.min(guidePage, guidePages.length - 1); guideOpen = true;
+  if (actionHeld) release();
+}
+function guideTurn(d) { guidePage = (guidePage + d + guidePages.length) % guidePages.length; sfx.nibble(); }
+const silCache = new Map();
+function silhouette(spr) { // unknown legends are shown as a dark shape
+  if (silCache.has(spr)) return silCache.get(spr);
+  const c = document.createElement('canvas'); c.width = spr.width; c.height = spr.height;
+  const x = c.getContext('2d'); x.drawImage(spr, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = '#3a3428'; x.fillRect(0, 0, c.width, c.height);
+  silCache.set(spr, c); return c;
+}
+function drawGuide() {
+  const P = guidePages[guidePage]; if (!P) return;
+  const x = 16, y = 12, w = 288, h = 176, ink = '#2a2418';
+  const ctr = (s, yy, col) => txt(s, Math.round(160 - s.length * 4), yy, col, false);
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#5a4a2a'; g.fillRect(x - 2, y - 2, w + 4, h + 4);
+  g.fillStyle = '#efe4c4'; g.fillRect(x, y, w, h);
+  g.fillStyle = '#e0d2aa'; for (let i = 0; i < 220; i++) g.fillRect(x + hash(i, 5) % w, y + 14 + hash(i, 6) % (h - 28), 1, 1);
+  g.fillStyle = '#2a5a8a'; g.fillRect(x, y, w, 14);
+  txt('KALASTUSOPAS', x + 6, y + 3, '#fff', false);
+  txt(P.title, x + w - 6 - P.title.length * 8, y + 3, '#ffd84a', false);
+  if (P.type === 'text') P.lines.forEach((l, i) => txt(l, x + 8, y + 22 + i * 10, ink, false));
+  else if (P.type === 'species') {
+    GUIDE_FISH.forEach(([sp, txtl], i) => {
+      const yy = y + 24 + i * 16, spr = makeSprite(sp, 16);
+      g.drawImage(spr, x + 8, yy - Math.round(spr.height / 2) + 3);
+      txt(SPECIES[sp].fi.toUpperCase(), x + 30, yy, '#2a5a8a', false);
+      txt(txtl, x + 104, yy, ink, false);
+    });
+  } else {
+    const k = P.key, L = LEGENDS[k], b = legendBook[k], known = b && b.n;
+    const proto = { sp: L.sp, w: (L.w[0] + L.w[1]) / 2, legend: k };
+    const len = Math.min(60, spriteLen(proto)), spr = makeSprite(L.sp, len, k), sc = len <= 30 ? 2 : 1;
+    const img = known ? spr : silhouette(spr);
+    g.fillStyle = '#3e5a3a'; g.fillRect(x + 8, y + 18, w - 16, 44);
+    g.drawImage(img, Math.round(160 - spr.width * sc / 2), Math.round(y + 40 - spr.height * sc / 2), spr.width * sc, spr.height * sc);
+    ctr(known ? legendName(k, b.n).toUpperCase() : '? ? ? ? ?', y + 68, known ? '#806000' : '#7a6a50');
+    let yy = y + 82;
+    for (const l of wrapText(L.hint, 34)) { ctr(l, yy, ink); yy += 10; }
+    yy += 4;
+    if (known) {
+      ctr('SAATU ' + b.n + ' KERTAA, PARAS ' + b.best.toFixed(2).replace('.', ',') + ' KG', yy, '#2a5a8a'); yy += 14;
+      for (const l of wrapText('TIEDOT: ' + L.info, 34)) { ctr(l, yy, ink); yy += 10; }
+    } else for (const l of wrapText('TARKAT TIEDOT PALJASTUVAT ENSIMMÄISEN SAALIIN JÄLKEEN.', 34)) { ctr(l, yy, '#7a6a50'); yy += 10; }
+  }
+  g.fillStyle = '#d8caa0'; g.fillRect(x, y + h - 14, w, 14);
+  txt('<', x + 6, y + h - 11, ink, false); txt('>', x + w - 14, y + h - 11, ink, false);
+  const pn = (guidePage + 1) + '/' + guidePages.length;
+  ctr(pn, y + h - 11, ink);
+  txt('O SULJE', x + w - 80, y + h - 11, '#7a5a2a', false);
+}
+
 // ---------- main loop ----------
 function update(dt) {
+  if (guideOpen) { ambientUpdate(performance.now() / 1000); return; } // the guide pauses the game
   gameMin = (gameMin + dt) % 1440;
   titleT += dt;
-  if (Math.abs(gameMin - skyMin) >= 3) renderSky();
+  updateWeather(dt); updateWx(dt); updateActs(); ambientUpdate(performance.now() / 1000); legendStep(dt);
+  if (fade > 0) fade = Math.max(0, fade - dt * 1.2);
+  if (Math.abs(gameMin - skyMin) >= 3 || Math.abs(wx.cloud - skyCloud) > 0.04) renderSky();
   twitchCd -= dt;
   updateFishes(dt);
   switch (state) {
@@ -1517,14 +2112,19 @@ function updateLog() {
   const log = document.getElementById('log'), recs = document.getElementById('recs');
   const fmt = w => w < 1 ? Math.round(w * 1000) + ' g' : w.toFixed(2).replace('.', ',') + ' kg';
   if (catches.length) {
-    log.innerHTML = '<table><thead><tr><th>Aika</th><th>Kala</th><th>Paino</th><th>Pituus</th><th>Väline</th></tr></thead><tbody>' +
-      catches.slice(0, 30).map(c => `<tr><td>${c.time}</td><td>${SPECIES[c.sp].fi}${c.note ? ' *' : ''}</td><td>${fmt(c.w)}</td><td>${c.cm} cm</td><td>${c.gear}</td></tr>`).join('') + '</tbody></table>' +
-      (catches.some(c => c.note) ? '<p class="empty">* Hauki tarttui koukussa olleeseen kalaan.</p>' : '');
+    log.innerHTML = '<table><thead><tr><th>Aika</th><th>Kala</th><th>Paino</th><th>Pituus</th><th>Väline</th><th>Sää</th></tr></thead><tbody>' +
+      catches.slice(0, 30).map(c => `<tr><td>${c.time}</td><td>${c.legend ? '<b>' + c.name + '</b>' : SPECIES[c.sp].fi}${c.note && !c.legend ? ' *' : ''}</td><td>${fmt(c.w)}</td><td>${c.cm} cm</td><td>${c.gear}</td><td>${c.wx}</td></tr>`).join('') + '</tbody></table>' +
+      (catches.some(c => c.note && !c.legend) ? '<p class="empty">* Hauki tarttui koukussa olleeseen kalaan.</p>' : '');
   }
   if (topList.length) {
     document.getElementById('top').innerHTML = '<table><thead><tr><th>#</th><th>Kala</th><th>Paino</th><th>Pisteet</th></tr></thead><tbody>' +
-      topList.map((e, i) => `<tr><td>${i + 1}.</td><td>${SPECIES[e.sp].fi}</td><td>${fmt(e.w)}</td><td>${e.pts}</td></tr>`).join('') + '</tbody></table>';
+      topList.map((e, i) => `<tr><td>${i + 1}.</td><td>${e.name || SPECIES[e.sp].fi}</td><td>${fmt(e.w)}</td><td>${e.pts}</td></tr>`).join('') + '</tbody></table>';
   }
+  document.getElementById('legends').innerHTML = '<table><tbody>' + Object.keys(LEGENDS).map(k => {
+    const L = LEGENDS[k], b = legendBook[k];
+    return b && b.n ? `<tr><td><b>${legendName(k, b.n)}</b></td><td>${b.n}×</td><td>${fmt(b.best)}</td></tr>`
+      : `<tr><td>? ? ?</td><td colspan="2">${L.hint.charAt(0) + L.hint.slice(1).toLowerCase()}</td></tr>`;
+  }).join('') + '</tbody></table>';
   const keys = Object.keys(records).filter(k => SPECIES[k]);
   if (keys.length) {
     recs.innerHTML = '<table><tbody>' + keys.sort((a, b) => records[b] - records[a])
@@ -1534,6 +2134,15 @@ function updateLog() {
 
 // ---------- input ----------
 window.addEventListener('keydown', e => {
+  if (guideOpen) {
+    if (['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
+    if (e.repeat) return;
+    if (e.code === 'ArrowLeft') guideTurn(-1);
+    else if (e.code === 'ArrowRight' || e.code === 'Space') guideTurn(1);
+    else if (e.code === 'KeyO' || e.code === 'Escape') toggleGuide();
+    return;
+  }
+  if (e.code === 'KeyO') { toggleGuide(); return; }
   if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) press(); }
   else if (e.code === 'ArrowUp') { e.preventDefault(); adjust(1); }
   else if (e.code === 'ArrowDown') { e.preventDefault(); adjust(-1); }
@@ -1545,11 +2154,15 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'KeyX') twitch();
   else if (e.code === 'KeyM') toggleMute();
   else if (e.code === 'KeyN') cycleMusic();
-  else if (e.code === 'Escape') { if (state === 'idle') { state = 'title'; titleT = 0; } }
+  else if (e.code === 'Escape') { if (state === 'idle') { state = 'title'; titleT = 0; syncButtons(); } }
+  else if (e.code === 'KeyA') cycleTime();
+  else if (e.code === 'KeyS') cycleWeather();
+  else if (e.code === 'KeyT') waitHour();
 });
 window.addEventListener('keyup', e => { if (e.code === 'Space') { e.preventDefault(); release(); } });
 cv.addEventListener('pointerdown', e => {
   e.preventDefault();
+  if (guideOpen) { const r = cv.getBoundingClientRect(); guideTurn(e.clientX - r.left < r.width / 2 ? -1 : 1); return; }
   if (e.button === 2) { twitch(); return; }
   try { cv.setPointerCapture(e.pointerId); } catch (_) {}
   press();
@@ -1573,10 +2186,17 @@ btn('bMinus', () => adjust(-1));
 btn('bPlus', () => adjust(1));
 btn('bMute', toggleMute);
 btn('bMusic', cycleMusic);
+btn('bGuide', toggleGuide);
+btn('bTime', cycleTime);
+btn('bWeather', cycleWeather);
+btn('bWait', waitHour);
 // twitch on pointerdown so it works while another finger holds the screen
 document.getElementById('bTwitch').addEventListener('pointerdown', e => { e.preventDefault(); twitch(); });
 
+buildClouds();
+setWeather(pickStartWx(), true);
 setScene('ranta');
+updateActs();
 for (let i = 0; i < 14; i++) spawnFish(true);
 syncButtons();
 syncMusicBtn();
