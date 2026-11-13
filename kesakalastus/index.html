@@ -74,6 +74,10 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
     <button id="bMute" aria-pressed="false">Ääni päällä</button>
     <button id="bMusic">N Musiikki: Auto</button>
     <button id="bGuide">O Opas</button>
+    <button id="bShop">K Kioski</button>
+    <button id="bContest">C Kisat</button>
+    <button id="bMap" class="gameOnly">B Vene</button>
+    <button id="bHome">H Mökki</button>
   </div>
   <div class="panels">
     <section class="panel">
@@ -88,6 +92,12 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
         <li><b>Hauen hyppy:</b> hauki voi hypätä pinnalle ravistelemaan päätään. Älä kelaa (tai nosta onkea) hypyn aikana – kireältä siimalta se ravistaa koukun helpommin irti.</li>
         <li><b>Aika ja sää:</b> ahven syö aamulla ja illalla, kuha yöllä, lahna aamuyöllä, salakka keskipäivän auringossa. Pilvinen ja tuulinen sää piristää syöntiä, kirkas keskipäivä hiljentää ja ajaa kalat syvemmälle. Paras hetki on ennen sadetta tai ukkosta, kun ilmanpaine laskee (punainen nuoli sääkuvakkeen vieressä). Ukkosen aikana syönti loppuu. Tuuli heiluttaa kohoa ja lyhentää heittoa. Huonolla syönnillä kalat näykkivät pidempään ja ottavat arasti.</li>
         <li><b>Legendat:</b> järvessä elää seitsemän harvinaista jättiläistä: Mörköhauki, Körmyniska, Kuhakaani, Päänsärki, Kahen kilon siika, Dalai Lahna ja Suklaamonni. Kalastusoppaassa (<kbd>O</kbd>) on huhut ja – ensimmäisen saaliin jälkeen – tarkat tiedot. Kukin liikkuu omina kellonaikoinaan, mutta syö vain oikeissa olosuhteissa ja oikealla välineellä. Suuri varjo syvällä tarkoittaa, että legenda on liikkeellä mutta ei syö; iso pyörre pinnassa, että se syö nyt – jos väline on oikea. Alkuvalikon tekstinauha kertoo kylän huhut. Legenda vapautetaan, ja se kasvaa hieman joka kerta; saalismäärä näkyy roomalaisena numerona nimessä. Siika on arka: koho vain värähtää, ja pehmeä suu repeää, jos nostat liian kovaa. Päänsärki näykkii loputtomasti – liian aikainen vastaisku säikäyttää sen tiehensä.</li>
+        <li><b>Varusteet:</b> kioskin osastoilta (nuolet vasemmalle/oikealle) siimat, vavat, kelat, kohot ja uistinvärit. Ostettu varuste otetaan käyttöön valitsemalla se. Paksu siima kestää enemmän mutta vähentää syöntejä; parempi kela tasoittaa jarrua ja mahtuu enemmän siimaa; pitkä onki ulottuu syvemmälle; herkkä koho näyttää pienetkin näykkäykset.</li>
+        <li><b>Mökki:</b> <kbd>H</kbd> avaa mökin seinän: legendojen lehtileikkeet, kilpailupokaalit ja täytetyt ennätyskalat (täyttäminen maksaa painon mukaan, uusi ennätys kannattaa täyttää uudelleen). Seinältä pääsee tupaan (koristeet, takka, käkikello…) ja postimyyntikuvastoon: moottorin viritys, käsintehty kela, pro-vapa, kultainen viehe ja mökkiremontti – jokainen taso maksaa kaksinkertaisesti ja auttaa vain vähän, mutta näkyy pelissä. Lisäksi lippikset, paidat, seinäpaneelit ja veneen maalit; nuolilla vaihdat asua.</li>
+        <li><b>Vene:</b> vuokraa vene kioskilta (30 mk/päivä) tai osta oma. <kbd>B</kbd> avaa venematkan: Kaislikkolahti (hauki, ahven), Kivikkoluoto (jyrkkä reuna, kuha), Syvänne (kuha, siika, lahna) ja Selkä (isot hauet, siika, tuulista). Soutaminen vie aikaa; perämoottori nopeuttaa matkaa mutta kuluttaa bensaa. Kaikuluotain näyttää pohjan ja kalat. Kisat käydään rannalta.</li>
+        <li><b>Kuluminen:</b> siima kuluu väsytyksissä ja pohjakiinnityksissä ja heikkenee – vaihda uusi kioskilla. Hauki voi katkaista siiman hampaillaan, ellei käytössä ole teräsperuketta. Kaislikossa uistin tarttuu helposti kaislaan – ruohouistin on tehty sinne.</li>
+        <li><b>Kilpailut:</b> <kbd>C</kbd> avaa kilpailukalenterin. Keskiviikkona virvelikisa (suurin kala), perjantaiyönä kuhamestaruus (kuhien yhteispaino, alamitta 37 cm), lauantaina kylän onkikisat (kaikkien kalojen yhteispaino). Ilmoittautuminen maksaa ja siirtää kisapäivään. Kisan aikana kello kulkee hitaammin, kisakalat punnitaan ja vapautetaan, legendoja ei lasketa. Kolme parasta saa palkintorahaa ja pokaalin.</li>
+        <li><b>Talous:</b> saaliskortilla valitset: vapauta (pisteet, järven kalakanta pysyy) tai myy (markkoja, kalakanta harvenee ja toipuu päivittäin). Kioskista (<kbd>K</kbd>, auki 6–23) ostat uistimia ja matoja; matoja voi myös kaivaa ilmaiseksi, mutta se vie aikaa. Legendoja ei myydä – paikallislehti maksaa ensimmäisestä saaliista juttupalkkion. <kbd>P</kbd> näyttää salasanan.</li>
         <li><b>Kalastusopas:</b> <kbd>O</kbd> avaa oppaan, joka pysäyttää pelin. Selaa nuolilla, välilyönnillä tai napauttamalla näytön reunoja.</li>
         <li><b>Alkuvalikko:</b> <kbd>A</kbd> valitsee kellonajan, <kbd>S</kbd> sään (vaihteleva tai kiinteä). Kalastaessa <kbd>T</kbd> odottaa tunnin.</li>
         <li><b>Mato-onki:</b> ei kelaa. Seuraa kohoa: nykäykset ovat näykkimistä, tee vastaisku, kun koho painuu pinnan alle. Lahna nostaa kohon kyljelleen. <kbd>↑</kbd><kbd>↓</kbd> säätävät kohon syvyyttä.</li>
@@ -106,6 +116,14 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
       <div id="legends"><p class="empty">Huhujen mukaan järvessä on seitsemän legendaa.</p></div>
       <h2 style="margin-top:12px">Omat ennätykset</h2>
       <div id="recs"><p class="empty">Ei vielä ennätyksiä.</p></div>
+    </section>
+    <section class="panel">
+      <h2>Salasana</h2>
+      <p>Nykyinen salasana: <b id="pwNow">–</b></p>
+      <p>Peli tallentuu myös selaimeen. Salasanalla siirrät rahat, uistimet, madot, päivän ja legendat toiselle laitteelle.</p>
+      <p><input id="pwIn" placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off" style="font:inherit;font-size:10px;width:100%;max-width:340px;padding:6px;background:var(--bg);color:var(--ink);border:2px solid var(--lo)"></p>
+      <p><button id="bPwLoad">Lataa salasana</button> <button id="bReset">Aloita alusta</button></p>
+      <p id="pwMsg" class="empty"></p>
     </section>
   </div>
 </main>
@@ -176,15 +194,76 @@ const SCENES = {
     drawAngler(g) {
       g.fillStyle = '#222'; g.fillRect(27, 60, 3, 2); g.fillRect(31, 60, 3, 2);
       g.fillStyle = '#34405a'; g.fillRect(28, 53, 2, 7); g.fillRect(31, 53, 2, 7);
-      g.fillStyle = '#b03028'; g.fillRect(27, 45, 7, 9);
-      g.fillStyle = '#7a1e1a'; g.fillRect(29, 45, 1, 9); g.fillRect(27, 48, 7, 1); g.fillRect(27, 51, 7, 1);
+      g.fillStyle = shirtCol()[0]; g.fillRect(27, 45, 7, 9);
+      g.fillStyle = shirtCol()[1]; g.fillRect(29, 45, 1, 9); g.fillRect(27, 48, 7, 1); g.fillRect(27, 51, 7, 1);
       g.fillStyle = '#f0c090'; g.fillRect(28, 39, 5, 6);
-      g.fillStyle = '#2a4aa8'; g.fillRect(27, 37, 7, 3); g.fillRect(33, 39, 3, 1);
+      g.fillStyle = capCol(); g.fillRect(27, 37, 7, 3); g.fillRect(33, 39, 3, 1);
       g.fillStyle = '#000'; g.fillRect(31, 41, 1, 1);
       g.fillStyle = '#f0c090'; g.fillRect(33, 49, 2, 2);
     },
   },
 };
+// ---------- boat spots (phase 4): same lake, other places; reached by boat from the jetty ----------
+function drawBoatHull(c) {
+  for (let x = 4; x <= 62; x++) {
+    const t = (x - 4) / 58, top = Math.round(WATER_Y - 5 - (x > 54 ? (x - 54) * 0.5 : 0));
+    const bot = Math.round(WATER_Y + 3 - Math.pow(Math.abs(t - 0.45) * 2, 2) * 3);
+    for (let y = top; y <= bot; y++) {
+      c.fillStyle = y === top ? '#e8e0c8' : y < WATER_Y - 2 ? paintCol() : y === WATER_Y - 2 ? '#e8e0c8' : '#1e3448';
+      c.fillRect(x, y, 1, 1);
+    }
+  }
+}
+function drawIsland(c) {
+  for (let x = 232; x <= 304; x++) {
+    const top = Math.round(WATER_Y - 2 - 11 * Math.sin(Math.PI * (x - 232) / 72) - (hash(x, 3) % 3));
+    for (let y = top; y < WATER_Y; y++) { c.fillStyle = hash(x, y) % 5 === 0 ? '#5a5650' : y - top < 2 ? '#a8a49a' : '#7e7a72'; c.fillRect(x, y, 1, 1); }
+  }
+  c.fillStyle = '#1c3524';
+  for (let y = 0; y < 22; y++) { const w = Math.round(y / 4); c.fillRect(268 - w, WATER_Y - 34 + y, w * 2 + 1, 1); }
+}
+function drawSittingAngler(g) {
+  if (owned.has('m4') || owned.has('m8')) { // outboard on the stern
+    g.fillStyle = owned.has('m8') ? '#c02020' : '#606870'; g.fillRect(1, WATER_Y - 13, 6, 6);
+    if (lux.motor) { g.fillStyle = MOTOR_STRIPES[lux.motor]; g.fillRect(1, WATER_Y - 11, 6, 1); } // tuning stripe
+    g.fillStyle = '#303030'; g.fillRect(3, WATER_Y - 7, 2, 11);
+  } else pixLine(g, 14, WATER_Y - 8, 2, WATER_Y + 3, '#8a6a3a'); // oar
+  g.fillStyle = '#ff7a1a'; g.fillRect(27, 62, 7, 13); // life jacket
+  g.fillStyle = shirtCol()[0]; g.fillRect(27, 62, 1, 9); g.fillRect(33, 62, 1, 9);
+  g.fillStyle = '#f0c090'; g.fillRect(28, 56, 5, 6);
+  g.fillStyle = capCol(); g.fillRect(27, 54, 7, 3); g.fillRect(33, 56, 3, 1);
+  g.fillStyle = '#000'; g.fillRect(31, 58, 1, 1);
+  g.fillStyle = '#f0c090'; g.fillRect(33, 68, 2, 2);
+}
+const boatScene = (name, o) => Object.assign({
+  name, boat: true, waterY: 80, originX: 46, ppm: 7.4, vpm: 17, minFishM: 0.5, maxM: 39,
+  cast: { spin: [4, 30], pole: [5.8, 4] }, rodBase: { x: 33, y: 69 },
+  pose: {
+    spin: { rest: [56, 52], fishing: [58, 62], charge: p => [14 - 6 * p, 46 + 4 * p] },
+    pole: { rest: [84, 44], fishing: [88, 48], charge: () => [26, 28], lift: [70, 32], give: d => [86 + 3 * d, 52 + 6 * d] },
+  },
+  reeds: [3, 8], reedCount: 0, lilies: [0, 0], lilyCount: 0, mosquito: [36, 52], cabin: false, treeK: 0.7, stones: 10,
+  foreground(c) { drawBoatHull(c); }, drawAngler: drawSittingAngler,
+}, o);
+Object.assign(SCENES.ranta, { pos: 0, d: 'LAITURI JA RANTAKALLIO' });
+Object.assign(SCENES, {
+  kaislikko: boatScene('Kaislikkolahti', { pos: 1, d: 'MATALA, KAISLAA. HAUKI, AHVEN, SÄRKI',
+    depth: m => 0.8 + 1.5 * Math.max(0, m) / 37 + 0.25 * Math.sin(m * 0.4), reeds: [3, 34], reedCount: 46, lilies: [80, 300], lilyCount: 14, windK: 0.6, weedK: 1,
+    speciesK: { hauki: 2.2, ahven: 1, sarki: 1.2, lahna: 0.9, salakka: 1, kiiski: 0.3, kuha: 0.05, siika: 0 } }),
+  luoto: boatScene('Kivikkoluoto', { pos: 2, d: 'JYRKKÄ REUNA. AHVEN, KUHA, HAUKI', vpm: 11, stones: 80, stoneR: 5, treeK: 0.8,
+    depth: m => { const x = Math.max(0, m); return 1.1 + 0.08 * x + 6.4 / (1 + Math.exp(-(x - 13) / 2.6)) + 0.35 * Math.sin(x * 0.9) * Math.sin(x * 0.23) + 0.2 * Math.sin(x * 2.1); },
+    speciesK: { ahven: 1.6, hauki: 1.3, kuha: 1.5, sarki: 0.7, lahna: 0.6, kiiski: 1, salakka: 1, siika: 0.5 },
+    foreground(c) { drawIsland(c); drawBoatHull(c); } }),
+  syvanne: boatScene('Syvänne', { pos: 2.5, d: 'JYRKKÄ ROTKO 12 M. KUHA, SIIKA, LAHNA', vpm: 9, treeK: 1.1, stones: 6,
+    water: ['#2a4a48', '#22403e', '#1c3634', '#162c2c', '#122424', '#0e1e1e', '#0a1818', '#081212'], bottomCols: ['#3a3a30', '#2a2a22', '#1e1e18', '#121210'],
+    depth: m => { const x = Math.max(0, m); return 2.2 + 10 / (1 + Math.exp(-(x - 7) / 1.6)) + 0.4 * Math.sin(x * 0.35); },
+    speciesK: { kuha: 2.2, siika: 2.5, lahna: 1.6, ahven: 0.9, kiiski: 1.4, hauki: 0.4, sarki: 0.6, salakka: 0.6 }, skewK: { kuha: 0.8, lahna: 0.85 } }),
+  selka: boatScene('Selkä', { pos: 3.5, d: 'AVOVETTÄ, HIEKKAPOHJA. ISOT HAUET', vpm: 15, treeK: 0.25, windK: 1.35, stones: 3,
+    water: ['#4a7a72', '#427068', '#3a665e', '#335c54', '#2c524a', '#264840', '#203e38', '#1a3430'], bottomCols: ['#c8b080', '#a89068', '#968058', '#b8a070'],
+    depth: m => 4.6 + 0.6 * Math.sin(m * 0.12) + 0.15 * Math.sin(m * 0.7),
+    speciesK: { hauki: 1.4, siika: 1.6, kuha: 1.2, ahven: 0.8, salakka: 1.6, lahna: 0.7, sarki: 0.6, kiiski: 0.5 }, skewK: { hauki: 0.7, siika: 0.8, ahven: 0.8 } }),
+});
+const SPOT_ORDER = ['ranta', 'kaislikko', 'luoto', 'syvanne', 'selka'];
 let scene = null, WATER_Y = 80;
 const mToX = m => scene.originX + m * scene.ppm;
 const xToM = x => (x - scene.originX) / scene.ppm;
@@ -219,12 +298,13 @@ const ROD = { spin:{line:5.0}, pole:{line:2.0} };
 // sink: m/s when not reeled (negative = floats up). rise: m/s climb while reeled.
 // runDepth: diving lure holds this depth while reeled. hop: lift from a twitch.
 const LURES = {
-  lippa:   { fi:'Lippa',   sink:.45, rise:.3,  snag:1.0, hop:.25, start:3, appeal:{ahven:1.3, hauki:.9,  kuha:.5} },
+  lippa:   { fi:'Lippa',   sink:.45, rise:.3,  snag:1.0, weed:1, hop:.25, start:3, appeal:{ahven:1.3, hauki:.9,  kuha:.5} },
   lusikka: { fi:'Lusikka', sink:.9,  rise:.28, snag:1.2, hop:.3,  start:2, appeal:{ahven:.7,  hauki:1.35,kuha:.65} },
   vaappu:  { fi:'Vaappu',  sink:-.25,runDepth:1.6, snag:.4, hop:.2, start:2, appeal:{ahven:.8,  hauki:1.2, kuha:.9} },
-  jigi:    { fi:'Jigi',    sink:1.3, rise:.9,  snag:.4, hop:.7,  start:3, appeal:{ahven:1.1, hauki:.55, kuha:1.5} },
+  jigi:    { fi:'Jigi',    sink:1.3, rise:.9,  snag:.4, weed:.9, hop:.7,  start:3, appeal:{ahven:1.1, hauki:.55, kuha:1.5} },
+  ruoho:   { fi:'Ruohouistin', hud:'RUOHO', sink:.55, rise:.3, snag:.35, weed:.1, hop:.25, start:0, appeal:{ahven:.8, hauki:1.3, kuha:.4} },
 };
-const LURE_ORDER = ['lippa', 'lusikka', 'vaappu', 'jigi'];
+const LURE_ORDER = ['lippa', 'lusikka', 'vaappu', 'jigi', 'ruoho'];
 const GEARS = { slow: 1.5, fast: 3.0 };
 
 // ---------- sprites ----------
@@ -578,7 +658,7 @@ function setWeather(k, snap) {
 }
 function wxTargets() {
   const W0 = WEATHERS[weather];
-  const t = { cloud: W0.cloud, wind: W0.wind, rain: W0.rain, dark: W0.dark };
+  const t = { cloud: W0.cloud, wind: Math.min(1.2, W0.wind * ((scene && scene.windK) || 1)), rain: W0.rain, dark: W0.dark };
   if (weather === 'ukkonen' && stormPhase === 'front') { t.rain = 0; t.wind = .45; t.dark = .15; }
   if (frontNow() && weather !== 'ukkonen') { t.cloud = Math.max(t.cloud, .75); t.dark = Math.max(t.dark, .06); }
   return t;
@@ -650,7 +730,7 @@ function activityText() {
 const TIME_PRESETS = [5 * 60, 12 * 60, 19 * 60, 23 * 60 + 30];
 let timePreset = 2;
 function newTrip() {
-  fishes = []; for (let i = 0; i < 14; i++) spawnFish(true);
+  fishes = []; for (let i = 0; i < popTarget(); i++) spawnFish(true);
   twist = 0; updateActs(); for (const k in legendCools) legendCools[k] = Math.min(legendCools[k], 30); legendGap = Math.min(legendGap, 30);
   const [t, c] = activityText();
   showMsg(t, c, 2.2);
@@ -667,11 +747,13 @@ function cycleWeather() {
   renderSky(); titleT = 0;
 }
 function waitHour() {
+  if (contest) { showMsg('Ei odotella kesken kisan!', '#ffd84a', 1.4); return; }
   if (state !== 'idle') { if (state !== 'title') showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
   gameMin = (gameMin + 60) % 1440;
+  if (gameMin < 60) newDay();
   updateWeather(60); wx = wxTargets(); renderSky();
   fishes = fishes.filter(f => f.legend && !f.leaving && LEGENDS[f.legend].season());
-  for (let i = fishes.length; i < 14; i++) spawnFish(true);
+  for (let i = fishes.length; i < popTarget(); i++) spawnFish(true);
   updateActs(); fade = 1; for (const k in legendCools) legendCools[k] -= 60; legendGap -= 60;
   const [t, c] = activityText();
   showMsg('Kello ' + clockStr() + ' - ' + t, c, 2.8);
@@ -819,6 +901,7 @@ function spawnLegend(k) {
 // ---------- fish population ----------
 function pickSpecies() {
   const w = { ahven: 3, sarki: 3, salakka: 2, kiiski: 1.4, lahna: 1.1, hauki: 1.0, kuha: isNight() ? 1.6 : 0.35, siika: isNight() ? 0.8 : 0.3 };
+  if (scene.speciesK) for (const k in w) w[k] *= scene.speciesK[k] ?? 1;
   let tot = 0; for (const k in w) tot += w[k];
   let r = Math.random() * tot;
   for (const k in w) { r -= w[k]; if (r <= 0) return k; }
@@ -836,7 +919,7 @@ function spawnFish(initial, forceSp, at) {
   if (!initial) m = scene.maxM - 1;
   if (at != null) m = at;
   const [lo, hi] = depthRange(S, Math.min(m, 35));
-  let w = +(S.min + (S.max - S.min) * Math.pow(Math.random(), S.skew)).toFixed(3);
+  let w = +(S.min + (S.max - S.min) * Math.pow(Math.random(), S.skew * ((scene.skewK && scene.skewK[sp]) || 1))).toFixed(3);
   if (forceSp === 'hauki') w = Math.max(w, +rnd(1, 3).toFixed(3));
   const d = S.bottom ? hi : rnd(lo, hi);
   const f = { sp, w, m, d, tdep: d, vx: (initial ? (Math.random() < .5 ? -1 : 1) : -1) * S.speed * rnd(.4, .9),
@@ -851,7 +934,7 @@ const lureMovingSpin = () => state === 'fishing' && rod === 'spin' && !snag &&
 const isFightFish = f => fight && (fight.f === f || fight.incoming === f || (fight.grab && fight.grab.prey === f));
 
 function updateFishes(dt) {
-  if (fishes.length < 14) { spawnT -= dt; if (spawnT <= 0) { spawnFish(false); spawnT = rnd(3, 8); } }
+  if (fishes.length < popTarget()) { spawnT -= dt; if (spawnT <= 0) { spawnFish(false); spawnT = rnd(3, 8); } }
   const busy = !!(fight || strike || bite);
   const night = isNight();
   for (let i = fishes.length - 1; i >= 0; i--) {
@@ -868,7 +951,7 @@ function updateFishes(dt) {
         const ap = LURES[lureType].appeal[f.sp] || 1;
         const sense = S.sense * nightK;
         if (!f.chase && moving && dist < sense) {
-          if (Math.random() < Math.min(0.95, S.interest * ap * ACT[f.sp] * S.spd[gear === 'fast' ? 1 : 0]) * (f.legend ? 0.6 : 1)) { f.chase = true; f.lostInt = 0; f.followT = 0; }
+          if (Math.random() < Math.min(0.95, S.interest * ap * ACT[f.sp] * S.spd[gear === 'fast' ? 1 : 0] * tackleK()) * (f.legend ? 0.6 : 1)) { f.chase = true; f.lostInt = 0; f.followT = 0; }
           else f.cool = f.legend ? rnd(20, 40) : rnd(4, 9) / Math.max(0.25, Math.min(1, ACT[f.sp])); // uninterested fish ignore the lure longer when feeding is slow
         }
         if (f.chase) {
@@ -885,7 +968,7 @@ function updateFishes(dt) {
         }
       } else if (rod === 'pole' && S.rods.includes('pole') && worm) {
         if (!f.chase && dist < S.sense) {
-          if (Math.random() < Math.min(0.95, S.interest * ACT[f.sp]) * (f.legend ? 0.6 : 1)) f.chase = true; else f.cool = f.legend ? rnd(20, 40) : rnd(4, 9) / Math.max(0.25, Math.min(1, ACT[f.sp]));
+          if (Math.random() < Math.min(0.95, S.interest * ACT[f.sp] * tackleK()) * (f.legend ? 0.6 : 1)) f.chase = true; else f.cool = f.legend ? rnd(20, 40) : rnd(4, 9) / Math.max(0.25, Math.min(1, ACT[f.sp]));
         }
         if (f.chase) {
           target = lure; spd = S.speed * 0.8;
@@ -942,6 +1025,7 @@ function syncButtons() {
 function setRod(r) {
   if (state === 'card' || state === 'landing') return;
   if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  if (contest && r !== CONTESTS[contest.key].rod) { showMsg('Tässä kisassa vain ' + (CONTESTS[contest.key].rod === 'spin' ? 'virveli' : 'mato-onki'), '#ffd84a', 1.6); return; }
   rod = r; syncButtons();
 }
 function cycleLure() {
@@ -961,12 +1045,11 @@ function press() {
   actionHeld = true;
   if (state === 'title') { state = 'idle'; actionHeld = false; newTrip(); syncButtons(); return; }
   if (state === 'landing') return;
-  if (state === 'card') { card = null; state = 'idle'; actionHeld = false; return; }
+  if (contestResults) { contestResults = null; actionHeld = false; return; }
+  if (state === 'card') { cardChoose(!card.f.legend && !card.contest && card.choice === 'sell'); return; }
   if (state === 'idle') {
-    if (rod === 'spin' && lureCount[lureType] <= 0) {
-      lureCount[lureType] = LURES[lureType].start;
-      showMsg('Uusia uistimia R-kioskilta', '#ffd84a', 2.5);
-    }
+    if (rod === 'spin' && lureCount[lureType] <= 0) { actionHeld = false; showMsg(LURES[lureType].fi + ' loppui - kioski: K', '#ffd84a', 2.2); return; }
+    if (rod === 'pole' && !worm && worms <= 0) { actionHeld = false; showMsg('Matopurkki tyhjä - kioski: K', '#ffd84a', 2.2); return; }
     state = 'charge'; chargeT = 0; chargeP = 0; return;
   }
   if (state === 'strike') { resolveStrike(); return; }
@@ -979,9 +1062,10 @@ function release() {
 }
 function doCast() {
   const p = chargeP, [c0, c1] = scene.cast[rod];
-  const m = c0 + p * c1 * (1 - 0.15 * wx.wind); // headwind shortens the cast
+  const m = rod === 'spin' ? c0 + p * c1 * eq('spinRod').cast * (1 + 0.02 * lux.rod) * (1 - 0.15 * wx.wind) // headwind shortens the cast
+    : c0 + eq('pole').reach + p * c1 * (1 - 0.15 * wx.wind);
   if (rod === 'spin') twist *= 0.7;
-  else if (!worm) worm = true;
+  else if (!worm) { worm = true; worms--; } // baiting uses a worm from the tin
   fly = { t: 0, dur: 0.45 + p * 0.6, x0: tip.x, y0: tip.y, x1: mToX(m), m };
   state = 'fly'; sfx.swing();
 }
@@ -1009,7 +1093,7 @@ function lureTrigger(kind) {
     if (!f.chase || isFightFish(f)) continue;
     if (f.legend && LEGENDS[f.legend].dropOnly && kind !== 'drop') continue;
     if (Math.hypot(lure.m - f.m, (lure.d - f.d) * 1.5) > 1.6) continue;
-    let p = base * (LU.appeal[f.sp] || 1) * SPECIES[f.sp].spd[gear === 'fast' ? 1 : 0];
+    let p = base * (LU.appeal[f.sp] || 1) * SPECIES[f.sp].spd[gear === 'fast' ? 1 : 0] * tackleK();
     if (kind === 'drop' && f.sp === 'kuha') p *= 1.5;
     p *= Math.min(1.5, ACT[f.sp]);
     if (Math.random() < p) { startStrike(f); return; }
@@ -1044,7 +1128,7 @@ function updSpin(dt) {
   if (snag) {
     if (actionHeld) {
       snag.hold += dt; snag.off = 0;
-      if (snag.hold > 1.3) { lureCount[lureType]--; snag = null; state = 'idle'; sfx.snap(); showMsg('Siima katkesi. Uistin meni', '#ff6a4a'); }
+      if (snag.hold > 1.3) { wearLine(0.05); lureCount[lureType]--; snag = null; state = 'idle'; sfx.snap(); showMsg('Siima katkesi. Uistin meni', '#ff6a4a'); }
     } else {
       snag.off += dt;
       if (snag.off > 0.8) {
@@ -1071,7 +1155,11 @@ function updSpin(dt) {
     const nb = bottomDepth(lure.m);
     if (lure.d > nb - 0.06) {
       lure.d = nb - 0.06;
-      if (Math.random() < dt * 0.35 * LU.snag) { snag = { hold: 0, off: 0 }; sfx.nibble(); showMsg('Pohjassa kiinni! Älä kelaa', '#ffd84a', 1.8); }
+      if (Math.random() < dt * 0.6 * LU.snag) { snag = { hold: 0, off: 0 }; sfx.nibble(); showMsg('Pohjassa kiinni! Älä kelaa', '#ffd84a', 1.8); }
+    }
+    if (!snag && reeds.length) { // reeds catch lures that have no weed guard
+      let near = 0; for (const r of reeds) if (Math.abs(r.m - lure.m) < 0.35) near++;
+      if (near && Math.random() < dt * 0.012 * near * (scene.weedK ?? 0.3) * (LU.weed ?? 1)) { snag = { hold: 0, off: 0 }; sfx.nibble(); showMsg('Kaislaan kiinni! Älä kelaa', '#ffd84a', 1.8); }
     }
     lure.onBottom = false;
     reelTick -= dt; if (reelTick <= 0) { sfx.click(); reelTick = gear === 'fast' ? 0.035 : 0.075; }
@@ -1103,7 +1191,7 @@ function startStrike(f) {
 }
 function resolveStrike() {
   const f = strike.f, S = SPECIES[f.sp];
-  const chance = ((f.legend && LEGENDS[f.legend].hook) || S.hook) * (strike.t < 0.25 ? 1 : 0.85);
+  const chance = Math.min(0.95, ((f.legend && LEGENDS[f.legend].hook) || S.hook) * (strike.t < 0.25 ? 1 : 0.85) * eq('spinRod').hook * (1 + 0.01 * lux.rod));
   strike = null;
   if (Math.random() < chance) startFight(f);
   else { f.cool = rnd(5, 9); state = 'fishing'; showMsg('Ohi meni!', '#ffd84a', 1.4); }
@@ -1166,10 +1254,12 @@ function poleStrike() {
 const fishBase = f => (0.25 + f.w * 0.85) * SPECIES[f.sp].str;
 function startFight(f) {
   state = 'fight'; f.chase = false;
+  if (rod === 'pole') worm = false; // the fish took the worm: rebait from the tin before the next cast
   fight = { f, base: fishBase(f), stam: 1, mode: 'run', modeT: rnd(.6, 1.4), t: 0,
     tension: 0, L: lure.m, d: 0.75, wormM: lure.m, slack: 0, slackT: 0, over: 0, slipping: false, reedT: 0,
     incoming: null, grab: null, gear: rod === 'pole' ? 'Mato' : LURES[lureType].fi };
   const L = f.legend && LEGENDS[f.legend];
+  fight.biteOff = rod === 'spin' && f.sp === 'hauki' && !leaderOn && Math.random() < 0.15 ? rnd(2, 10) : 0;
   if (L) { fight.base = L.base; fight.stamK = L.stamK; fight.chargeK = L.chargeK || 0; fight.zen = !!L.zen; fight.calmT = 0; fight.lastHeld = actionHeld; fight.legend = f.legend; showMsg('Jokin valtava tarttui!', '#ff9a4a', 2.2); sfx.legend(); }
   else showMsg('Kala kiinni!', '#9cff7a', 1.2);
   splash(mToX(lure.m), WATER_Y, 4); sfx.splash();
@@ -1258,7 +1348,7 @@ function jumpStep(F, dt) {
     f.d = -Math.sin(Math.PI * p) * J.h; // negative depth = in the air
     f.m = J.m0 + J.dm * p;
     if (rod === 'spin') F.L = f.m;
-    F.tension = lerp(F.tension, actionHeld ? Math.min(ROD[rod].line * 0.95, F.base * 0.9) : 0.2, Math.min(1, dt * 10));
+    F.tension = lerp(F.tension, actionHeld ? Math.min(lineStr() * 0.95, F.base * 0.9) : 0.2, Math.min(1, dt * 10));
     if (!J.judged && p > 0.35) { J.judged = true; J.thrown = Math.random() < (actionHeld ? 0.4 : 0.08); }
     if (p >= 1) {
       F.jump = null; f.d = 0.3;
@@ -1279,7 +1369,8 @@ function jumpStep(F, dt) {
   return false;
 }
 function fightCommon(F, dt) {
-  const line = ROD[rod].line;
+  F.peak = Math.max(F.peak || 0, F.tension / lineStr());
+  const line = lineStr();
   if (F.tension > line) { F.over += dt; if (F.over > 0.15) { lose('Naps! Siima katkesi', true); return false; } }
   else F.over = Math.max(0, F.over - dt);
   F.stam = Math.max(0, F.stam - dt * (0.02 + 0.07 * Math.min(1.5, F.tension / (F.base + 0.2))) * (F.mode === 'run' ? 1.3 : 1) * (F.stamK || 1));
@@ -1291,9 +1382,10 @@ function fightSpin(dt) {
   if (!pikeStep(dt)) return;
   const f = F.f, S = SPECIES[f.sp];
   if (jumpStep(F, dt)) return;
+  if (F.biteOff && F.t > F.biteOff) { lose('Hauki katkaisi siiman hampaillaan', true); return; } // no wire leader
   modeStep(F, dt, true);
   const k = 0.35 + 0.65 * F.stam;
-  let reel = actionHeld ? (gear === 'fast' ? 2.3 : 1.8) * dt : 0;
+  let reel = actionHeld ? (gear === 'fast' ? 2.3 : 1.8) * eq('reel').reel / 1.8 * (1 + 0.02 * lux.reel) * dt : 0;
   const wasSlipping = F.slipping;
   F.slipping = false;
   if (F.spike > 0) F.spike -= dt;
@@ -1311,7 +1403,7 @@ function fightSpin(dt) {
       F.slipping = true;
       if (!wasSlipping) F.spike = 0.25; // drag start-up friction
       F.L += Math.min(6, (pull + crank - drag) * 2 + 0.4) * dt;
-      ten = drag * (F.spike > 0 ? 1.3 : 1);
+      ten = drag * (F.spike > 0 ? 1 + (eq('reel').spike - 1) * (1 - eq('spinRod').cushion * 2) * (1 - 0.04 * lux.reel) : 1); // reel and rod soften the start-up spike
       if (actionHeld) twist = Math.min(2.5, twist + dt * 0.6);
       if (Math.random() < dt * (F.legend ? (LEGENDS[F.legend].wrap || 0.012) : 0.035)) { lose('Kala kietoi siiman kiveen', true); return; }
     } else {
@@ -1325,13 +1417,14 @@ function fightSpin(dt) {
   if (actionHeld && !F.slipping) { reelTick -= dt; if (reelTick <= 0) { sfx.click(); reelTick = gear === 'fast' ? 0.035 : 0.06; } }
   if (F.slipping) { dragTick -= dt; if (dragTick <= 0) { sfx.drag(); dragTick = 0.045; } }
   if (!fightCommon(F, dt)) return;
-  if (F.L > 100) { lose('Kela tyhjä! Siima loppui', true); return; }
+  if (F.L > eq('reel').spool) { lose('Kela tyhjä! Siima loppui', true); return; }
   const bot = bottomDepth(F.L);
   const dive = Math.max(0.3, Math.min(bot - 0.25, S.headshake ? 1.6 : 99));
   const tgt = F.mode === 'run' ? dive : (F.stam < 0.4 || F.L < 4) ? 0.3 : dive * 0.6;
-  f.m = F.L; f.d = clamp(lerp(f.d, tgt, dt * 1.5), 0.2, bot - 0.1);
+  f.m = F.L; f.d = clamp(f.d + clamp(lerp(f.d, tgt, dt * 1.5) - f.d, -1.5 * dt, 2.5 * dt), 0.2, bot - 0.1); // depth changes at a fish's pace
   f.vx = F.mode === 'run' ? 1 : -1;
-  if (F.L <= 1.2) {
+  if (F.L <= 1.2 && f.d > 1.0) { F.L = 1.2; if (actionHeld && !F.slipping) f.d = Math.max(0.6, f.d - 1.2 * dt); } // deep below the boat: lift it up first
+  else if (F.L <= 1.2) {
     if (f.w > 0.6 && F.stam > 0.35) { F.mode = 'run'; F.modeT = rnd(1, 2); F.L = 1.5; showMsg('Ei vielä väsynyt!', '#ffd84a', 1.2); splash(mToX(1.5), WATER_Y, 5); sfx.splash(); }
     else land();
   }
@@ -1347,7 +1440,7 @@ function fightPole(dt) {
   const pull = F.mode === 'run' ? F.base * k : F.base * 0.3 * k;
   if (F.zen) { if (actionHeld !== F.lastHeld) { F.calmT = 0; F.lastHeld = actionHeld; } else F.calmT += dt; }
   let ten;
-  if (actionHeld) { ten = 0.25 + pull * (F.mode === 'run' ? 1.0 : 0.85); F.d += dt * (pull * 0.13 - (F.zen && F.calmT < 2.5 ? 0 : 0.24)); F.reedT = 0; F.looseT = 0; }
+  if (actionHeld) { ten = 0.25 + pull * (F.mode === 'run' ? 1.0 : 0.85); F.d += dt * (pull * 0.13 - (F.zen && F.calmT < 2.5 ? 0 : 0.24 * eq('pole').lift)); F.reedT = 0; F.looseT = 0; }
   else if (F.d < 1) {
     ten = 0.08 + pull * 0.3; F.d += dt * (0.05 + pull * 0.14); F.reedT = 0;
     F.looseT = ten < 0.25 ? (F.looseT || 0) + dt : 0;
@@ -1376,6 +1469,7 @@ function fightPole(dt) {
 function removeFish(f) { const i = fishes.indexOf(f); if (i >= 0) fishes.splice(i, 1); }
 function land() {
   const F = fight, f = F.f;
+  wearLine(0.02 + 0.04 * Math.min(1.2, F.peak || 0));
   removeFish(f);
   let note = '';
   if (F.grab) {
@@ -1390,18 +1484,20 @@ function land() {
     const b = legendBook[f.legend] = legendBook[f.legend] || { n: 0, best: 0 };
     b.n++; b.best = Math.max(b.best, f.w); saveLegends();
     name = legendName(f.legend, b.n); pts = 300; note = L.note || 'Legenda! Vapautettu';
+    if (b.n === 1 && LEGEND_REWARD[f.legend]) { money += LEGEND_REWARD[f.legend]; note = 'Lehti maksoi ' + LEGEND_REWARD[f.legend] + ' mk!'; }
   } else {
     const prev = records[f.sp] || 0;
     isRec = f.w > prev;
     if (isRec) { records[f.sp] = f.w; saveRecords(); }
     pts = fishPoints(f);
   }
+  const cNote = contest ? contestScore(f) : null;
   const rank = addTop(L ? { sp: f.sp, w: f.w, pts, name: L.short } : { sp: f.sp, w: f.w, pts });
   catches.unshift({ sp: f.sp, name, legend: !!L, w: f.w, cm: lengthCm(f), time: clockStr(), gear: F.gear, note, pts, wx: WEATHERS[weather].fi + (frontNow() ? ' ↓' : '') });
   updateLog();
   f.vx = -1; f.d = 0.3;
   landing = { f, t: 0, type: f.w >= 1 ? 'net' : 'swing', dur: f.w >= 1 ? 1.6 : 0.8, splashed: false,
-    card: { f, name, rec: isRec, note, pts, rank, t: 0 } };
+    card: { f, name, rec: isRec, note: cNote || note, pts, rank, t: 0, choice: 'sell', price: L ? 0 : fishPrice(f), contest: !!cNote } };
   state = 'landing'; actionHeld = false;
   splash(mToX(1.2), WATER_Y, 8); sfx.splash();
 }
@@ -1415,6 +1511,7 @@ function lose(text, broke, who) {
   if (broke && rod === 'pole') worm = false;
   fight = null; state = 'idle';
   broke ? sfx.snap() : sfx.lose();
+  wearLine(broke ? 0.08 : 0.02);
   showMsg(text, '#ff6a4a', 2.4);
   if (f && f.legend) setTimeout(() => showMsg(LEGENDS[f.legend].fi + ' palasi syvyyksiin', '#ff9a4a', 2.4), 2400);
 }
@@ -1492,7 +1589,8 @@ function pixLine(c, x0, y0, x1, y1, col) {
 function buildStatic() {
   const c = staticCv.getContext('2d');
   c.clearRect(0, 0, W, H);
-  const bands = ['#3e5a3a', '#37523a', '#304a36', '#2a4232', '#243a2e', '#1f332a', '#1a2c25', '#152520'];
+  const bands = scene.water || ['#3e5a3a', '#37523a', '#304a36', '#2a4232', '#243a2e', '#1f332a', '#1a2c25', '#152520'];
+  const bc = scene.bottomCols || ['#7a6644', '#5c4b30', '#4a3c26', '#3a2e1e'];
   for (let y = WATER_Y; y < H; y++) {
     const f = (y - WATER_Y) / (H - WATER_Y) * (bands.length - 1);
     const lo = Math.floor(f), frac = f - lo;
@@ -1501,17 +1599,17 @@ function buildStatic() {
       c.fillStyle = bands[pick]; c.fillRect(x, y, 2, 1);
     }
   }
-  for (let x = Math.max(0, scene.originX - 2); x < W; x++) {
+  for (let x = scene.boat ? 0 : Math.max(0, scene.originX - 2); x < W; x++) {
     const y = Math.round(dToY(bottomDepth(xToM(x))));
     for (let yy = y; yy < H; yy++) {
       const deep = yy - y;
-      c.fillStyle = deep < 2 ? '#7a6644' : (hash(x, yy) % 7 === 0 ? '#3a2e1e' : (deep < 6 ? '#5c4b30' : '#4a3c26'));
+      c.fillStyle = deep < 2 ? bc[0] : (hash(x, yy) % 7 === 0 ? bc[3] : (deep < 6 ? bc[1] : bc[2]));
       c.fillRect(x, yy, 1, 1);
     }
   }
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < (scene.stones || 14); i++) {
     const m = rnd(1, 36), x = Math.round(mToX(m)), y = Math.round(dToY(bottomDepth(m)));
-    const r = Math.round(rnd(1, 3.5));
+    const r = Math.round(rnd(1, scene.stoneR || 3.5));
     for (let dy = -r; dy <= 0; dy++) for (let dx = -r - 1; dx <= r + 1; dx++) {
       if (dx * dx / ((r + 1) * (r + 1)) + dy * dy / (r * r + 0.01) <= 1) {
         c.fillStyle = dy === -r || dx < -r + 1 ? '#8a8a7e' : '#5e5e56'; c.fillRect(x + dx, y + dy, 1, 1);
@@ -1520,7 +1618,7 @@ function buildStatic() {
   }
   const fc = ['#1c3524', '#21402a', '#183020'];
   for (let x = -4; x < W + 6; x += rnd(3, 6)) {
-    const h = rnd(10, 24), base = WATER_Y;
+    const h = rnd(10, 24) * (scene.treeK || 1), base = WATER_Y;
     c.fillStyle = fc[Math.floor(Math.random() * fc.length)];
     for (let y = 0; y < h; y++) {
       const w = Math.max(0, Math.round((y / h) * 4 + (y % 3 === 0 ? 1 : 0)));
@@ -1533,6 +1631,7 @@ function buildStatic() {
     for (let dy = -4; dy <= 4; dy++) for (let dx = -5; dx <= 5; dx++)
       if (dx * dx / 25 + dy * dy / 16 < 1 && hash(dx + 9, dy + 9 + i) % 3) c.fillRect(Math.round(x + dx), Math.round(y + dy), 1, 1);
   }
+  if (scene.cabin !== false) { // the cabin, sauna and flag across the bay
   const cx = 214, cy = WATER_Y - 2;
   c.fillStyle = '#9e2a1e'; c.fillRect(cx, cy - 8, 16, 8);
   c.fillStyle = '#e8e4d8'; c.fillRect(cx, cy - 8, 1, 8); c.fillRect(cx + 15, cy - 8, 1, 8);
@@ -1544,10 +1643,35 @@ function buildStatic() {
   c.fillStyle = '#d8d8d0'; c.fillRect(cx - 8, cy - 22, 1, 22);
   c.fillStyle = '#fff'; c.fillRect(cx - 7, cy - 22, 9, 6);
   c.fillStyle = '#1f4fae'; c.fillRect(cx - 7, cy - 20, 9, 2); c.fillRect(cx - 4, cy - 22, 2, 6);
+  if (lux.cabin >= 1) { // fresh paint, white window frames, porch and flower boxes
+    c.fillStyle = '#c8321e'; c.fillRect(cx + 1, cy - 8, 14, 8);
+    c.fillStyle = '#f4f0e4'; c.fillRect(cx + 3, cy - 7, 5, 5); c.fillRect(cx + 9, cy - 7, 5, 5);
+    c.fillStyle = '#5a8ac8'; c.fillRect(cx + 4, cy - 6, 3, 3); c.fillRect(cx + 10, cy - 6, 3, 3);
+    c.fillStyle = '#d8c8a0'; c.fillRect(cx - 4, cy - 1, 24, 2);
+    c.fillStyle = '#ff5a9a'; c.fillRect(cx + 3, cy - 2, 5, 1); c.fillStyle = '#ffd84a'; c.fillRect(cx + 9, cy - 2, 5, 1);
+  }
+  if (lux.cabin >= 2) { // long jetty with posts, a moored boat and a swimming ladder
+    c.fillStyle = '#b09a70'; c.fillRect(cx + 26, WATER_Y - 2, 46, 2);
+    c.fillStyle = '#5a4a30'; for (let x = cx + 28; x < cx + 72; x += 8) c.fillRect(x, WATER_Y, 1, 3);
+    c.fillStyle = paintCol(); c.fillRect(cx + 54, WATER_Y - 4, 12, 3); c.fillStyle = '#e8e0c8'; c.fillRect(cx + 54, WATER_Y - 4, 12, 1);
+    c.fillStyle = '#c8c8c8'; c.fillRect(cx + 70, WATER_Y - 4, 1, 6); c.fillRect(cx + 72, WATER_Y - 4, 1, 6);
+  }
+  if (lux.cabin >= 3) { // ochre storehouse and a woodpile
+    c.fillStyle = '#d0982a'; c.fillRect(cx - 36, cy - 9, 15, 9); c.fillStyle = '#7a4a10'; c.fillRect(cx - 31, cy - 6, 4, 6);
+    c.fillStyle = '#2e2e30'; for (let i = 0; i < 5; i++) c.fillRect(cx - 38 + i, cy - 10 - i, 19 - 2 * i, 1);
+    for (let i = 0; i < 9; i++) { c.fillStyle = i % 2 ? '#8a5a2a' : '#a8743a'; c.fillRect(cx - 18 + (i % 3) * 3, cy - 2 - Math.floor(i / 3) * 2, 3, 2); }
+  }
+  if (lux.cabin >= 4) { // white gazebo and a string of lanterns along the jetty
+    c.fillStyle = '#f4f0e4'; c.fillRect(cx - 58, cy - 9, 11, 1); c.fillRect(cx - 58, cy - 8, 1, 8); c.fillRect(cx - 48, cy - 8, 1, 8);
+    for (let i = 0; i < 4; i++) c.fillRect(cx - 57 + i, cy - 10 - i, 9 - 2 * i, 1);
+    c.fillStyle = '#ffd860'; for (let x = cx + 28; x < cx + 72; x += 6) c.fillRect(x, WATER_Y - 6, 1, 1);
+    c.fillStyle = '#ffd860'; c.fillRect(cx - 53, cy - 5, 1, 1);
+  }
+  }
   scene.foreground(c);
   reeds = []; lilies = [];
-  for (let i = 0; i < 16; i++) reeds.push({ m: rnd(scene.reeds[0], scene.reeds[1]), h: rnd(1.2, 2.4), ph: Math.random() * 6 });
-  for (let i = 0; i < 4; i++) lilies.push({ x: Math.round(rnd(scene.lilies[0], scene.lilies[1])) + i * 3, f: i === 1 });
+  for (let i = 0; i < (scene.reedCount ?? 16); i++) reeds.push({ m: rnd(scene.reeds[0], scene.reeds[1]), h: rnd(1.2, 2.4), ph: Math.random() * 6 });
+  for (let i = 0; i < (scene.lilyCount ?? 4); i++) lilies.push({ x: Math.round(rnd(scene.lilies[0], scene.lilies[1])) + i * 3, f: i === 1 });
 }
 function setScene(name) {
   scene = SCENES[name];
@@ -1618,6 +1742,7 @@ function drawFishAt(f, x, y, alpha, rot) {
 }
 function drawLure(x, y, now) {
   x = Math.round(x); y = Math.round(y);
+  if (lux.gold && Math.floor(now * 6) % 3 === 0) { g.fillStyle = '#ffd84a'; g.fillRect(x - 1, y - 2, 3, 1); } // golden glint
   const moving = lure.moving || lure.flashT > 0 || state === 'fly';
   const blink = Math.floor(now * 14) % 2;
   switch (lureType) {
@@ -1639,6 +1764,13 @@ function drawLure(x, y, now) {
       g.fillStyle = '#000'; g.fillRect(x - 2, y - 1, 1, 1);
       g.fillStyle = '#d8e8f0'; g.fillRect(x - 5, y + 1, 2, 1);
       break;
+    case 'ruoho': { // green weedless spoon with a wire guard
+      const tilt = moving ? (blink ? -1 : 1) : 0;
+      g.fillStyle = '#5a9a3a'; g.fillRect(x - 2, y + (tilt < 0 ? -1 : 0), 4, 2);
+      g.fillStyle = '#d0d0d0'; g.fillRect(x + 1, y - 2, 1, 1); g.fillRect(x + 2, y - 1, 1, 1);
+      g.fillStyle = '#b02020'; g.fillRect(x + 2, y + (tilt > 0 ? 1 : 0), 1, 1);
+      break;
+    }
     case 'jigi': {
       const wig = moving ? blink : 0;
       g.fillStyle = '#d02020'; g.fillRect(x - 2, y - 1, 2, 2);
@@ -1722,7 +1854,7 @@ function draw() {
   tip.x = lerp(tip.x, R.x, 0.25); tip.y = lerp(tip.y, R.y, 0.25);
   scene.drawAngler(g);
   const L = (state === 'fishing' || state === 'strike' || state === 'fight' || state === 'fly') ? lurePos() : null;
-  const tens = fight ? fight.tension / ROD[rod].line : (snag && actionHeld ? 0.6 : state === 'strike' ? 0.4 : 0);
+  const tens = fight ? fight.tension / lineStr() : (snag && actionHeld ? 0.6 : state === 'strike' ? 0.4 : 0);
   let tx = tip.x, ty = tip.y;
   if (L && tens > 0) {
     const dx = L.x - tx, dy = L.y - ty, d = Math.hypot(dx, dy) || 1;
@@ -1732,9 +1864,10 @@ function draw() {
   if (lure.flashT > 0.2 && rod === 'spin') { tx += 2; ty -= 3; }
   const bx = scene.rodBase.x, by = scene.rodBase.y;
   const rodPts = quadPts(bx, by, tip.x, tip.y, tx, ty, 12);
-  drawCurve(rodPts, rod === 'pole' ? '#c9a44a' : '#2a2a2a');
+  drawCurve(rodPts, rod === 'pole' ? '#c9a44a' : ROD_COLS[lux.rod]);
+  if (rod === 'spin' && lux.rod >= 3) { g.fillStyle = '#ffd84a'; g.fillRect(Math.round(tx), Math.round(ty), 1, 1); } // gold tip
   if (rod === 'pole') { for (let i = 3; i < rodPts.length - 1; i += 3) { g.fillStyle = '#7a5a20'; g.fillRect(Math.round(rodPts[i][0]), Math.round(rodPts[i][1]), 1, 1); } }
-  else { g.fillStyle = '#9a9a9a'; g.fillRect(bx, by - 1, 3, 2); pixLine(g, bx, by + 1, bx - 3, by + 4, '#5a3a20'); }
+  else { g.fillStyle = REEL_COLS[lux.reel]; g.fillRect(bx, by - 1, 3, 2); pixLine(g, bx, by + 1, bx - 3, by + 4, '#5a3a20'); }
   // line + terminal tackle
   if (L) {
     const lineCol = '#d8d8d0';
@@ -1751,7 +1884,7 @@ function draw() {
         drawCurve(quadPts(tx, ty, (tx + L.x) / 2, (ty + L.y) / 2 + 4, L.x, L.y, 14), lineCol);
       } else {
         const dip = floatDip, tw = floatTwitch;
-        const fy = WATER_Y - 4 + Math.round((dip > 0 ? dip * 6 : tw * 2) + wx.wind * 1.6 * Math.sin(now * 5.3 + Math.sin(now * 1.7) * 2)); // waves bob the float
+        const fl = eq('float'), fy = WATER_Y - 4 + Math.round((dip > 0 ? Math.min(7, dip * 6 * fl.sens) : tw * 2 * fl.sens) + wx.wind * 1.6 * fl.wind * Math.sin(now * 5.3 + Math.sin(now * 1.7) * 2)); // waves bob the float
         drawCurve(quadPts(tx, ty, (tx + flX) / 2, WATER_Y - 6, flX, fy, 12), lineCol);
         const wy = Math.round(L.y);
         pixLine(g, flX, fy + 5, flX, wy, '#9aa8a0');
@@ -1773,7 +1906,7 @@ function draw() {
   if (state === 'strike') txtC('!!', Math.round(dToY(lure.d)) - 22, Math.floor(now * 10) % 2 ? '#ff4a3a' : '#fff');
   for (const p of particles) { g.fillStyle = '#d8ecf0'; g.fillRect(Math.round(p.x), Math.round(p.y), 1, 1); }
   const [mx, my] = scene.mosquito;
-  g.fillStyle = '#111'; g.fillRect(Math.round(mx + Math.sin(now * 5.3) * 6 + Math.sin(now * 13) * 2), Math.round(my + Math.cos(now * 4.1) * 5), 1, 1);
+  g.fillStyle = repellent ? 'rgba(0,0,0,0)' : '#111'; g.fillRect(Math.round(mx + Math.sin(now * 5.3) * 6 + Math.sin(now * 13) * 2), Math.round(my + Math.cos(now * 4.1) * 5), 1, 1);
   // morning mist on calm mornings
   const hh = hourNow();
   if ((weather === 'selkea' || weather === 'pilvi') && wx.wind < 0.4 && hh > 2.5 && hh < 7.5) {
@@ -1803,6 +1936,12 @@ function draw() {
   if (fade > 0) { g.fillStyle = `rgba(0,0,0,${fade.toFixed(3)})`; g.fillRect(0, 0, W, H); }
   drawHud(now);
   if (guideOpen) drawGuide();
+  if (shopOpen) drawShop();
+  if (contestOpen) drawContestScreen();
+  if (mapOpen) drawMap();
+  if (homeOpen) drawHome(now);
+  if (contestResults) drawContestResults(now);
+  if (pwShow) drawPassword();
 }
 
 function drawLanding(now) {
@@ -1854,13 +1993,15 @@ function drawTitle(now) {
   txtC('MÖKKIJÄRVEN KALASTUSPELI', 64, '#9cd8ff');
   const page = Math.floor(titleT / 7) % 2;
   if (page === 0) {
+    txtC('PÄIVÄ ' + dayNum + ' ' + weekday() + '  ' + money + ' MK', 74, '#ffd84a');
     if (Math.floor(now * 2) % 2) txtC('PAINA ALOITTAAKSESI', 84, '#ffffff');
     txt('1 VIRVELI', 76, 100, rod === 'spin' ? '#ffd84a' : '#8a8a8a');
     txt('2 MATO-ONKI', 172, 100, rod === 'pole' ? '#ffd84a' : '#8a8a8a');
     txtC('A AIKA: ' + clockStr(), 116, '#e8e8e0');
     txtC('S SÄÄ: ' + (weatherMode === 'vaihteleva' ? 'VAIHTELEVA (' + WEATHERS[weather].fi.toUpperCase() + ')' : WEATHERS[weather].fi.toUpperCase()), 128, '#e8e8e0');
-    txtC('O OPAS  N MUSIIKKI  M ÄÄNI', 144, '#c8c8c0');
-    txtC('(C) 1996 LAITURISOFT', 162, '#9cd8ff');
+    txtC('O OPAS  K KIOSKI  P SALASANA', 142, '#c8c8c0');
+    txtC('C KISAT  H MÖKKI  N MUSIIKKI', 153, '#c8c8c0');
+    txtC('(C) 1996 LAITURISOFT', 166, '#9cd8ff');
   } else if (page === 1) {
     txtC('HUIPPUSAALIIT', 80, '#ffd84a');
     if (!topList.length) txtC('EI VIELÄ SAALIITA', 106, '#c8c8c0');
@@ -1880,15 +2021,22 @@ function drawHud(now) {
   drawWxIcon(45, 1);
   if (rod === 'spin') {
     const n = lureCount[lureType];
-    txt(LURES[lureType].fi.toUpperCase() + ' ' + n, 60, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
+    txt((LURES[lureType].hud || LURES[lureType].fi.toUpperCase()) + ' ' + n, 60, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
     txt('JARRU ' + fi1(drag), 136, 2, '#9cd8ff');
     txt(gear === 'fast' ? 'NOPEA' : 'HIDAS', 276, 2, gear === 'fast' ? '#ff9a4a' : '#9cff7a');
   } else {
     txt('MATO-ONKI', 60, 2, '#ffd84a');
     txt('SYVYYS ' + fi1(floatDepth) + 'M', 140, 2, '#9cd8ff');
-    txt(worm ? 'MATO OK' : 'EI MATOA', 252, 2, worm ? '#ff9ab0' : '#ff6a4a');
+    txt('MATOJA ' + worms, 252, 2, worm ? '#ff9ab0' : '#ff6a4a'); // pink: worm on the hook
   }
-  if (rod === 'spin' && twist > 0.6) txt('SIIMA KIERTEELLÄ', 4, 14, Math.floor(now * 3) % 2 ? '#ff8a4a' : '#ffd84a');
+  if (state === 'idle' || state === 'fishing') { const ms = money + ' MK'; txt(ms, W - 4 - ms.length * 8, 14, '#ffd84a'); }
+  if (contest && state !== 'title') {
+    const c = CONTESTS[contest.key], left = Math.max(0, c.len - contest.t), lt = Math.floor(left / 60) + ':' + String(Math.floor(left % 60)).padStart(2, '0');
+    txt('KISA ' + (contest.over ? 'LOPPU' : lt) + ' ' + fmtKg(contest.score), 4, 14, contest.over || left < 30 ? '#ff9a4a' : '#9cff7a');
+  }
+  if ((state === 'idle' || state === 'fishing') && lineCond[rod] < 0.45) txt('SIIMA KULUNUT', 4, 34, Math.floor(now * 2) % 2 ? '#ff8a4a' : '#ffd84a');
+  if (scene.boat && owned.has('e1') && state !== 'title') drawSonar();
+  if (rod === 'spin' && twist > 0.6) txt('SIIMA KIERTEELLÄ', 4, contest ? 24 : 14, Math.floor(now * 3) % 2 ? '#ff8a4a' : '#ffd84a');
   if (state === 'charge') {
     g.fillStyle = '#000'; g.fillRect(40, 15, 62, 7);
     g.fillStyle = chargeP > 0.85 ? '#ff4a3a' : chargeP > 0.5 ? '#ffd84a' : '#5ad84a';
@@ -1896,7 +2044,7 @@ function drawHud(now) {
     txt('VOIMA', 106, 15, '#fff');
   }
   if (state === 'fight' && fight) {
-    const line = ROD[rod].line, max = line * 1.15, X = 6, Y = 188, BW = 230;
+    const line = lineStr(), max = line * 1.15, X = 6, Y = 188, BW = 230;
     g.fillStyle = '#000'; g.fillRect(X - 1, Y - 1, BW + 2, 9);
     const r = fight.tension / line;
     g.fillStyle = r > 0.9 ? (Math.floor(now * 12) % 2 ? '#ff2a1a' : '#fff') : r > 0.7 ? '#ff8a2a' : r > 0.45 ? '#ffd84a' : '#5ad84a';
@@ -1953,7 +2101,15 @@ function drawCard(now) {
   if (card.note) { txt(card.note.toUpperCase(), x + 10, ly, '#804000', false); ly += 10; }
   if (card.rec) { txt('UUSI ENNÄTYS!', x + 10, ly, Math.floor(now * 4) % 2 ? '#c00000' : '#000', false); ly += 10; }
   if (card.rank) txt('HUIPPULISTALLE: ' + card.rank + '.', x + 10, ly, '#000080', false);
-  if (Math.floor(now * 2) % 2) txt('PAINA JATKAAKSESI', x + 10, y + 134, '#404040', false);
+  if (f.legend || card.contest) { if (Math.floor(now * 2) % 2) txt('PAINA JATKAAKSESI', x + 10, y + 134, '#404040', false); return; }
+  const btn2 = (bx, label, on) => { // 90s push buttons: release | sell
+    g.fillStyle = on ? '#000080' : '#c0c0c0'; g.fillRect(bx, y + 129, 104, 14);
+    g.fillStyle = on ? '#404040' : '#fff'; g.fillRect(bx, y + 129, 104, 1); g.fillRect(bx, y + 129, 1, 14);
+    g.fillStyle = on ? '#fff' : '#404040'; g.fillRect(bx, y + 142, 104, 1); g.fillRect(bx + 103, y + 129, 1, 14);
+    txt(label, Math.round(bx + 52 - label.length * 4), y + 132, on ? '#fff' : '#000', false);
+  };
+  btn2(x + 10, 'VAPAUTA', card.choice === 'release');
+  btn2(x + 126, card.price ? 'MYY ' + card.price + ' MK' : 'MYY', card.choice === 'sell');
 }
 
 // ---------- fishing guide pamphlet (Kalastusopas) ----------
@@ -1964,10 +2120,10 @@ const GUIDE_A = [
   ['PERUSTEET', [
     'HEITÄ PITÄMÄLLÄ VÄLILYÖNTIÄ TAI NÄYTTÖÄ POHJASSA JA PÄÄSTÄ IRTI, KUN VOIMAMITTARI ON TÄYNNÄ.',
     '1 VIRVELI, 2 MATO-ONKI. NUOLET YLÖS JA ALAS SÄÄTÄVÄT JARRUA TAI KOHON SYVYYTTÄ.',
-    'T ODOTTAA TUNNIN. ESC PALAA ALKUVALIKKOON. O AVAA TÄMÄN OPPAAN. N MUSIIKKI, M ÄÄNI.']],
+    'T ODOTTAA TUNNIN. ESC PALAA ALKUVALIKKOON. O AVAA TÄMÄN OPPAAN, K KIOSKIN, P SALASANAN. N MUSIIKKI, M ÄÄNI.']],
   ['VIRVELI', [
     'Q VAIHTAA UISTINTA, V KELAUSNOPEUTTA, X TAI OIKEA HIIRENNAPPI NYKÄISEE.',
-    'LIPPA: AHVENEN SUOSIKKI. LUSIKKA: HAUELLE. VAAPPU: KELLUU, HARVOIN POHJASSA. JIGI: POMPII POHJAA, KUHA OTTAA VAJOTESSA.',
+    'LIPPA: AHVENEN SUOSIKKI. LUSIKKA: HAUELLE. VAAPPU: KELLUU, HARVOIN POHJASSA. JIGI: POMPII POHJAA, KUHA OTTAA VAJOTESSA. RUOHOUISTIN: EI TARTU KAISLAAN.',
     'TASAINEN KELAUS TUO SEURAAJIA. NYKÄISY, TAUKO TAI POHJAKOSKETUS SAA NE ISKEMÄÄN.']],
   ['VÄSYTYS', [
     'KUN JARRU LUISTAA, ÄLÄ KELAA: SIIMA KIERTYY JA KIRISTYY. KELAA, KUN KALA LEPÄÄ. PIDÄ SIIMA KIREÄLLÄ, KUN KALA UI SINUA KOHTI.',
@@ -1987,6 +2143,27 @@ const GUIDE_B = [
     'PILVI JA TUULI PIRISTÄVÄT SYÖNTIÄ, KIRKAS KESKIPÄIVÄ HILJENTÄÄ JA AJAA KALAT SYVEMMÄLLE.',
     'PARAS HETKI ON ENNEN SADETTA TAI UKKOSTA: PUNAINEN NUOLI SÄÄKUVAKKEEN VIERESSÄ KERTOO PAINEEN LASKUSTA. UKKOSELLA SYÖNTI LOPPUU - LÄHES KAIKILTA.',
     'ALKUVALIKOSSA A VALITSEE AJAN JA S SÄÄN.']],
+  ['VARUSTEET', [
+    'KIOSKIN OSASTOT (NUOLET VASEMMALLE/OIKEALLE): SIIMAT, VAVAT, KELAT, KOHOT JA UISTINVÄRIT. OSTETTU VARUSTE OTETAAN KÄYTTÖÖN VALITSEMALLA SE.',
+    'PAKSU SIIMA KESTÄÄ ENEMMÄN, MUTTA KALAT ARKAILEVAT. HYVÄ KELA TASOITTAA JARRUN NYKÄYKSEN JA MAHTUU ENEMMÄN SIIMAA. PITKÄ ONKI ULOTTUU SYVEMMÄLLE.',
+    'VÄRIT: HOPEA AURINGOSSA, KULTA PILVELLÄ JA HÄMÄRÄSSÄ, MUSTA YÖLLÄ, FLUORESOIVA SATEELLA JA SYVÄLLÄ.']],
+  ['MÖKKI', [
+    'H AVAA MÖKIN SEINÄN: LEGENDOJEN LEHTILEIKKEET, POKAALIT JA TÄYTETYT ENNÄTYSKALAT. TÄYTTÄMINEN MAKSAA PAINON MUKAAN.',
+    'POSTIMYYNTIKUVASTOSSA LUKSUSTA: JOKAINEN TASO MAKSAA KAKSI KERTAA ENEMMÄN JA AUTTAA VÄHÄN, MUTTA NÄKYY. LISÄKSI LIPPIKSET, PAIDAT JA VENEEN MAALIT.']],
+  ['VENE', [
+    'VUOKRAA VENE KIOSKILTA (VENE-OSASTO) TAI OSTA OMA. B AVAA VENEMATKAN.',
+    'KAISLIKKOLAHTI: MATALA, HAUKI JA AHVEN. KIVIKKOLUOTO: JYRKKÄ REUNA, KUHA. SYVÄNNE: KUHA, SIIKA, LAHNA. SELKÄ: ISOT HAUET JA SIIKA, TUULISTA.',
+    'SOUTAMINEN VIE AIKAA. PERÄMOOTTORI ON NOPEA MUTTA KULUTTAA BENSAA. KAIKULUOTAIN NÄYTTÄÄ POHJAN JA KALAT.',
+    'SIIMA KULUU JA HEIKKENEE - VAIHDA UUSI KIOSKILLA. TERÄSPERUKE ESTÄÄ HAUKEA KATKAISEMASTA SIIMAA.']],
+  ['KILPAILUT', [
+    'C AVAA KALENTERIN: KE VIRVELIKISA (SUURIN KALA), PE YÖLLÄ KUHAMESTARUUS (KUHIEN PAINO, ALAMITTA 37 CM), LA KYLÄN ONKIKISAT (KAIKKI KALAT).',
+    'ILMOITTAUTUMINEN MAKSAA JA SIIRTÄÄ KISAPÄIVÄÄN. KISAN AIKANA KELLO KULKEE HITAAMMIN. KALAT PUNNITAAN JA VAPAUTETAAN.',
+    'LEGENDOJA EI LASKETA - TUOMARI EI USKO NIIHIN. KOLME PARASTA SAA RAHAA JA POKAALIN.']],
+  ['TALOUS', [
+    'SAALISKORTILLA: VAPAUTA (NUOLI VASEMMALLE) TAI MYY (OIKEALLE). MYYMINEN HARVENTAA JÄRVEN KALAKANTAA, SE TOIPUU PÄIVITTÄIN.',
+    'KUHA JA SIIKA OVAT ARVOKKAITA, AHVEN KOHTUULLINEN. KIISKEÄ EI OSTA KUKAAN.',
+    'KIOSKI (K) ON AUKI 6-23: UISTIMIA, MATOJA, HYTTYSMYRKKYÄ. MATOJA VOI KAIVAA ILMAISEKSI, SE VIE PUOLI TUNTIA.',
+    'LEGENDOJA EI MYYDÄ. PAIKALLISLEHTI MAKSAA JUTTUPALKKION ENSIMMÄISESTÄ.']],
   ['LEGENDAT', [
     'JÄRVESSÄ ELÄÄ SEITSEMÄN JÄTTILÄISTÄ. KUKIN LIIKKUU OMINA KELLONAIKOINAAN, MUTTA SYÖ VAIN OIKEISSA OLOSUHTEISSA JA OIKEALLA VÄLINEELLÄ.',
     'SUURI VARJO SYVÄLLÄ: LEGENDA ON LIIKKEELLÄ, MUTTA EI SYÖ. ISO PYÖRRE PINNASSA: SE SYÖ NYT - JOS VÄLINE ON OIKEA.', 'LEGENDA VAPAUTETAAN, JA SE KASVAA HIEMAN JOKA KERTA.',
@@ -2069,12 +2246,721 @@ function drawGuide() {
   txt('O SULJE', x + w - 80, y + h - 11, '#7a5a2a', false);
 }
 
+// ---------- economy: markka, calendar, kiosk, saving ----------
+// Fish are sold by weight at made-up 1990s prices (tuned for gameplay, not history). Legends are never sold:
+// the local paper pays a one-off reward for the first catch of each.
+const PRICE = { ahven: 28, hauki: 12, kuha: 30, sarki: 3, lahna: 5, salakka: 2, kiiski: 0, siika: 34, monni: 0 }; // mk/kg
+const LEGEND_REWARD = { morko: 600, kormy: 300, siika: 400, kaani: 500, paansarki: 300, dalai: 400, suklaa: 800 };
+const WEEKDAYS = ['MAANANTAI', 'TIISTAI', 'KESKIVIIKKO', 'TORSTAI', 'PERJANTAI', 'LAUANTAI', 'SUNNUNTAI'];
+let money = 100, dayNum = 1, worms = 20, lakeStock = 1, repellent = false, saveT = 60;
+const weekday = () => WEEKDAYS[(dayNum - 1) % 7];
+const popTarget = () => Math.round(14 * lakeStock);
+function fishPrice(f) {
+  const S = SPECIES[f.sp], base = PRICE[f.sp] || 0;
+  if (!base) return 0;
+  return Math.max(1, Math.round(base * f.w * (1 + 0.6 * Math.max(0, f.w / S.max - 0.5)))); // big fish fetch a premium
+}
+function newDay() {
+  dayNum++; lakeStock = Math.min(1, lakeStock + 0.15); repellent = false;
+  showMsg(weekday() + ', päivä ' + dayNum, '#ffd84a', 2.4);
+  if (spot !== 'ranta' && !owned.has('b1')) setTimeout(() => showMsg('Venevuokra päättyi - palaa rantaan (B)', '#ffd84a', 2.6), 2600);
+  saveGame();
+}
+function cardChoose(sell) { // catch card: release (points, healthy lake) or sell (markka, fewer fish)
+  const f = card.f;
+  if (card.contest && !f.legend) { if (catches[0]) catches[0].fate = 'Kisasaalis'; updateLog(); }
+  else if (!f.legend) {
+    if (sell) {
+      const p = fishPrice(f);
+      if (p > 0) { money += p; lakeStock = Math.max(0.4, lakeStock - 0.025); showMsg('Myyty: +' + p + ' mk', '#ffd84a', 1.6); sfx.click(); }
+      else showMsg(f.sp === 'kiiski' ? 'No ei näistä kukaan maksa' : 'Ei kelpaa kauppaan', '#ffd84a', 1.8);
+      if (catches[0]) catches[0].fate = p > 0 ? p + ' mk' : 'Ei kelvannut';
+    } else { showMsg('Vapautettu', '#9cff7a', 1.2); if (catches[0]) catches[0].fate = 'Vapautettu'; }
+    updateLog();
+  }
+  card = null; state = 'idle'; actionHeld = false;
+  saveGame();
+}
+// ---- contests (phase 3): weekly events with an entry fee, fictional rivals and prize money ----
+// The clock runs at 40 % speed during a contest, so 6 game hours take 15 real minutes.
+const CONTESTS = {
+  onki:    { fi: 'KYLÄN ONKIKISAT', day: 5, start: 8 * 60, len: 360, rod: 'pole', fee: 20, prizes: [150, 80, 40], score: 'total',
+             d: 'MATO-ONKI. KAIKKIEN KALOJEN YHTEISPAINO.', base: 1.45 },
+  virveli: { fi: 'VIRVELIKISA', day: 2, start: 17 * 60, len: 360, rod: 'spin', fee: 50, prizes: [400, 200, 100], score: 'biggest',
+             d: 'VIRVELI. SUURIN YKSITTÄINEN KALA.', base: 3.2 },
+  kuha:    { fi: 'KUHAMESTARUUS', day: 4, start: 21 * 60, len: 360, rod: 'spin', fee: 100, prizes: [1000, 500, 250], score: 'kuha', minCm: 37,
+             d: 'VIRVELI. KUHIEN YHTEISPAINO, ALAMITTA 37 CM.', base: 2.3 },
+};
+const CONTEST_ORDER = ['virveli', 'kuha', 'onki'];
+const RIVALS = ['TAUNO AHVENLAHTI', 'SEPPO SÄRKILÄ', 'EILA ELOVAARA', 'KALEVI KIISKINEN', 'ONNI ONKINEN', 'VEIKKO VIRVELÄ',
+  'MARTTA MADETOJA', 'HANNES HAUKILAHTI', 'LIISA LAHNANEN', 'PERTTI PILKKINEN', 'AILI AHOLA', 'REIJO ROUSKU'];
+const WD_SHORT = ['MA', 'TI', 'KE', 'TO', 'PE', 'LA', 'SU'];
+let contest = null, contestOpen = false, contestSel = 0, contestResults = null, contestMsg = '';
+let trophies = { onki: [0, 0, 0], virveli: [0, 0, 0], kuha: [0, 0, 0] }; // gold, silver, bronze
+const clockK = () => contest ? 0.4 : 1;
+const fmtKg = w => w < 1 ? Math.round(w * 1000) + ' G' : w.toFixed(2).replace('.', ',') + ' KG';
+const daysUntil = c => { const wd = (dayNum - 1) % 7; let d = (c.day - wd + 7) % 7; if (d === 0 && gameMin > c.start) d = 7; return d; };
+function toggleContest() {
+  if (contestOpen) { contestOpen = false; return; }
+  if (contest) { showMsg('Kilpailu on käynnissä', '#ffd84a', 1.2); return; }
+  if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  contestOpen = true; contestMsg = ''; if (actionHeld) release();
+}
+function startContest(key, free) {
+  const c = CONTESTS[key];
+  if (!free && money < c.fee) { contestMsg = 'Osallistumismaksu ' + c.fee + ' mk - rahat eivät riitä.'; return false; }
+  const days = free ? 0 : daysUntil(c);
+  for (let i = 0; i < days; i++) { dayNum++; lakeStock = Math.min(1, lakeStock + 0.15); repellent = false; }
+  if (!free) money -= c.fee;
+  if (spot !== 'ranta') { spot = 'ranta'; setScene('ranta'); }
+  gameMin = c.start; renderSky(); updateWeather(0); wx = wxTargets();
+  rod = c.rod; contest = { key, t: 0, score: 0, n: 0, over: false };
+  contestOpen = false;
+  if (state === 'title') state = 'idle';
+  newTrip(); syncButtons(); saveGame();
+  showMsg(c.fi + ' ALKAA!', '#9cff7a', 2.6); sfx.catch();
+  return true;
+}
+function contestScore(f) { // called when a fish is landed during a contest; returns a note for the catch card
+  const c = CONTESTS[contest.key];
+  if (f.legend) return 'Tuomari ei usko legendoihin';
+  if (c.score === 'kuha') {
+    if (f.sp !== 'kuha') return 'Vain kuhat lasketaan';
+    if (lengthCm(f) < c.minCm) return 'Alamittainen - ei kelpaa';
+    contest.score += f.w; contest.n++; return 'Punnittu! Yhteensä ' + fmtKg(contest.score).toLowerCase();
+  }
+  if (c.score === 'biggest') { const better = f.w > contest.score; contest.score = Math.max(contest.score, f.w); contest.n++; return better ? 'Uusi suurin kala!' : 'Ei suurempi kuin ' + fmtKg(contest.score).toLowerCase(); }
+  contest.score += f.w; contest.n++; return 'Punnittu! Yhteensä ' + fmtKg(contest.score).toLowerCase();
+}
+function contestStep(dt) {
+  if (!contest) return;
+  contest.t += dt * clockK();
+  const c = CONTESTS[contest.key];
+  if (contest.t >= c.len && !contest.over) { contest.over = true; showMsg('Aika loppui! Viimeinen kala saa tulla.', '#ffd84a', 2.4); sfx.bite(); }
+  if (contest.over && (state === 'idle' || state === 'fishing' || state === 'title')) finishContest();
+}
+function finishContest() {
+  const key = contest.key, c = CONTESTS[key], you = contest.score;
+  const names = RIVALS.slice().sort(() => Math.random() - 0.5).slice(0, 7);
+  const rows = names.map(name => { // rivals: a skill level and a good or bad day
+    const skill = rnd(0.45, 1.15);
+    let s = c.base * skill * Math.exp(rnd(-0.45, 0.45));
+    if (Math.random() < 0.18 * (1.2 - skill)) s = 0; // blanked
+    return { name, s };
+  });
+  rows.push({ name: 'SINÄ', s: you, you: true });
+  rows.sort((a, b) => b.s - a.s);
+  const place = rows.findIndex(r => r.you) + 1, prize = you > 0 ? (c.prizes[place - 1] || 0) : 0;
+  money += prize;
+  if (place <= 3 && you > 0) trophies[key][place - 1]++;
+  contestResults = { key, rows, place, prize };
+  contest = null;
+  if (state === 'fishing') state = 'idle';
+  syncButtons(); saveGame();
+  sfx[place === 1 && you > 0 ? 'catch' : 'lose']();
+}
+function contestBuy() {
+  const key = CONTEST_ORDER[contestSel];
+  startContest(key, false);
+}
+function drawContestScreen() {
+  const x = 16, y = 12, w = 288, h = 176, ink = '#2a2418';
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#006040'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt('KILPAILUT', x + 7, y + 5, '#fff', false);
+  const ms = money + ' MK'; txt(ms, x + w - 8 - ms.length * 8, y + 5, '#ffd84a', false);
+  txt('TÄNÄÄN ' + weekday() + ' ' + clockStr(), x + 8, y + 20, '#000080', false);
+  CONTEST_ORDER.forEach((k, i) => {
+    const c = CONTESTS[k], yy = y + 34 + i * 34, sel = i === contestSel, d = daysUntil(c);
+    if (sel) { g.fillStyle = '#000080'; g.fillRect(x + 5, yy - 2, w - 10, 32); }
+    const col = sel ? '#fff' : ink;
+    txt(c.fi, x + 10, yy, col, false);
+    const when = d === 0 ? 'TÄNÄÄN' : WD_SHORT[c.day] + ' (' + d + ' PV)';
+    txt(when, x + w - 10 - when.length * 8, yy, sel ? '#ffd84a' : '#006040', false);
+    txt(c.d.slice(0, 34), x + 10, yy + 10, sel ? '#c8d8ff' : '#404040', false);
+    const t = String(c.start / 60).padStart(2, '0') + '-' + String(((c.start + c.len) / 60) % 24).padStart(2, '0');
+    const line = 'KLO ' + t + '  MAKSU ' + c.fee + '  1. ' + c.prizes[0] + ' MK';
+    txt(line, x + 10, yy + 20, sel ? '#fff' : '#404040', false);
+  });
+  const tr = trophies[CONTEST_ORDER[contestSel]];
+  txt(contestMsg ? contestMsg.toUpperCase().slice(0, 34) : 'POKAALIT: ' + tr[0] + ' KULTA ' + tr[1] + ' HOPEA ' + tr[2] + ' PRONSSI', x + 8, y + h - 28, contestMsg ? '#a00000' : '#804000', false);
+  txt('PAINA: ILMOITTAUDU  C: SULJE', x + 8, y + h - 15, '#404040', false);
+}
+function drawContestResults(now) {
+  const R = contestResults, c = CONTESTS[R.key], x = 30, y = 14, w = 260, h = 172;
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#006040'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt(c.fi + ' - TULOKSET', x + 7, y + 5, '#fff', false);
+  R.rows.forEach((r, i) => {
+    const yy = y + 22 + i * 12;
+    if (r.you) { g.fillStyle = '#000080'; g.fillRect(x + 5, yy - 2, w - 10, 11); }
+    const col = r.you ? '#fff' : i < 3 ? '#804000' : '#2a2418';
+    txt((i + 1) + '. ' + r.name, x + 10, yy, col, false);
+    const s = r.s > 0 ? fmtKg(r.s) : '-';
+    txt(s, x + w - 10 - s.length * 8, yy, col, false);
+  });
+  const msg = R.place <= 3 && R.prize ? (R.place === 1 ? 'VOITTO! ' : R.place + '. SIJA! ') + '+' + R.prize + ' MK' : R.place + '. SIJA. ENSI KERRALLA!';
+  txt(msg, Math.round(160 - msg.length * 4), y + h - 30, R.place === 1 ? '#c00000' : '#000080', false);
+  if (Math.floor(now * 2) % 2) txt('PAINA JATKAAKSESI', x + 10, y + h - 15, '#404040', false);
+}
+// ---- boat items, travel, sonar, line wear ----
+const BOAT_ITEMS = [
+  { id: 'rent', fi: 'VENEVUOKRA (PÄIVÄ)', price: 30, d: 'SOUTUVENE TÄMÄN PÄIVÄN AJAN' },
+  { id: 'b1', fi: 'OMA SOUTUVENE', price: 2500, d: 'OMA VENE - EI ENÄÄ VUOKRIA' },
+  { id: 'm4', fi: 'PERÄMOOTTORI 4 HV', price: 1800, d: 'MATKAT 3X NOPEAMMIN, BENSA 4 MK' },
+  { id: 'm8', fi: 'PERÄMOOTTORI 8 HV', price: 3500, d: 'MATKAT 6X NOPEAMMIN, BENSA 7 MK' },
+  { id: 'e1', fi: 'KAIKULUOTAIN', price: 1200, d: 'NÄYTTÄÄ POHJAN JA KALAT VENEESTÄ' },
+];
+const LEADER = { id: 'l1', fi: 'TERÄSPERUKE', price: 35, d: 'HAUKI EI KATKAISE. -5 % TÄRPPEJÄ' };
+const EXTRA_ORDER = ['b1', 'm4', 'm8', 'e1', 'l1']; // password bit order
+let spot = 'ranta', rentDay = 0, mapOpen = false, mapSel = 0, mapMsg = '', leaderOn = false, lineCond = { spin: 1, pole: 1 }, wornWarned = false;
+const hasBoat = () => owned.has('b1') || rentDay === dayNum;
+const travelRate = () => (owned.has('m8') ? 2.5 : owned.has('m4') ? 5 : 15) * (owned.has('m4') || owned.has('m8') ? 1 - 0.06 * lux.motor : 1); // game minutes per distance unit
+const fuelRate = () => owned.has('m8') ? 7 : owned.has('m4') ? 4 : 0;
+function trip(to) { const d = Math.abs(SCENES[to].pos - SCENES[spot].pos); return { min: Math.round(d * travelRate()), fuel: Math.round(d * fuelRate()) }; }
+function wearLine(a) {
+  lineCond[rod] = Math.max(0, lineCond[rod] - a);
+  if (lineCond[rod] < 0.45 && !wornWarned) { wornWarned = true; setTimeout(() => showMsg('Siima on kulunut - vaihda kioskilla', '#ffd84a', 2.4), 2500); }
+}
+function toggleMap() {
+  if (mapOpen) { mapOpen = false; return; }
+  if (contest) { showMsg('Kisa käydään rannalta', '#ffd84a', 1.4); return; }
+  if (state !== 'idle') { showMsg(state === 'title' ? 'Aloita ensin kalastus' : 'Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  mapOpen = true; mapMsg = ''; mapSel = SPOT_ORDER.indexOf(spot);
+}
+function travel(to) {
+  if (to === spot) { mapMsg = 'Olet jo täällä.'; return; }
+  if (to !== 'ranta' && !hasBoat()) { mapMsg = 'Tarvitset veneen - vuokra kioskilla.'; return; }
+  const t = trip(to);
+  if (money < t.fuel) { mapMsg = 'Ei rahaa bensaan.'; return; }
+  money -= t.fuel;
+  const prev = gameMin; gameMin = (gameMin + t.min) % 1440; if (gameMin < prev) newDay();
+  updateWeather(t.min); spot = to; setScene(to); wx = wxTargets();
+  mapOpen = false; fade = 1; newTrip();
+  showMsg(SCENES[to].name + (t.min ? ' - matka ' + t.min + ' min' : ''), '#9cd8ff', 2.4); sfx.splash();
+  saveGame();
+}
+function drawMap() {
+  const x = 16, y = 12, w = 288, h = 176, ink = '#2a2418';
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#1d4f8f'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt('VENEMATKA', x + 7, y + 5, '#fff', false);
+  const ms = money + ' MK'; txt(ms, x + w - 8 - ms.length * 8, y + 5, '#ffd84a', false);
+  const bs = 'VENE: ' + (owned.has('b1') ? 'OMA' : rentDay === dayNum ? 'VUOKRA' : 'EI') + '  ' + (owned.has('m8') ? '8 HV' : owned.has('m4') ? '4 HV' : 'AIROT');
+  txt(bs, x + 8, y + 19, '#000080', false);
+  SPOT_ORDER.forEach((k, i) => {
+    const S = SCENES[k], yy = y + 32 + i * 22, sel = i === mapSel, here = k === spot, t = trip(k);
+    if (sel) { g.fillStyle = '#000080'; g.fillRect(x + 5, yy - 2, w - 10, 21); }
+    const col = sel ? '#fff' : ink;
+    txt(S.name.toUpperCase(), x + 10, yy, col, false);
+    const r = here ? 'TÄSSÄ' : t.min + ' MIN' + (t.fuel ? ' ' + t.fuel + ' MK' : '');
+    txt(r, x + w - 10 - r.length * 8, yy, here ? (sel ? '#9cff7a' : '#006000') : col, false);
+    txt(S.d.slice(0, 34), x + 10, yy + 9, sel ? '#c8d8ff' : '#404040', false);
+  });
+  if (mapMsg) txt(mapMsg.toUpperCase().slice(0, 34), x + 8, y + h - 27, '#a00000', false);
+  txt('PAINA: LÄHDE   B: SULJE', x + 8, y + h - 15, '#404040', false);
+}
+function drawSonar() { // 90s green LCD: bottom profile and fish arches 0-17 m ahead of the boat
+  const X = 246, Y = 24, w = 70, h = 40, range = 17;
+  let maxD = 0; for (let m = 0; m <= range; m += 0.5) maxD = Math.max(maxD, bottomDepth(m));
+  maxD = Math.ceil(maxD + 0.5);
+  g.fillStyle = '#28381a'; g.fillRect(X - 1, Y - 1, w + 2, h + 2);
+  g.fillStyle = '#a8b878'; g.fillRect(X, Y, w, h);
+  const dy = d => Y + 2 + Math.round(d / maxD * (h - 12));
+  g.fillStyle = '#28381a';
+  for (let px = 0; px < w; px++) { const by = dy(bottomDepth(px / w * range)); g.fillRect(X + px, by, 1, Y + h - 10 - by); }
+  g.fillStyle = '#486030'; g.fillRect(X, Y + h - 10, w, 1);
+  g.fillStyle = '#18240e';
+  for (const f of fishes) {
+    if (f.m < 0 || f.m > range || f.d < 0) continue;
+    const fx = X + Math.round(f.m / range * w), fy = dy(f.d), a = f.legend ? 4 : f.w > 2 ? 3 : f.w > 0.5 ? 2 : 1;
+    for (let i = -a; i <= a; i++) g.fillRect(fx + i, fy + (Math.abs(i) >> 1), 1, 1);
+  }
+  const ds = fi1(bottomDepth(0.5)) + 'M'; txt(ds, X + 2, Y + h - 9, '#18240e', false);
+}
+// ---- endgame (phase 5): mail-order luxuries, cosmetics, taxidermy and the cabin wall ----
+// Luxury tiers double in price each level for a small, capped benefit; each also shows on screen.
+const LUX = [
+  { id: 'motor', fi: 'MOOTTORIN VIRITYS', max: 5, base: 1500, need: () => owned.has('m4') || owned.has('m8'), needMsg: 'Tarvitset ensin perämoottorin.', d: 'MATKAT 6 % NOPEAMMIN / TASO' },
+  { id: 'reel', fi: 'KÄSINTEHTY KELA', max: 5, base: 2000, d: 'JARRU HIEMAN TASAISEMPI / TASO' },
+  { id: 'rod', fi: 'PRO-VAPA', max: 5, base: 2500, d: 'HEITTO +2 %, ISKU +1 % / TASO' },
+  { id: 'gold', fi: 'KULTAINEN VIEHE', max: 1, base: 15000, d: 'KAIKKI UISTIMET +3 % TÄRPPEJÄ' },
+  { id: 'cabin', fi: 'MÖKKIREMONTTI', max: 4, base: 3000, d: 'MÖKKI KOHENEE - NÄKYY RANNASTA' },
+  { id: 'deco', fi: 'SISUSTUS', max: 6, base: 500, d: 'TUPAAN UUSI KORISTE / TASO' },
+];
+const COSMETIC = [
+  { id: 'cap', fi: 'LIPPIS', names: ['SININEN', 'PUNAINEN', 'VIHREÄ', 'VALKOINEN', 'KULTAINEN'],
+    cols: ['#2a4aa8', '#c02020', '#2a8a3a', '#f0f0f0', '#d8a020'], prices: [0, 40, 60, 120, 600] },
+  { id: 'shirt', fi: 'PAITA', names: ['PUNAINEN FLANELLI', 'SININEN FLANELLI', 'VIHREÄ COLLEGE', 'KALASTAJAPAITA', 'NAHKALIIVI'],
+    cols: [['#b03028', '#7a1e1a'], ['#2a5aa8', '#1a3a78'], ['#3a7a3a', '#245024'], ['#e8e0c8', '#b8b098'], ['#202020', '#3a3a3a']], prices: [0, 80, 120, 300, 1500] },
+  { id: 'wall', fi: 'SEINÄPANEELI', names: ['HIRSI', 'HÖYLÄTTY HIRSI', 'TERVATTU HIRSI', 'KOIVUPANEELI', 'MAHONKI'],
+    cols: [['#7a5228', '#8a6030', '#3a2410'], ['#9a6a38', '#a87840', '#5a3a1a'], ['#4a3018', '#583820', '#1e1208'], ['#d8c098', '#e4cca4', '#a89068'], ['#6a2a1a', '#7a3420', '#3a120a']], prices: [0, 400, 900, 2000, 6000] },
+  { id: 'paint', fi: 'VENEEN MAALI', names: ['SININEN', 'PUNAINEN', 'VIHREÄ', 'LAKATTU PUU', 'KULTA'],
+    cols: ['#2a5a8a', '#a02020', '#2a6a3a', '#8a5a2a', '#c8a030'], prices: [0, 300, 500, 1200, 8000], need: () => owned.has('b1'), needMsg: 'Tarvitset ensin oman veneen.' },
+];
+const ROD_COLS = ['#2a2a2a', '#3a3a44', '#1e2a5a', '#1e4a2a', '#101010', '#c8a040'];
+const REEL_COLS = ['#9a9a9a', '#b0b0b8', '#c8c8d0', '#d8c070', '#e8c850', '#ffd84a'];
+const MOTOR_STRIPES = ['', '#ffd84a', '#ff8a2a', '#40c0ff', '#ff40c0', '#ffffff'];
+const WALL_SPECIES = ['ahven', 'hauki', 'kuha', 'sarki', 'lahna', 'salakka', 'kiiski', 'siika'];
+let lux = { motor: 0, reel: 0, rod: 0, gold: 0, cabin: 0, deco: 0 };
+let cos = { cap: { own: 1, wear: 0 }, shirt: { own: 1, wear: 0 }, wall: { own: 1, wear: 0 }, paint: { own: 1, wear: 0 } };
+let stuffed = {}; // species -> weight of the mounted fish
+let homeOpen = false, homePage = 'wall', homeSel = 0, homeMsg = '';
+const luxPrice = L => Math.round(L.base * Math.pow(2, lux[L.id]));
+const capCol = () => COSMETIC[0].cols[cos.cap.wear];
+const shirtCol = () => COSMETIC[1].cols[cos.shirt.wear];
+const paintCol = () => COSMETIC[3].cols[cos.paint.wear];
+const stuffPrice = w => Math.round(60 + 50 * w);
+function toggleHome() {
+  if (homeOpen) { homeOpen = false; saveGame(); return; }
+  if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  homeOpen = true; homePage = 'wall'; homeSel = 0; homeMsg = ''; if (actionHeld) release();
+}
+function stuffFish(sp) {
+  const rec = records[sp];
+  if (!rec) { homeMsg = 'Ei vielä saalista tästä lajista.'; return; }
+  if (stuffed[sp] && stuffed[sp] >= rec) { homeMsg = 'Ennätyskala on jo seinällä.'; return; }
+  const p = stuffPrice(rec);
+  if (money < p) { homeMsg = 'Täyttäminen maksaa ' + p + ' mk.'; return; }
+  money -= p; stuffed[sp] = rec; homeMsg = SPECIES[sp].fi + ' täytetty ja ripustettu!'; sfx.catch(); saveGame();
+}
+function catalogRows() { return [...LUX.map(L => ({ kind: 'lux', L })), ...COSMETIC.map(C => ({ kind: 'cos', C })), { kind: 'back' }]; }
+function catalogAct(dir) { // dir 0: buy next level / style (or cycle worn style if nothing to buy); ±1: cycle worn style
+  const r = catalogRows()[homeSel];
+  if (r.kind === 'back') { homePage = 'wall'; homeSel = 9; homeMsg = ''; return; }
+  if (r.kind === 'lux') {
+    const L = r.L;
+    if (dir) return;
+    if (lux[L.id] >= L.max) { homeMsg = 'Jo huipussaan.'; return; }
+    if (L.need && !L.need()) { homeMsg = L.needMsg; return; }
+    const p = luxPrice(L);
+    if (money < p) { homeMsg = 'Hinta ' + p + ' mk - rahat eivät riitä.'; return; }
+    money -= p; lux[L.id]++; homeMsg = nice(L.fi) + ': taso ' + lux[L.id] + '!'; sfx.catch();
+    if (L.id === 'cabin' && spot === 'ranta') buildStatic();
+    saveGame(); return;
+  }
+  const C = r.C, st = cos[C.id];
+  const wear = i => { st.wear = (i + st.own) % st.own; homeMsg = nice(C.fi) + ': ' + C.names[st.wear].toLowerCase(); if ((C.id === 'paint' && scene.boat) || (C.id === 'paint' && lux.cabin >= 2 && spot === 'ranta')) buildStatic(); saveGame(); };
+  if (dir) { wear(st.wear + dir); return; }
+  if (st.own < C.names.length && (!C.need || C.need()) && money >= C.prices[st.own]) {
+    money -= C.prices[st.own]; st.own++; sfx.catch(); wear(st.own - 1); return;
+  }
+  if (st.own < C.names.length && C.need && !C.need()) { homeMsg = C.needMsg; return; }
+  if (st.own > 1) wear(st.wear + 1); else homeMsg = 'Seuraava maksaa ' + C.prices[st.own] + ' mk.';
+}
+function homeAct(dir) {
+  if (homePage === 'tupa') { if (!dir) { homePage = 'wall'; homeSel = 8; } return; }
+  if (homePage === 'wall') {
+    if (dir) { homeSel = clamp(homeSel + dir, 0, 9); homeMsg = ''; return; }
+    if (homeSel === 8) { homePage = 'tupa'; homeMsg = ''; return; }
+    if (homeSel === 9) { homePage = 'catalog'; homeSel = 0; homeMsg = ''; return; }
+    stuffFish(WALL_SPECIES[homeSel]); return;
+  }
+  catalogAct(dir);
+}
+function drawPanel(cols) { // log wall in the chosen panelling
+  for (let y = 0; y < H; y++) { const r = Math.floor(y / 12); g.fillStyle = y % 12 === 0 ? cols[2] : r % 2 ? cols[0] : cols[1]; g.fillRect(0, y, W, 1); }
+  for (let i = 0; i < 18; i++) { g.fillStyle = cols[2]; g.fillRect(hash(i, 1) % W, (hash(i, 2) % 16) * 12 + 5, 3, 2); }
+}
+function drawTupa(now) { // the cabin's main room: decorations bought from the catalogue appear here
+  const P = COSMETIC[2].cols[cos.wall.wear];
+  drawPanel(P);
+  g.fillStyle = '#5a3a1e'; g.fillRect(0, 150, W, 50);
+  for (let x = 0; x < W; x += 24) { g.fillStyle = '#3a2410'; g.fillRect(x, 150, 1, 50); }
+  g.fillStyle = '#3a2410'; g.fillRect(0, 150, W, 2);
+  // window with the lake outside at the current hour
+  const [top, bot] = skyColors(hourNow());
+  for (let y = 0; y < 34; y++) { const t = y / 33; g.fillStyle = `rgb(${Math.round(lerp(top[0], bot[0], t))},${Math.round(lerp(top[1], bot[1], t))},${Math.round(lerp(top[2], bot[2], t))})`; g.fillRect(122, 32 + y, 76, 1); }
+  g.fillStyle = '#1c3524'; for (let x = 122; x < 198; x += 3) { const h = 4 + hash(x, 9) % 6; g.fillRect(x, 66 - h, 2, h); }
+  g.fillStyle = '#3e6a6a'; g.fillRect(122, 66, 76, 22);
+  g.fillStyle = '#f0ece0'; g.fillRect(118, 28, 84, 4); g.fillRect(118, 88, 84, 4); g.fillRect(118, 28, 4, 64); g.fillRect(198, 28, 4, 64); g.fillRect(158, 28, 3, 64); g.fillRect(118, 58, 84, 3);
+  // table with a coffee pot and a radio
+  g.fillStyle = '#7a4a22'; g.fillRect(212, 118, 84, 5); g.fillRect(218, 123, 4, 27); g.fillRect(286, 123, 4, 27);
+  g.fillStyle = '#c03020'; g.fillRect(226, 108, 8, 10); g.fillRect(234, 111, 3, 2);
+  g.fillStyle = '#2a2a2a'; g.fillRect(250, 104, 30, 14); g.fillStyle = '#c8c0a8'; g.fillRect(254, 107, 12, 8); g.fillStyle = '#ffd84a'; g.fillRect(270, 109, 3, 3);
+  const d = lux.deco;
+  if (d >= 1) { // ryijy
+    const rc = ['#c02020', '#ffd84a', '#2a4aa8', '#2a8a3a', '#f0ece0'];
+    for (let y = 0; y < 56; y += 4) for (let x = 0; x < 52; x += 4) { g.fillStyle = rc[hash(x >> 2, y >> 2) % rc.length]; g.fillRect(22 + x, 26 + y, 4, 4); }
+    g.fillStyle = '#f0ece0'; for (let x = 22; x < 74; x += 2) g.fillRect(x, 82, 1, 4);
+  }
+  if (d >= 2) { // moose antlers above the window
+    g.fillStyle = '#d8c8a0';
+    g.fillRect(156, 12, 8, 6); g.fillRect(138, 10, 18, 3); g.fillRect(164, 10, 18, 3);
+    for (const x of [138, 143, 148, 168, 173, 178]) g.fillRect(x, 5, 2, 6);
+  }
+  if (d >= 3) { // cuckoo clock
+    g.fillStyle = '#5a3418'; g.fillRect(228, 40, 22, 22); for (let i = 0; i < 6; i++) g.fillRect(226 + i, 39 - i, 26 - 2 * i, 1);
+    g.fillStyle = '#f0ece0'; g.fillRect(232, 46, 14, 12);
+    const a = (now % 60) / 60 * Math.PI * 2; pixLine(g, 239, 52, 239 + Math.round(Math.sin(a) * 5), 52 - Math.round(Math.cos(a) * 5), '#000');
+    const sw = Math.round(Math.sin(now * 3) * 4); pixLine(g, 239, 62, 239 + sw, 80, '#c8a040'); g.fillStyle = '#c8a040'; g.fillRect(237 + sw, 80, 4, 4);
+  }
+  if (d >= 4) { // old bamboo poles crossed above the table
+    pixLine(g, 214, 20, 296, 32, '#c9a44a'); pixLine(g, 214, 32, 296, 20, '#c9a44a');
+  }
+  if (d >= 5) { // fireplace with a fire
+    g.fillStyle = '#7e7a72'; g.fillRect(10, 98, 84, 52); g.fillStyle = '#5a5650';
+    for (let y = 98; y < 150; y += 6) for (let x = 10 + ((y / 6) % 2) * 6; x < 94; x += 12) g.fillRect(x, y, 1, 6);
+    g.fillStyle = '#1a1410'; g.fillRect(28, 116, 48, 34);
+    for (let i = 0; i < 14; i++) { const fx = 32 + (i * 3) % 40, fh = 6 + Math.round(Math.abs(Math.sin(now * 9 + i * 1.7)) * 12); g.fillStyle = i % 3 ? '#ff8a2a' : '#ffd84a'; g.fillRect(fx, 148 - fh, 3, fh); }
+    g.fillStyle = '#4a3420'; g.fillRect(32, 146, 40, 4);
+  }
+  if (d >= 6) { // rocking chair, rocking
+    const rk = Math.sin(now * 1.5) * 3;
+    g.fillStyle = '#6a3a18';
+    pixLine(g, 112, 148 + rk * 0.3, 150, 148 - rk * 0.3, '#6a3a18');
+    g.fillRect(116, 128, 30, 4); g.fillRect(118, 132, 3, 14); g.fillRect(140, 132, 3, 14);
+    pixLine(g, 142, 128, 148 + rk, 100, '#6a3a18'); pixLine(g, 146, 128, 152 + rk, 100, '#6a3a18');
+  }
+  g.fillStyle = '#2a1808'; g.fillRect(0, 0, W, 12);
+  txt('TUPA', 4, 2, '#ffd84a');
+  txt('SISUSTUS ' + d + '/6', W - 4 - 13 * 8, 2, '#fff');
+  txt(d < 6 ? 'LISÄÄ KORISTEITA KUVASTOSTA' : 'TUPA ON VALMIS!', 4, 176, '#fff');
+  txt('PAINA: TAKAISIN SEINÄLLE', 4, 189, '#e8d8b0');
+}
+function drawHome(now) {
+  if (homePage === 'tupa') { drawTupa(now); return; }
+  drawPanel(COSMETIC[2].cols[cos.wall.wear]);
+  g.fillStyle = '#2a1808'; g.fillRect(0, 0, W, 12);
+  txt(homePage === 'wall' ? 'MÖKIN SEINÄ' : 'POSTIMYYNTIKUVASTO', 4, 2, '#ffd84a');
+  const ms = money + ' MK'; txt(ms, W - 4 - ms.length * 8, 2, '#fff');
+  if (homePage === 'wall') {
+    Object.keys(LEGENDS).forEach((k, i) => { // newspaper clippings of legends
+      const x = 6 + i * 44, y = 16, b = legendBook[k];
+      g.fillStyle = '#2a1808'; g.fillRect(x - 1, y - 1, 40, 25);
+      g.fillStyle = b && b.n ? '#efe4c4' : '#3a2810'; g.fillRect(x, y, 38, 23);
+      if (b && b.n) {
+        const L = LEGENDS[k], spr = makeSprite(L.sp, 30, k), sc = Math.min(34 / spr.width, 14 / spr.height);
+        g.drawImage(spr, Math.round(x + 19 - spr.width * sc / 2), y + 2, Math.round(spr.width * sc), Math.round(spr.height * sc));
+        txt(b.n > 1 ? roman(b.n) : 'I', x + 2, y + 14, '#2a2418', false);
+      } else txt('?', x + 15, y + 8, '#6a5030', false);
+    });
+    WALL_SPECIES.forEach((sp, i) => { // mounted record fish
+      const x = 8 + (i % 4) * 78, y = 46 + Math.floor(i / 4) * 44, sel = homeSel === i, rec = records[sp], st = stuffed[sp];
+      g.fillStyle = sel ? '#ffd84a' : '#2a1808'; g.fillRect(x - 2, y - 2, 74, 34);
+      g.fillStyle = '#5a3a1a'; g.fillRect(x, y, 70, 30);
+      g.fillStyle = '#6a4a26'; g.fillRect(x + 2, y + 2, 66, 26);
+      if (st) {
+        const spr = makeSprite(sp, Math.min(60, spriteLen({ sp, w: st }) + 4));
+        g.drawImage(spr, Math.round(x + 35 - spr.width / 2), Math.round(y + 15 - spr.height / 2));
+        const t = fmtKg(st); txt(t, x + 35 - t.length * 4, y + 32, '#ffd84a');
+      } else if (rec) { txt('TÄYTÄ', x + 15, y + 8, '#c8a878'); const t = stuffPrice(rec) + ' MK'; txt(t, x + 35 - t.length * 4, y + 18, '#e8d8b0'); }
+      else txt('-', x + 31, y + 11, '#8a6a46');
+      if (!st) txt(SPECIES[sp].fi.toUpperCase().slice(0, 8), x + 35 - Math.min(8, SPECIES[sp].fi.length) * 4, y + 32, '#c8a878');
+    });
+    g.fillStyle = '#4a2c10'; g.fillRect(4, 152, W - 8, 3); // trophy shelf
+    CONTEST_ORDER.forEach((k, ci) => [0, 1, 2].forEach(mi => {
+      const x = 12 + (ci * 3 + mi) * 34, n = trophies[k][mi], col = ['#ffd84a', '#d0d0d8', '#c87a3a'][mi];
+      g.fillStyle = n ? col : 'rgba(0,0,0,0.25)';
+      g.fillRect(x, 140, 9, 6); g.fillRect(x + 3, 146, 3, 3); g.fillRect(x + 1, 149, 7, 3); g.fillRect(x - 2, 141, 2, 3); g.fillRect(x + 9, 141, 2, 3);
+      if (n) txt('X' + n, x + 12, 142, '#fff');
+    }));
+    ['VIRVELI', 'KUHA', 'ONKI'].forEach((t, i) => txt(t, 12 + i * 102, 158, '#e8d8b0'));
+    const tsel = homeSel === 8, ksel = homeSel === 9;
+    g.fillStyle = tsel ? '#ffd84a' : '#2a1808'; g.fillRect(110, 170, 98, 14);
+    txt('TUPA >', 135, 173, tsel ? '#000' : '#ffd84a');
+    g.fillStyle = ksel ? '#ffd84a' : '#2a1808'; g.fillRect(214, 170, 102, 14);
+    txt('KUVASTO >', 222, 173, ksel ? '#000' : '#ffd84a');
+    txt((homeMsg || (homeSel === 8 ? 'Mökin tupa' : homeSel < 8 ? SPECIES[WALL_SPECIES[homeSel]].fi + (records[WALL_SPECIES[homeSel]] ? ' ' + fmtKg(records[WALL_SPECIES[homeSel]]).toLowerCase() : '') : 'Luksusta ja vaatteita')).toUpperCase().slice(0, 13), 4, 173, '#fff');
+    txt('NUOLET VALITSE  PAINA: OK  H: SULJE', 4, 189, '#c8a878');
+    return;
+  }
+  const x = 16, y = 16, w = 288, h = 172, ink = '#2a2418';
+  g.fillStyle = '#efe4c4'; g.fillRect(x, y, w, h);
+  catalogRows().forEach((r, i) => {
+    const yy = y + 6 + i * 11, sel = i === homeSel;
+    if (sel) { g.fillStyle = '#000080'; g.fillRect(x + 3, yy - 2, w - 6, 10); }
+    const col = sel ? '#fff' : ink;
+    if (r.kind === 'back') { txt('< TAKAISIN SEINÄLLE', x + 8, yy, col, false); return; }
+    if (r.kind === 'lux') {
+      const L = r.L, lv = lux[L.id];
+      txt(L.fi, x + 8, yy, col, false);
+      const p = lv >= L.max ? 'MAX' : luxPrice(L) + ' MK', t = L.max > 1 ? lv + '/' + L.max : lv ? 'OMA' : '';
+      txt(t, x + 160, yy, sel ? '#ffd84a' : '#000080', false);
+      txt(p, x + w - 8 - p.length * 8, yy, col, false);
+    } else {
+      const C = r.C, st = cos[C.id];
+      txt(C.fi, x + 8, yy, col, false);
+      txt(st.own + '/' + C.names.length, x + 160, yy, sel ? '#ffd84a' : '#000080', false);
+      const p = st.own >= C.names.length ? 'KAIKKI' : C.prices[st.own] + ' MK';
+      txt(p, x + w - 8 - p.length * 8, yy, col, false);
+    }
+  });
+  const r = catalogRows()[homeSel];
+  const info = homeMsg ? homeMsg.toUpperCase() : r.kind === 'lux' ? r.L.d : r.kind === 'cos' ? 'PÄÄLLÄ: ' + r.C.names[cos[r.C.id].wear] : '';
+  txt(info.slice(0, 34), x + 8, y + h - 34, homeMsg ? '#804000' : '#000080', false);
+  txt('PAINA: OSTA  < >: VAIHDA ASUA', x + 8, y + h - 20, '#404040', false);
+  txt('H: SULJE', x + 8, y + h - 10, '#404040', false);
+}
+// ---- kiosk ----
+// ---- gear (phase 2): each item changes only a few existing parameters, capped so legends stay hard ----
+const GEAR = {
+  spinLine: [
+    { id: 's20', fi: 'SIIMA 0,20', price: 45, line: 3.6, bite: 1.15, d: 'KESTÄÄ 3,6 KG. ENEMMÄN TÄRPPEJÄ' },
+    { id: 's25', fi: 'SIIMA 0,25', price: 0, line: 5.0, bite: 1, d: 'KESTÄÄ 5,0 KG. PERUSSIIMA' },
+    { id: 's30', fi: 'SIIMA 0,30', price: 60, line: 6.0, bite: .85, d: 'KESTÄÄ 6,0 KG. KALAT ARKOJA' },
+    { id: 's35', fi: 'SIIMA 0,35', price: 80, line: 6.5, bite: .72, d: 'KESTÄÄ 6,5 KG. VÄHÄN TÄRPPEJÄ' }],
+  reel: [
+    { id: 'r1', fi: 'PERUSKELA', price: 0, spool: 100, spike: 1.3, reel: 1.8, d: '100 M SIIMAA. JARRU NYKII' },
+    { id: 'r2', fi: 'LAATUKELA', price: 180, spool: 130, spike: 1.22, reel: 1.95, d: '130 M, TASAISEMPI JARRU' },
+    { id: 'r3', fi: 'KILPAKELA', price: 450, spool: 160, spike: 1.15, reel: 2.1, d: '160 M, SILEÄ JARRU, NOPEA' },
+    { id: 'r4', fi: 'AMMATTIKELA', price: 900, spool: 180, spike: 1.1, reel: 2.2, d: '180 M, LÄHES TÄYDELLINEN JARRU' }],
+  spinRod: [
+    { id: 'v1', fi: 'LASIKUITUVAPA', price: 0, cast: 1, hook: 1, cushion: 0, d: 'PERUSVAPA' },
+    { id: 'v2', fi: 'HIILIKUITUVAPA', price: 250, cast: 1.1, hook: 1.08, cushion: 0, d: 'PIDEMPI HEITTO, VARMEMPI ISKU' },
+    { id: 'v3', fi: 'RASKAS HEITTOVAPA', price: 400, cast: 1.15, hook: 1, cushion: .12, d: 'PISIN HEITTO, VAIMENTAA NYKÄYKSET' }],
+  pole: [
+    { id: 'p1', fi: 'BAMBUONKI', price: 0, reach: 0, lift: 1, d: 'PERUSONKI' },
+    { id: 'p2', fi: 'LASIKUITUONKI 6 M', price: 120, reach: 1, lift: 1.08, d: 'METRIN PIDEMPI ULOTTUVUUS' },
+    { id: 'p3', fi: 'HIILIKUITUONKI 7 M', price: 350, reach: 2, lift: 1.18, d: 'KAKSI METRIÄ PIDEMPI, KEVYT NOSTO' }],
+  poleLine: [
+    { id: 'o18', fi: 'ONKISIIMA 0,18', price: 25, line: 1.6, bite: 1.15, d: 'KESTÄÄ 1,6 KG. ENEMMÄN TÄRPPEJÄ' },
+    { id: 'o20', fi: 'ONKISIIMA 0,20', price: 0, line: 2.0, bite: 1, d: 'KESTÄÄ 2,0 KG. PERUSSIIMA' },
+    { id: 'o25', fi: 'ONKISIIMA 0,25', price: 35, line: 2.6, bite: .85, d: 'KESTÄÄ 2,6 KG. KALAT ARKOJA' }],
+  float: [
+    { id: 'k1', fi: 'PERUSKOHO', price: 0, sens: 1, wind: 1, d: 'TAVALLINEN KOHO' },
+    { id: 'k2', fi: 'HERKKÄ TIKKUKOHO', price: 30, sens: 1.7, wind: 1.1, d: 'NÄYTTÄÄ PIENETKIN NÄYKKÄYKSET' },
+    { id: 'k3', fi: 'TUULIKOHO', price: 40, sens: 1, wind: .35, d: 'PYSYY RAUHALLISENA AALLOISSA' }],
+  color: [
+    { id: 'c0', fi: 'HOPEA', price: 0, d: 'HYVÄ KIRKKAALLA AURINGOLLA' },
+    { id: 'c1', fi: 'KULTA', price: 40, d: 'HYVÄ PILVELLÄ JA HÄMÄRÄSSÄ' },
+    { id: 'c2', fi: 'MUSTA', price: 60, d: 'HYVÄ YÖLLÄ' },
+    { id: 'c3', fi: 'FLUORESOIVA', price: 80, d: 'HYVÄ SATEELLA JA SYVÄLLÄ' }],
+};
+const GEAR_SLOTS = Object.keys(GEAR);
+const GEAR_START = { spinLine: 's25', reel: 'r1', spinRod: 'v1', pole: 'p1', poleLine: 'o20', float: 'k1', color: 'c0' };
+const GEAR_BUYABLE = GEAR_SLOTS.flatMap(s => GEAR[s].filter(g => g.price > 0).map(g => g.id)); // order fixed: password bits
+let owned = new Set(Object.values(GEAR_START)), equip = Object.assign({}, GEAR_START);
+const eq = slot => GEAR[slot].find(g => g.id === equip[slot]) || GEAR[slot].find(g => g.id === GEAR_START[slot]);
+const lineStr = () => (rod === 'spin' ? eq('spinLine').line : eq('poleLine').line) * (0.55 + 0.45 * lineCond[rod]); // worn line is weaker
+function colorK() { // lure colour vs conditions
+  const h = hourNow(), dusk = (h >= 19.5 && h < 23) || (h >= 3 && h < 6.5);
+  switch (equip.color) {
+    case 'c1': return weather === 'pilvi' || weather === 'sade' || weather === 'ukkonen' || dusk ? 1.15 : 0.95;
+    case 'c2': return isNight() ? 1.2 : 0.9;
+    case 'c3': return weather === 'sade' || wx.cloud > 0.7 || lure.d > 3 ? 1.15 : 0.95;
+    default: return brightSun() ? 1.1 : 1;
+  }
+}
+const tackleK = () => rod === 'spin' ? eq('spinLine').bite * colorK() * (leaderOn ? 0.95 : 1) * (lux.gold ? 1.03 : 1) : eq('poleLine').bite;
+// ---- kiosk with tabs ----
+const SHOP_TABS = [
+  { fi: 'TARV.', items: () => SHOP }, { fi: 'SIIMA', items: () => [...GEAR.spinLine, ...GEAR.poleLine, LEADER] },
+  { fi: 'VAPA', items: () => [...GEAR.spinRod, ...GEAR.pole] }, { fi: 'KELA', items: () => GEAR.reel },
+  { fi: 'KOHO', items: () => GEAR.float }, { fi: 'VÄRI', items: () => GEAR.color }, { fi: 'VENE', items: () => BOAT_ITEMS }];
+const SHOP = [
+  { id: 'lippa', fi: 'LIPPA', price: 18, d: 'AHVENEN SUOSIKKI' }, { id: 'lusikka', fi: 'LUSIKKA', price: 22, d: 'HAUELLE' },
+  { id: 'vaappu', fi: 'VAAPPU', price: 45, d: 'KELLUU, HARVOIN POHJASSA' }, { id: 'jigi', fi: 'JIGI', price: 12, d: 'KUHALLE POHJAN TUNTUMASTA' },
+  { id: 'ruoho', fi: 'RUOHOUISTIN', price: 28, d: 'RUOHOSUOJA - EI TARTU KAISLAAN' },
+  { id: 'worms', fi: 'MATOPURKKI (20)', price: 10, d: '20 MATOA' },
+  { id: 'dig', fi: 'KAIVA MATOJA', price: 0, note: '30 MIN', d: '8 MATOA, VIE PUOLI TUNTIA' },
+  { id: 'respool', fi: 'UUSI SIIMA', price: 25, d: 'TÄYSI KELALLINEN UUTTA SIIMAA' },
+  { id: 'spray', fi: 'HYTTYSMYRKKY', price: 16, d: 'HYTTYSET POISSA PÄIVÄN' },
+  { id: 'coffee', fi: 'KAHVI JA MUNKKI', price: 12, d: 'MÖKKIRANNAN KLASSIKKO' },
+];
+let shopOpen = false, shopSel = 0, shopTab = 0, shopMsg = '';
+const shopItems = () => SHOP_TABS[shopTab].items();
+const slotOf = id => GEAR_SLOTS.find(s => GEAR[s].some(g => g.id === id));
+const shopHours = () => { const h = hourNow(); return h >= 6 && h < 23; };
+function toggleShop() {
+  if (shopOpen) { shopOpen = false; saveGame(); return; }
+  if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  shopOpen = true; shopMsg = ''; if (actionHeld) release();
+}
+function shopTabTurn(d) { shopTab = (shopTab + d + SHOP_TABS.length) % SHOP_TABS.length; shopSel = 0; shopMsg = ''; }
+const itemPrice = it => it.id === 'respool' ? (rod === 'spin' ? 25 : 12) : it.price;
+const shopOwned = it => it.id === 'respool' ? Math.round(lineCond[rod] * 100) + '%' : it.id === 'rent' ? (rentDay === dayNum ? 'TÄNÄÄN' : '') : LURES[it.id] ? lureCount[it.id] : it.id === 'worms' || it.id === 'dig' ? worms : it.id === 'spray' ? (repellent ? 'ON' : '') : '';
+const nice = s => s.charAt(0) + s.slice(1).toLowerCase();
+function shopBuy() {
+  const it = shopItems()[shopSel]; if (!it) return;
+  const slot = slotOf(it.id), price = itemPrice(it);
+  if (EXTRA_ORDER.includes(it.id)) { // boat, motors, sonar, wire leader: buy once
+    if (owned.has(it.id)) { if (it.id === 'l1') { leaderOn = !leaderOn; shopMsg = leaderOn ? 'Teräsperuke käytössä.' : 'Teräsperuke pois.'; } else shopMsg = 'Omistat jo.'; return; }
+    if (it.id !== 'b1' && it.id !== 'l1' && !owned.has('b1')) { shopMsg = 'Tarvitset ensin oman veneen.'; return; }
+    if (!shopHours()) { shopMsg = 'Kioski on kiinni (avoinna 6-23).'; return; }
+    if (money < price) { shopMsg = 'Rahat eivät riitä.'; return; }
+    money -= price; owned.add(it.id); if (it.id === 'l1') leaderOn = true;
+    shopMsg = nice(it.fi) + ' ostettu!'; sfx.catch(); saveGame(); return;
+  }
+  if (slot) { // gear: buy once, then equip
+    if (owned.has(it.id)) { equip[slot] = it.id; if (slot === 'spinLine' || slot === 'poleLine') lineCond[slot === 'spinLine' ? 'spin' : 'pole'] = 1; shopMsg = nice(it.fi) + ' käytössä.'; sfx.click(); syncButtons(); saveGame(); return; }
+    if (!shopHours()) { shopMsg = 'Kioski on kiinni (avoinna 6-23).'; return; }
+    if (money < it.price) { shopMsg = 'Rahat eivät riitä.'; return; }
+    money -= it.price; owned.add(it.id); equip[slot] = it.id; if (slot === 'spinLine' || slot === 'poleLine') lineCond[slot === 'spinLine' ? 'spin' : 'pole'] = 1; shopMsg = nice(it.fi) + ' ostettu ja käytössä.'; sfx.catch(); saveGame(); return;
+  }
+  if (it.id === 'dig') { // free, but costs time
+    gameMin = (gameMin + 30) % 1440; if (gameMin < 30) newDay();
+    worms += 8; renderSky(); shopMsg = 'Kaivoit 8 matoa kasvimaalta.'; sfx.nibble(); return;
+  }
+  if (!shopHours()) { shopMsg = 'Kioski on kiinni (avoinna 6-23).'; return; }
+  if (money < price) { shopMsg = 'Rahat eivät riitä.'; return; }
+  if (it.id === 'rent' && owned.has('b1')) { shopMsg = 'Sinulla on oma vene.'; return; }
+  money -= price; sfx.click();
+  if (LURES[it.id]) { lureCount[it.id]++; shopMsg = nice(it.fi) + ' ostettu.'; }
+  else if (it.id === 'worms') { worms += 20; shopMsg = 'Matopurkki ostettu.'; }
+  else if (it.id === 'respool') { lineCond[rod] = 1; wornWarned = false; shopMsg = 'Uusi siima kelattu (' + (rod === 'spin' ? 'virveli' : 'onki') + ').'; }
+  else if (it.id === 'rent') { rentDay = dayNum; shopMsg = 'Vene vuokrattu. B: venematka'; }
+  else if (it.id === 'spray') { repellent = true; shopMsg = 'Hyttyset pysyvät poissa tämän päivän.'; }
+  else if (it.id === 'coffee') { shopMsg = ['Pirteä olo!', 'Munkki oli vielä lämmin.', 'Kahvi oli laihaa, mutta kelpasi.'][Math.floor(Math.random() * 3)]; }
+}
+function drawShop() {
+  const x = 16, y = 12, w = 288, h = 176, ink = '#2a2418';
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#8a1a1a'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt('RANTAKIOSKI', x + 7, y + 5, '#fff', false);
+  const ms = money + ' MK'; txt(ms, x + w - 8 - ms.length * 8, y + 5, '#ffd84a', false);
+  SHOP_TABS.forEach((t, i) => { // tab bar
+    const tx = x + 4 + i * 40, on = i === shopTab;
+    g.fillStyle = on ? '#c0c0c0' : '#909090'; g.fillRect(tx, y + 18, 38, 12);
+    g.fillStyle = on ? '#fff' : '#b0b0b0'; g.fillRect(tx, y + 18, 38, 1);
+    txt(t.fi, tx + Math.round(19 - t.fi.length * 4), y + 20, on ? '#000' : '#404040', false);
+  });
+  txt(shopHours() ? 'AVOINNA 6-23' : 'KIINNI - AVOINNA 6-23', x + 8, y + 34, shopHours() ? '#006000' : '#a00000', false);
+  shopItems().forEach((it, i) => {
+    const yy = y + 46 + i * 10, sel = i === shopSel, slot = slotOf(it.id);
+    if (sel) { g.fillStyle = '#000080'; g.fillRect(x + 5, yy - 1, w - 10, 9); }
+    const col = sel ? '#fff' : ink;
+    txt(it.id === 'respool' ? 'UUSI SIIMA ' + (rod === 'spin' ? 'VIRV.' : 'ONKI') : it.fi, x + 10, yy, col, false);
+    let pr;
+    if (slot) pr = equip[slot] === it.id ? 'KÄYTÖSSÄ' : owned.has(it.id) ? 'OMA' : it.price + ' MK';
+    else if (EXTRA_ORDER.includes(it.id)) pr = it.id === 'l1' && leaderOn ? 'KÄYTÖSSÄ' : owned.has(it.id) ? 'OMA' : it.price + ' MK';
+    else { pr = it.note || (itemPrice(it) + ' MK'); const own = shopOwned(it); if (own !== '') txt(String(own), x + 156, yy, sel ? '#ffd84a' : '#000080', false); }
+    txt(pr, x + w - 10 - pr.length * 8, yy, slot && equip[slot] === it.id ? (sel ? '#9cff7a' : '#006000') : col, false);
+  });
+  const it = shopItems()[shopSel];
+  const info = shopMsg ? shopMsg.toUpperCase() : it ? it.d : '';
+  txt(info.slice(0, 34), x + 8, y + h - 28, shopMsg ? '#804000' : '#000080', false);
+  txt('< > OSASTO  PAINA: OSTA/VALITSE', x + 8, y + h - 15, '#404040', false);
+}
+// ---- saving: browser storage + a 90s-style password ----
+const PW_ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const PW_LEGENDS = ['morko', 'kormy', 'siika', 'kaani', 'paansarki', 'suklaa', 'dalai'];
+const PW_VERSION = 6; // older passwords still load
+function pwLayout(v) { // bit widths per field for a password version
+  const PW_LURES = ['lippa', 'lusikka', 'vaappu', 'jigi']; // the original four; newer lures are appended at the end
+  const base = [4, 24, 10, ...PW_LURES.map(() => 7), 8, 4, ...PW_LEGENDS.map(() => 4)];
+  return v === 1 ? base : v === 2 ? [...base, GEAR_BUYABLE.length] : v === 3 ? [...base, GEAR_BUYABLE.length, 4, 4, 4] : v === 4 ? [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length]
+    : v === 5 ? [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length, 3, 3, 3, 1, 3, 3, 3, 3]
+    : [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length, 3, 3, 3, 1, 3, 3, 3, 3, 7, 3, 3];
+}
+function pwValues() {
+  let mask = 0; GEAR_BUYABLE.forEach((id, i) => { if (owned.has(id)) mask |= 1 << i; });
+  return [PW_VERSION, Math.min(money, 16777215), Math.min(dayNum, 1023), ...['lippa', 'lusikka', 'vaappu', 'jigi'].map(k => Math.min(lureCount[k], 127)),
+    Math.min(worms, 255), Math.round(lakeStock * 15), ...PW_LEGENDS.map(k => Math.min((legendBook[k] && legendBook[k].n) || 0, 15)), mask,
+    ...CONTEST_ORDER.map(k => Math.min(trophies[k][0], 15)), EXTRA_ORDER.reduce((m, id, i) => m | (owned.has(id) ? 1 << i : 0), 0), // contest wins, boat items
+    lux.motor, lux.reel, lux.rod, lux.gold, lux.cabin, cos.cap.own - 1, cos.shirt.own - 1, cos.paint.own - 1, // luxuries, wardrobe
+    Math.min(lureCount.ruoho, 127), lux.deco, cos.wall.own - 1]; // v6
+}
+function pwMask(i) { let x = (i * 2654435761 + 0x9e3779b9) >>> 0; x ^= x >>> 15; x = Math.imul(x, 2246822519) >>> 0; return (x >>> 13) & 1; }
+function pwChecksum(bits) { let c = 0x2a7; for (let i = 0; i < bits.length; i++) c = ((c * 31) + bits[i] * (i + 7)) % 1024; return c; }
+function makePassword() {
+  const bits = [], vals = pwValues();
+  pwLayout(PW_VERSION).forEach((n, k) => { for (let i = n - 1; i >= 0; i--) bits.push((vals[k] >>> i) & 1); });
+  const cs = pwChecksum(bits);
+  for (let i = 9; i >= 0; i--) bits.push((cs >>> i) & 1);
+  while (bits.length % 25) bits.push(0); // whole groups of five characters
+  let s = '';
+  for (let i = 0; i < bits.length; i += 5) { let v = 0; for (let j = 0; j < 5; j++) v = v * 2 + (bits[i + j] ^ pwMask(i + j)); s += PW_ALPHA[v]; }
+  return s.match(/.{1,5}/g).join('-');
+}
+function loadPassword(code) {
+  const clean = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const bits = [];
+  for (const ch of clean) { const v = PW_ALPHA.indexOf(ch); if (v < 0) return false; for (let j = 4; j >= 0; j--) bits.push((v >>> j) & 1); }
+  for (let i = 0; i < bits.length; i++) bits[i] ^= pwMask(i);
+  if (bits.length < 4) return false;
+  const ver = bits[0] * 8 + bits[1] * 4 + bits[2] * 2 + bits[3];
+  if (ver < 1 || ver > 6) return false;
+  const layout = pwLayout(ver), dataLen = layout.reduce((a, b) => a + b, 0);
+  if (bits.length < dataLen + 10) return false;
+  let p = 0; const read = n => { let v = 0; for (let i = 0; i < n; i++) v = v * 2 + bits[p++]; return v; };
+  const vals = layout.map(read), cs = read(10);
+  if (cs !== pwChecksum(bits.slice(0, dataLen))) return false;
+  let k = 1;
+  money = vals[k++]; dayNum = Math.max(1, vals[k++]);
+  for (const l of ['lippa', 'lusikka', 'vaappu', 'jigi']) lureCount[l] = vals[k++];
+  worms = vals[k++]; lakeStock = Math.max(0.4, vals[k++] / 15);
+  for (const l of PW_LEGENDS) { const n = vals[k++]; if (n) legendBook[l] = { n, best: Math.max((legendBook[l] && legendBook[l].best) || 0, LEGENDS[l].w[0]) }; else delete legendBook[l]; }
+  owned = new Set(Object.values(GEAR_START));
+  if (ver >= 2) { const mask = vals[k++]; GEAR_BUYABLE.forEach((id, i) => { if (mask & (1 << i)) owned.add(id); }); }
+  if (ver >= 3) for (const c of CONTEST_ORDER) trophies[c][0] = vals[k++];
+  if (ver >= 4) { const em = vals[k++]; EXTRA_ORDER.forEach((id, i) => { if (em & (1 << i)) owned.add(id); }); }
+  leaderOn = owned.has('l1');
+  if (ver >= 5) {
+    for (const id of ['motor', 'reel', 'rod', 'gold', 'cabin']) lux[id] = Math.min(LUX.find(L => L.id === id).max, vals[k++]);
+    for (const id of ['cap', 'shirt', 'paint']) { const own = Math.min(5, vals[k++] + 1); cos[id] = { own, wear: Math.min(cos[id].wear, own - 1) }; }
+    if (ver >= 6) { lureCount.ruoho = vals[k++]; lux.deco = Math.min(6, vals[k++]); const own = Math.min(5, vals[k++] + 1); cos.wall = { own, wear: Math.min(cos.wall ? cos.wall.wear : 0, own - 1) }; }
+    buildStatic();
+  }
+  for (const s of GEAR_SLOTS) if (!owned.has(equip[s])) equip[s] = GEAR_START[s];
+  saveLegends(); saveGame(); updateLog(); syncButtons();
+  return true;
+}
+function saveGame() {
+  try { localStorage.setItem('kesakalastus.save', JSON.stringify({ v: 1, money, dayNum, lureCount, worms, lakeStock, owned: [...owned], equip, trophies, rentDay, lineCond, leaderOn, lux, cos, stuffed })); } catch (e) {}
+  const el = document.getElementById('pwNow'); if (el) el.textContent = makePassword();
+}
+function loadGame() {
+  try {
+    const d = JSON.parse(localStorage.getItem('kesakalastus.save') || 'null');
+    if (!d || d.v !== 1) return;
+    money = d.money; dayNum = d.dayNum; worms = d.worms; lakeStock = d.lakeStock;
+    for (const k of LURE_ORDER) if (typeof d.lureCount[k] === 'number') lureCount[k] = d.lureCount[k];
+    if (Array.isArray(d.owned)) for (const id of d.owned) if (slotOf(id)) owned.add(id);
+    if (Array.isArray(d.owned)) for (const id of d.owned) if (EXTRA_ORDER.includes(id)) owned.add(id);
+    if (typeof d.rentDay === 'number') rentDay = d.rentDay;
+    if (d.lineCond) lineCond = { spin: +d.lineCond.spin || 1, pole: +d.lineCond.pole || 1 };
+    leaderOn = !!d.leaderOn && owned.has('l1');
+    if (d.lux) for (const L of LUX) if (typeof d.lux[L.id] === 'number') lux[L.id] = Math.min(L.max, d.lux[L.id]);
+    if (d.cos) for (const C of COSMETIC) if (d.cos[C.id]) { const own = Math.min(5, d.cos[C.id].own || 1); cos[C.id] = { own, wear: Math.min(own - 1, d.cos[C.id].wear || 0) }; }
+    if (d.stuffed) stuffed = d.stuffed;
+    if (d.trophies) for (const k of CONTEST_ORDER) if (Array.isArray(d.trophies[k])) trophies[k] = d.trophies[k].slice(0, 3);
+    if (d.equip) for (const s of GEAR_SLOTS) if (owned.has(d.equip[s])) equip[s] = d.equip[s];
+  } catch (e) {}
+}
+function resetGame() {
+  money = 100; dayNum = 1; worms = 20; lakeStock = 1; repellent = false;
+  for (const k of LURE_ORDER) lureCount[k] = LURES[k].start;
+  owned = new Set(Object.values(GEAR_START)); equip = Object.assign({}, GEAR_START);
+  trophies = { onki: [0, 0, 0], virveli: [0, 0, 0], kuha: [0, 0, 0] }; contest = null;
+  rentDay = 0; lineCond = { spin: 1, pole: 1 }; leaderOn = false;
+  lux = { motor: 0, reel: 0, rod: 0, gold: 0, cabin: 0, deco: 0 }; cos = { cap: { own: 1, wear: 0 }, shirt: { own: 1, wear: 0 }, wall: { own: 1, wear: 0 }, paint: { own: 1, wear: 0 } }; stuffed = {}; buildStatic(); if (spot !== 'ranta') { spot = 'ranta'; setScene('ranta'); }
+  records = {}; topList = []; legendBook = {}; catches.length = 0;
+  try { for (const k of ['records', 'top', 'legends', 'save']) localStorage.removeItem('kesakalastus.' + k); } catch (e) {}
+  saveGame(); updateLog(); syncButtons();
+  document.getElementById('log').innerHTML = '<p class="empty">Ei vielä saalista.</p>';
+  document.getElementById('top').innerHTML = '<p class="empty">Lista on vielä tyhjä.</p>';
+  document.getElementById('recs').innerHTML = '<p class="empty">Ei vielä ennätyksiä.</p>';
+}
+let pwShow = false;
+function drawPassword() {
+  const x = 30, y = 50, w = 260, h = 96;
+  g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#000080'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt('SALASANA', x + 7, y + 5, '#fff', false);
+  const grp = makePassword().split('-'), half = grp.slice(0, 3).join('-'), rest = grp.slice(3).join('-');
+  txt(half, Math.round(160 - half.length * 4), y + 26, '#000080', false);
+  if (rest) txt(rest, Math.round(160 - rest.length * 4), y + 38, '#000080', false);
+  txt('KIRJOITA SALASANA YLÖS!', x + 10, y + 56, '#804000', false);
+  txt('LATAUS: SIVUN ALAOSASTA', x + 10, y + 68, '#404040', false);
+  txt('P: SULJE', x + 10, y + 80, '#404040', false);
+}
+
 // ---------- main loop ----------
 function update(dt) {
-  if (guideOpen) { ambientUpdate(performance.now() / 1000); return; } // the guide pauses the game
-  gameMin = (gameMin + dt) % 1440;
+  if (guideOpen || shopOpen || pwShow || contestOpen || contestResults || mapOpen || homeOpen) { ambientUpdate(performance.now() / 1000); return; } // overlays pause the game
+  const prevMin = gameMin;
+  gameMin = (gameMin + dt * clockK()) % 1440;
+  if (gameMin < prevMin && state !== 'title') newDay();
+  saveT -= dt; if (saveT <= 0) { saveT = 60; saveGame(); }
   titleT += dt;
-  updateWeather(dt); updateWx(dt); updateActs(); ambientUpdate(performance.now() / 1000); legendStep(dt);
+  contestStep(dt);
+  updateWeather(dt * clockK()); updateWx(dt); updateActs(); ambientUpdate(performance.now() / 1000); legendStep(dt);
   if (fade > 0) fade = Math.max(0, fade - dt * 1.2);
   if (Math.abs(gameMin - skyMin) >= 3 || Math.abs(wx.cloud - skyCloud) > 0.04) renderSky();
   twitchCd -= dt;
@@ -2112,8 +2998,8 @@ function updateLog() {
   const log = document.getElementById('log'), recs = document.getElementById('recs');
   const fmt = w => w < 1 ? Math.round(w * 1000) + ' g' : w.toFixed(2).replace('.', ',') + ' kg';
   if (catches.length) {
-    log.innerHTML = '<table><thead><tr><th>Aika</th><th>Kala</th><th>Paino</th><th>Pituus</th><th>Väline</th><th>Sää</th></tr></thead><tbody>' +
-      catches.slice(0, 30).map(c => `<tr><td>${c.time}</td><td>${c.legend ? '<b>' + c.name + '</b>' : SPECIES[c.sp].fi}${c.note && !c.legend ? ' *' : ''}</td><td>${fmt(c.w)}</td><td>${c.cm} cm</td><td>${c.gear}</td><td>${c.wx}</td></tr>`).join('') + '</tbody></table>' +
+    log.innerHTML = '<table><thead><tr><th>Aika</th><th>Kala</th><th>Paino</th><th>Pituus</th><th>Väline</th><th>Sää</th><th>Kohtalo</th></tr></thead><tbody>' +
+      catches.slice(0, 30).map(c => `<tr><td>${c.time}</td><td>${c.legend ? '<b>' + c.name + '</b>' : SPECIES[c.sp].fi}${c.note && !c.legend ? ' *' : ''}</td><td>${fmt(c.w)}</td><td>${c.cm} cm</td><td>${c.gear}</td><td>${c.wx}</td><td>${c.fate || (c.legend ? 'Vapautettu' : '')}</td></tr>`).join('') + '</tbody></table>' +
       (catches.some(c => c.note && !c.legend) ? '<p class="empty">* Hauki tarttui koukussa olleeseen kalaan.</p>' : '');
   }
   if (topList.length) {
@@ -2134,6 +3020,7 @@ function updateLog() {
 
 // ---------- input ----------
 window.addEventListener('keydown', e => {
+  if (e.target && e.target.tagName === 'INPUT') return; // typing a password
   if (guideOpen) {
     if (['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
     if (e.repeat) return;
@@ -2142,7 +3029,54 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'KeyO' || e.code === 'Escape') toggleGuide();
     return;
   }
+  if (shopOpen) {
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.code)) e.preventDefault();
+    const n = shopItems().length;
+    if (e.code === 'ArrowUp') { shopSel = (shopSel + n - 1) % n; shopMsg = ''; }
+    else if (e.code === 'ArrowDown') { shopSel = (shopSel + 1) % n; shopMsg = ''; }
+    else if (e.code === 'ArrowLeft') shopTabTurn(-1);
+    else if (e.code === 'ArrowRight') shopTabTurn(1);
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) shopBuy();
+    else if (e.code === 'KeyK' || e.code === 'Escape') toggleShop();
+    return;
+  }
+  if (contestOpen) {
+    if (['Space', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.code)) e.preventDefault();
+    if (e.code === 'ArrowUp') { contestSel = (contestSel + 2) % 3; contestMsg = ''; }
+    else if (e.code === 'ArrowDown') { contestSel = (contestSel + 1) % 3; contestMsg = ''; }
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) contestBuy();
+    else if (e.code === 'KeyC' || e.code === 'Escape') toggleContest();
+    return;
+  }
+  if (homeOpen) {
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.code)) e.preventDefault();
+    if (e.repeat && (e.code === 'Space' || e.code === 'Enter')) return;
+    const n = homePage === 'wall' ? 10 : catalogRows().length;
+    if (e.code === 'ArrowUp') { homeSel = homePage === 'wall' ? (homeSel === 8 ? 4 : homeSel === 9 ? 6 : Math.max(0, homeSel - 4)) : (homeSel + n - 1) % n; homeMsg = ''; }
+    else if (e.code === 'ArrowDown') { homeSel = homePage === 'wall' ? (homeSel >= 8 ? homeSel : homeSel >= 4 ? (homeSel < 6 ? 8 : 9) : homeSel + 4) : (homeSel + 1) % n; homeMsg = ''; }
+    else if (e.code === 'ArrowLeft') homeAct(-1);
+    else if (e.code === 'ArrowRight') homeAct(1);
+    else if (e.code === 'Space' || e.code === 'Enter') homeAct(0);
+    else if (e.code === 'KeyH' || e.code === 'Escape') toggleHome();
+    return;
+  }
+  if (mapOpen) {
+    if (['Space', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.code)) e.preventDefault();
+    if (e.code === 'ArrowUp') { mapSel = (mapSel + SPOT_ORDER.length - 1) % SPOT_ORDER.length; mapMsg = ''; }
+    else if (e.code === 'ArrowDown') { mapSel = (mapSel + 1) % SPOT_ORDER.length; mapMsg = ''; }
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) travel(SPOT_ORDER[mapSel]);
+    else if (e.code === 'KeyB' || e.code === 'Escape') toggleMap();
+    return;
+  }
+  if (contestResults) { if (e.code === 'Space' || e.code === 'Escape' || e.code === 'Enter') { e.preventDefault(); if (!e.repeat) contestResults = null; } return; }
+  if (pwShow) { if (e.code === 'KeyP' || e.code === 'Escape' || e.code === 'Space') { e.preventDefault(); pwShow = false; } return; }
+  if (state === 'card' && card && !card.f.legend && (e.code === 'ArrowLeft' || e.code === 'ArrowRight')) { e.preventDefault(); card.choice = e.code === 'ArrowLeft' ? 'release' : 'sell'; return; }
   if (e.code === 'KeyO') { toggleGuide(); return; }
+  if (e.code === 'KeyK') { toggleShop(); return; }
+  if (e.code === 'KeyC') { toggleContest(); return; }
+  if (e.code === 'KeyB') { toggleMap(); return; }
+  if (e.code === 'KeyH') { toggleHome(); return; }
+  if (e.code === 'KeyP') { if (state === 'title' || state === 'idle') pwShow = true; return; }
   if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) press(); }
   else if (e.code === 'ArrowUp') { e.preventDefault(); adjust(1); }
   else if (e.code === 'ArrowDown') { e.preventDefault(); adjust(-1); }
@@ -2154,7 +3088,7 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'KeyX') twitch();
   else if (e.code === 'KeyM') toggleMute();
   else if (e.code === 'KeyN') cycleMusic();
-  else if (e.code === 'Escape') { if (state === 'idle') { state = 'title'; titleT = 0; syncButtons(); } }
+  else if (e.code === 'Escape') { if (state === 'idle' && !contest) { state = 'title'; titleT = 0; syncButtons(); } else if (contest) showMsg('Kilpailu on kesken', '#ffd84a', 1.2); }
   else if (e.code === 'KeyA') cycleTime();
   else if (e.code === 'KeyS') cycleWeather();
   else if (e.code === 'KeyT') waitHour();
@@ -2163,6 +3097,43 @@ window.addEventListener('keyup', e => { if (e.code === 'Space') { e.preventDefau
 cv.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (guideOpen) { const r = cv.getBoundingClientRect(); guideTurn(e.clientX - r.left < r.width / 2 ? -1 : 1); return; }
+  if (pwShow) { pwShow = false; return; }
+  if (contestResults) { contestResults = null; return; }
+  if (homeOpen) { // wall: tap a plaque or the catalogue button; catalogue: tap a row, tap again to buy
+    const r = cv.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * W, py = (e.clientY - r.top) / r.height * H;
+    if (py < 12) { toggleHome(); return; }
+    if (homePage === 'tupa') { homeAct(0); return; }
+    if (homePage === 'wall') {
+      let hit = -1;
+      if (px >= 214 && py >= 168 && py < 186) hit = 9;
+      else if (px >= 110 && px < 208 && py >= 168 && py < 186) hit = 8;
+      else for (let i = 0; i < 8; i++) { const x = 8 + (i % 4) * 78, y = 46 + Math.floor(i / 4) * 44; if (px >= x && px < x + 70 && py >= y && py < y + 40) hit = i; }
+      if (hit >= 0) { if (hit === homeSel) homeAct(0); else { homeSel = hit; homeMsg = ''; } }
+    } else {
+      const row = Math.floor((py - 20) / 11);
+      if (row >= 0 && row < catalogRows().length) { if (row === homeSel) homeAct(0); else { homeSel = row; homeMsg = ''; } }
+    }
+    return;
+  }
+  if (mapOpen) { // tap a spot to select it, tap again to go, tap the header to close
+    const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H, row = Math.floor((py - 42) / 22);
+    if (py < 28) toggleMap(); else if (row >= 0 && row < SPOT_ORDER.length) { if (row === mapSel) travel(SPOT_ORDER[row]); else { mapSel = row; mapMsg = ''; } }
+    return;
+  }
+  if (contestOpen) { // tap a contest to select it, tap again to enter, tap the header to close
+    const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H, row = Math.floor((py - 44) / 34);
+    if (py < 28) toggleContest(); else if (row >= 0 && row < 3) { if (row === contestSel) contestBuy(); else { contestSel = row; contestMsg = ''; } }
+    return;
+  }
+  if (shopOpen) { // tap a row to select it, tap the selected row to buy, tap the header to close
+    const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H;
+    const px = (e.clientX - r.left) / r.width * W, row = Math.floor((py - 57) / 10);
+    if (py < 28) toggleShop();
+    else if (py < 44) { const t = Math.floor((px - 20) / 40); if (t >= 0 && t < SHOP_TABS.length) { shopTab = t; shopSel = 0; shopMsg = ''; } }
+    else if (row >= 0 && row < shopItems().length) { if (row === shopSel) shopBuy(); else { shopSel = row; shopMsg = ''; } }
+    return;
+  }
+  if (state === 'card' && card && !card.f.legend) { const r = cv.getBoundingClientRect(); card.choice = e.clientX - r.left < r.width / 2 ? 'release' : 'sell'; cardChoose(card.choice === 'sell'); return; }
   if (e.button === 2) { twitch(); return; }
   try { cv.setPointerCapture(e.pointerId); } catch (_) {}
   press();
@@ -2187,6 +3158,20 @@ btn('bPlus', () => adjust(1));
 btn('bMute', toggleMute);
 btn('bMusic', cycleMusic);
 btn('bGuide', toggleGuide);
+btn('bShop', toggleShop);
+btn('bContest', toggleContest);
+btn('bMap', toggleMap);
+btn('bHome', toggleHome);
+document.getElementById('bPwLoad').addEventListener('click', () => {
+  const ok = loadPassword(document.getElementById('pwIn').value);
+  document.getElementById('pwMsg').textContent = ok ? 'Salasana ladattu!' : 'Virheellinen salasana.';
+});
+let resetArm = 0;
+document.getElementById('bReset').addEventListener('click', e => {
+  if (Date.now() - resetArm < 3000) { resetGame(); e.currentTarget.textContent = 'Aloita alusta'; document.getElementById('pwMsg').textContent = 'Uusi peli aloitettu.'; resetArm = 0; return; }
+  resetArm = Date.now(); e.currentTarget.textContent = 'Varmasti? Paina uudelleen';
+  setTimeout(() => { if (resetArm && Date.now() - resetArm >= 3000) document.getElementById('bReset').textContent = 'Aloita alusta'; }, 3100);
+});
 btn('bTime', cycleTime);
 btn('bWeather', cycleWeather);
 btn('bWait', waitHour);
@@ -2200,6 +3185,8 @@ updateActs();
 for (let i = 0; i < 14; i++) spawnFish(true);
 syncButtons();
 syncMusicBtn();
+loadGame();
+saveGame();
 updateLog();
 if (document.fonts && document.fonts.load) document.fonts.load("8px 'Press Start 2P'").catch(() => {});
 requestAnimationFrame(loop);
