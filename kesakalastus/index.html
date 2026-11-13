@@ -34,7 +34,9 @@ h1{font-size:16px;margin:4px 0 2px;letter-spacing:1px}
 .screen{width:min(100%, calc((100dvh - 250px) * 4 / 3));min-width:min(100%,320px);margin:0 auto;
   border:4px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);background:#000}
 canvas{display:block;width:100%;aspect-ratio:4/3;image-rendering:pixelated;image-rendering:crisp-edges;
-  touch-action:none;cursor:pointer;-webkit-user-select:none;user-select:none}
+  touch-action:none;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* long presses on the game must never start text selection or the iOS callout */
+h1,.sub,.screen,.bar{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px auto 0;max-width:760px}
 button{font:inherit;font-size:10px;padding:9px 10px;background:var(--panel);color:var(--ink);
   border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);cursor:pointer;touch-action:manipulation;
@@ -94,9 +96,11 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
         <li><b>Legendat:</b> järvessä elää seitsemän harvinaista jättiläistä: Mörköhauki, Körmyniska, Kuhakaani, Päänsärki, Kahen kilon siika, Dalai Lahna ja Suklaamonni. Kalastusoppaassa (<kbd>O</kbd>) on huhut ja – ensimmäisen saaliin jälkeen – tarkat tiedot. Kukin liikkuu omina kellonaikoinaan, mutta syö vain oikeissa olosuhteissa ja oikealla välineellä. Suuri varjo syvällä tarkoittaa, että legenda on liikkeellä mutta ei syö; iso pyörre pinnassa, että se syö nyt – jos väline on oikea. Alkuvalikon tekstinauha kertoo kylän huhut. Legenda vapautetaan, ja se kasvaa hieman joka kerta; saalismäärä näkyy roomalaisena numerona nimessä. Siika on arka: koho vain värähtää, ja pehmeä suu repeää, jos nostat liian kovaa. Päänsärki näykkii loputtomasti – liian aikainen vastaisku säikäyttää sen tiehensä.</li>
         <li><b>Varusteet:</b> kioskin osastoilta (nuolet vasemmalle/oikealle) siimat, vavat, kelat, kohot ja uistinvärit. Ostettu varuste otetaan käyttöön valitsemalla se. Paksu siima kestää enemmän mutta vähentää syöntejä; parempi kela tasoittaa jarrua ja mahtuu enemmän siimaa; pitkä onki ulottuu syvemmälle; herkkä koho näyttää pienetkin näykkäykset.</li>
         <li><b>Mökki:</b> <kbd>H</kbd> avaa mökin seinän: legendojen lehtileikkeet, kilpailupokaalit ja täytetyt ennätyskalat (täyttäminen maksaa painon mukaan, uusi ennätys kannattaa täyttää uudelleen). Seinältä pääsee tupaan (koristeet, takka, käkikello…) ja postimyyntikuvastoon: moottorin viritys, käsintehty kela, pro-vapa, kultainen viehe ja mökkiremontti – jokainen taso maksaa kaksinkertaisesti ja auttaa vain vähän, mutta näkyy pelissä. Lisäksi lippikset, paidat, seinäpaneelit ja veneen maalit; nuolilla vaihdat asua.</li>
+        <li><b>Naapurin Reiska</b> soutaa välillä ohi – joskus kehuskelemaan, joskus lainaamaan lippaa tai kutsumaan kahville (nuolet ja välilyönti tai näytön puolikkaat). Kohtele häntä hyvin: ystävänä hän kertoo kahvilla legendan salaisuuden. Järvellä liikkuu myös kalasääski, joka voi napata pienen kalan siimasta, ja kaupunkilaisten moottoriveneitä, jotka säikyttävät kalat hetkeksi. Kilpailujen aikana sääski ja moottoriveneet pysyvät poissa.</li>
+        <li><b>Haavi:</b> pieni aloitushaavi riittää alle 2 kilon kaloille – isommat voivat pompata pois. Isompia haaveja saa kioskin VAPA-osastolta. Aluksi mukana ovat vain mato-onki, virveli ja kolme lippaa; muut uistimet ostetaan kioskilta.</li>
         <li><b>Vene:</b> vuokraa vene kioskilta (30 mk/päivä) tai osta oma. <kbd>B</kbd> avaa venematkan: Kaislikkolahti (hauki, ahven), Kivikkoluoto (jyrkkä reuna, kuha), Syvänne (kuha, siika, lahna) ja Selkä (isot hauet, siika, tuulista). Soutaminen vie aikaa; perämoottori nopeuttaa matkaa mutta kuluttaa bensaa. Kaikuluotain näyttää pohjan ja kalat. Kisat käydään rannalta.</li>
         <li><b>Kuluminen:</b> siima kuluu väsytyksissä ja pohjakiinnityksissä ja heikkenee – vaihda uusi kioskilla. Hauki voi katkaista siiman hampaillaan, ellei käytössä ole teräsperuketta. Kaislikossa uistin tarttuu helposti kaislaan – ruohouistin on tehty sinne.</li>
-        <li><b>Kilpailut:</b> <kbd>C</kbd> avaa kilpailukalenterin. Keskiviikkona virvelikisa (suurin kala), perjantaiyönä kuhamestaruus (kuhien yhteispaino, alamitta 37 cm), lauantaina kylän onkikisat (kaikkien kalojen yhteispaino). Ilmoittautuminen maksaa ja siirtää kisapäivään. Kisan aikana kello kulkee hitaammin, kisakalat punnitaan ja vapautetaan, legendoja ei lasketa. Kolme parasta saa palkintorahaa ja pokaalin.</li>
+        <li><b>Kilpailut:</b> <kbd>C</kbd> avaa kilpailukalenterin. Keskiviikkona virvelikisa (suurin kala), perjantaiyönä kuhamestaruus (kuhien yhteispaino, alamitta 37 cm), lauantaina kylän onkikisat (kaikkien kalojen yhteispaino). Ilmoittautuminen maksaa ja siirtää kisapäivään. Kisan aikana kello kulkee hitaammin; <kbd>T</kbd> odottaa tunnin myös kisassa, ja <kbd>C</kbd> tai <kbd>Esc</kbd> kahdesti lopettaa kisan etuajassa, kisakalat punnitaan ja vapautetaan, legendoja ei lasketa. Kolme parasta saa palkintorahaa ja pokaalin.</li>
         <li><b>Talous:</b> saaliskortilla valitset: vapauta (pisteet, järven kalakanta pysyy) tai myy (markkoja, kalakanta harvenee ja toipuu päivittäin). Kioskista (<kbd>K</kbd>, auki 6–23) ostat uistimia ja matoja; matoja voi myös kaivaa ilmaiseksi, mutta se vie aikaa. Legendoja ei myydä – paikallislehti maksaa ensimmäisestä saaliista juttupalkkion. <kbd>P</kbd> näyttää salasanan.</li>
         <li><b>Kalastusopas:</b> <kbd>O</kbd> avaa oppaan, joka pysäyttää pelin. Selaa nuolilla, välilyönnillä tai napauttamalla näytön reunoja.</li>
         <li><b>Alkuvalikko:</b> <kbd>A</kbd> valitsee kellonajan, <kbd>S</kbd> sään (vaihteleva tai kiinteä). Kalastaessa <kbd>T</kbd> odottaa tunnin.</li>
@@ -299,9 +303,9 @@ const ROD = { spin:{line:5.0}, pole:{line:2.0} };
 // runDepth: diving lure holds this depth while reeled. hop: lift from a twitch.
 const LURES = {
   lippa:   { fi:'Lippa',   sink:.45, rise:.3,  snag:1.0, weed:1, hop:.25, start:3, appeal:{ahven:1.3, hauki:.9,  kuha:.5} },
-  lusikka: { fi:'Lusikka', sink:.9,  rise:.28, snag:1.2, hop:.3,  start:2, appeal:{ahven:.7,  hauki:1.35,kuha:.65} },
-  vaappu:  { fi:'Vaappu',  sink:-.25,runDepth:1.6, snag:.4, hop:.2, start:2, appeal:{ahven:.8,  hauki:1.2, kuha:.9} },
-  jigi:    { fi:'Jigi',    sink:1.3, rise:.9,  snag:.4, weed:.9, hop:.7,  start:3, appeal:{ahven:1.1, hauki:.55, kuha:1.5} },
+  lusikka: { fi:'Lusikka', sink:.9,  rise:.28, snag:1.2, hop:.3,  start:0, appeal:{ahven:.7,  hauki:1.35,kuha:.65} },
+  vaappu:  { fi:'Vaappu',  sink:-.25,runDepth:1.6, snag:.4, hop:.2, start:0, appeal:{ahven:.8,  hauki:1.2, kuha:.9} },
+  jigi:    { fi:'Jigi',    sink:1.3, rise:.9,  snag:.4, weed:.9, hop:.7,  start:0, appeal:{ahven:1.1, hauki:.55, kuha:1.5} },
   ruoho:   { fi:'Ruohouistin', hud:'RUOHO', sink:.55, rise:.3, snag:.35, weed:.1, hop:.25, start:0, appeal:{ahven:.8, hauki:1.3, kuha:.4} },
 };
 const LURE_ORDER = ['lippa', 'lusikka', 'vaappu', 'jigi', 'ruoho'];
@@ -370,9 +374,23 @@ const lengthCm = f => Math.round(Math.cbrt(100 * f.w * 1000 / (f.legend ? LEGEND
 
 // ---------- audio ----------
 let AC = null, muted = false, noiseBuf = null;
+// iOS Safari only starts Web Audio inside a touchend/click, and mutes it with the ring/silent switch unless the
+// audio session is set to 'playback'. Unlock once on the first real tap, click or key press.
+let audioUnlocked = false;
+function unlockAudio() {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  audioInit();
+  if (!AC) return;
+  try { const b = AC.createBuffer(1, 1, 22050), src = AC.createBufferSource(); src.buffer = b; src.connect(AC.destination); src.start(0); } catch (e) {}
+  if (AC.state === 'running') audioUnlocked = true;
+}
+if (document.addEventListener) {
+  ['touchend', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (!audioUnlocked) unlockAudio(); }, true));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && AC && AC.state !== 'running') AC.resume(); });
+}
 function audioInit() {
   if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } }
-  if (AC && AC.state === 'suspended') AC.resume();
+  if (AC && AC.state !== 'running' && AC.resume) AC.resume();
   musicStart();
   ambientStart();
 }
@@ -602,7 +620,7 @@ function addTop(entry) { // returns 1-based rank if it made the list
 }
 
 // ---------- game state ----------
-let rod = 'spin', drag = 2.0, floatDepth = 1.2;
+let rod = 'pole', drag = 2.0, floatDepth = 1.2;
 let lureType = 'lippa', gear = 'slow';
 const lureCount = {}; for (const k of LURE_ORDER) lureCount[k] = LURES[k].start;
 let state = 'title'; // title idle charge fly fishing strike fight landing card
@@ -658,7 +676,7 @@ function setWeather(k, snap) {
 }
 function wxTargets() {
   const W0 = WEATHERS[weather];
-  const t = { cloud: W0.cloud, wind: Math.min(1.2, W0.wind * ((scene && scene.windK) || 1)), rain: W0.rain, dark: W0.dark };
+  const t = { cloud: W0.cloud, wind: Math.min(1.2, W0.wind * ((scene && scene.windK) || 1) + (typeof wakeT === 'number' ? 0.7 * wakeT / 20 : 0)), rain: W0.rain, dark: W0.dark }; // + a passing boat's wake
   if (weather === 'ukkonen' && stormPhase === 'front') { t.rain = 0; t.wind = .45; t.dark = .15; }
   if (frontNow() && weather !== 'ukkonen') { t.cloud = Math.max(t.cloud, .75); t.dark = Math.max(t.dark, .06); }
   return t;
@@ -747,9 +765,9 @@ function cycleWeather() {
   renderSky(); titleT = 0;
 }
 function waitHour() {
-  if (contest) { showMsg('Ei odotella kesken kisan!', '#ffd84a', 1.4); return; }
   if (state !== 'idle') { if (state !== 'title') showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
   gameMin = (gameMin + 60) % 1440;
+  if (contest) contest.t += 60; // an hour of contest time passes too
   if (gameMin < 60) newDay();
   updateWeather(60); wx = wxTargets(); renderSky();
   fishes = fishes.filter(f => f.legend && !f.leaving && LEGENDS[f.legend].season());
@@ -870,6 +888,262 @@ const saveLegends = () => { try { localStorage.setItem('kesakalastus.legends', J
 const roman = n => { let s = ''; for (const [v, r] of [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]) while (n >= v) { s += r; n -= v; } return s; };
 const legendName = (k, n) => LEGENDS[k].fi + (n > 1 ? ' ' + roman(n) : '');
 const legendCools = {}; let omen = null, legendGap = 30; // per legend: seconds of play (= game minutes) until it can show up again
+// ---------- random encounters: Reiska the neighbour, the osprey, speedboats ----------
+// One encounter at a time, with a break between them. Reiska's mood (−3…+3) follows how you treat him;
+// at his friendliest he tells you a legend's secret over coffee.
+let reiska = { mood: 0, known: {} };
+let neighbor = null, osprey = null, speedboat = null, choice = null, wakeT = 0;
+let encT = { neighbor: rnd(150, 360), osprey: rnd(300, 700), speedboat: rnd(360, 800) };
+const encBusy = () => !!(neighbor || osprey || speedboat);
+const encCanAsk = () => (state === 'idle' || state === 'fishing') && !contest;
+function encDone(kind, next) { // after any encounter, everything waits a little
+  encT[kind] = next; for (const k in encT) encT[k] = Math.max(encT[k], rnd(240, 360)); // shared break: 4-6 min between any encounters
+}
+function encounterStep(dt) {
+  if (state === 'title') return;
+  wakeT = Math.max(0, wakeT - dt);
+  if (!encBusy()) {
+    for (const k in encT) encT[k] -= dt;
+    const h = hourNow();
+    if (encT.neighbor <= 0 && !contest) startNeighbor();
+    else if (encT.osprey <= 0 && h >= 6 && h < 21 && !stormNow() && !contest) startOsprey(); // nothing that disturbs the fish during contests
+    else if (encT.speedboat <= 0 && h >= 9 && h < 22 && !stormNow() && !contest) startSpeedboat();
+  }
+  neighborStep(dt); ospreyStep(dt); speedboatStep(dt);
+}
+// ---- Reiska ----
+const REISKA = {
+  classic:  { w: m => 2 - m * 0.4, say: 'LUULETKO SAAVAS KALAA?', back: true, load: 'fish' },
+  empty:    { w: () => 2, say: 'NAPPAAKO?', back: true, load: 'none', sayBack: 'EI OTTANUT. HUOMENNA SITTEN.' },
+  borrower: { w: () => 1.5, say: 'LAINAATKO LIPPAA? OMA JÄI KIVEEN.', ask: ['LAINAA', 'EI'] },
+  bragger:  { w: () => 1.5, say: 'KAHDEKSAN KILOA! NO, MELKEIN.', brag: true },
+  coffee:   { w: m => 1 + m * 0.4, say: 'TULE KAHVILLE!', ask: ['MENE', 'EI KIITOS'] },
+  engine:   { w: () => scene.boat ? 2 : 0.8, say: 'PERÄPRUTKU LEVISI!', motor: 'broken', ask: ['HINAA', 'EI'] },
+  stolen:   { w: () => 1, say: 'MERCURY PÖLLITTIIN TAAS!', motor: 'gone', angry: true },
+};
+function startNeighbor() {
+  let tot = 0; const ws = {};
+  for (const k in REISKA) { ws[k] = Math.max(0.1, REISKA[k].w(reiska.mood)); tot += ws[k]; }
+  let r = Math.random() * tot, sc = 'classic';
+  for (const k in ws) { r -= ws[k]; if (r <= 0) { sc = k; break; } }
+  neighbor = { sc, phase: 'out', x: W + 30, bubble: 0, text: '', oar: 0, load: REISKA[sc].load || 'none' };
+}
+function reiskaSay(text, t = 4.5) { neighbor.text = text; neighbor.bubble = t; tone(330, 0.12, 'triangle', 0.05); setTimeout(() => tone(294, 0.18, 'triangle', 0.05), 140); }
+function reiskaAsk() { // a two-button question; pauses the game until answered
+  const N = neighbor, S = REISKA[N.sc];
+  if (N.sc === 'borrower' && lureCount.lippa <= 0) { reiskaSay('AI, SINULLAKAAN EI OLE LIPPOJA...'); return; }
+  if (N.sc === 'engine' && !(scene.boat && (owned.has('m4') || owned.has('m8')))) return; // nobody to tow him
+  if (!encCanAsk()) { reiskaSay('NO, OLET KIIREINEN. TOISTE!'); return; }
+  if (actionHeld) release();
+  choice = { opts: S.ask, sel: 0, cb: i => reiskaAnswer(i === 0) };
+}
+function reiskaAnswer(yes) {
+  const N = neighbor;
+  if (N.sc === 'borrower') {
+    if (yes) { lureCount.lippa--; reiska.mood = Math.min(3, reiska.mood + 1); N.lent = true; reiskaSay('KIITOS! TUON TAKAISIN.'); }
+    else { reiska.mood = Math.max(-3, reiska.mood - 1); reiskaSay('ON SIINÄKIN NAAPURI KUN EI KIPPAA LAINAA!'); }
+  } else if (N.sc === 'coffee') {
+    if (!yes) { reiskaSay('NO, TOISEN KERRAN.'); return; }
+    reiska.mood = Math.min(3, reiska.mood + 1);
+    gameMin = (gameMin + 30) % 1440; if (gameMin < 30) newDay(); renderSky(); fade = 1;
+    const secret = Object.keys(LEGENDS).find(k => !(legendBook[k] && legendBook[k].n) && !reiska.known[k]);
+    if (reiska.mood >= 3 && secret) { reiska.known[secret] = true; reiska.mood = 1; showMsg('Reiska kertoi legendan salaisuuden! (O)', '#ffd84a', 3.2); } // one secret per friendship
+    else {
+      const best = Object.keys(SPECIES).filter(k => SPECIES[k].rods.length).sort((a, b) => ACT[b] - ACT[a])[0];
+      showMsg('Reiska: ' + SPECIES[best].fi + ' syö nyt parhaiten', '#9cd8ff', 3);
+    }
+    neighbor = null; encDone('neighbor', rnd(900, 1800)); saveGame(); return;
+  } else if (N.sc === 'engine') {
+    if (yes) {
+      reiska.mood = Math.min(3, reiska.mood + 1); money += 40;
+      gameMin = (gameMin + 20) % 1440; if (gameMin < 20) newDay(); renderSky(); fade = 1;
+      showMsg('Hinasit Reiskan. Bensarahat: +40 mk', '#9cff7a', 2.6);
+      neighbor = null; encDone('neighbor', rnd(900, 1800)); saveGame(); return;
+    }
+    reiska.mood = Math.max(-3, reiska.mood - 1); reiskaSay('NO SOUDAN SITTEN...');
+  }
+  saveGame();
+}
+function neighborStep(dt) {
+  const N = neighbor; if (!N) return;
+  const S = REISKA[N.sc];
+  if (N.bubble > 0) N.bubble -= dt;
+  N.oar -= dt;
+  if (N.oar <= 0 && N.phase !== 'wait') { N.oar = N.phase === 'back' ? 1.6 : 1.2; noise(0.25, 0.04, 700); }
+  if (N.phase === 'out') {
+    N.x -= (S.angry ? 22 : 16) * dt;
+    if (!N.said && N.x < 220) { N.said = true; reiskaSay(S.say); if (S.ask) N.askAt = 1.2; }
+    if (N.askAt > 0) { N.askAt -= dt; if (N.askAt <= 0) reiskaAsk(); }
+    if (N.x < -40) {
+      if (S.back || N.lent) { N.phase = 'wait'; N.wait = rnd(60, 120); if (N.lent) N.load = 'gift'; }
+      else { neighbor = null; encDone('neighbor', rnd(900, 1800)); }
+    }
+  } else if (N.phase === 'wait') {
+    N.wait -= dt; if (N.wait <= 0) { N.phase = 'back'; N.x = -40; N.said = false; }
+  } else {
+    N.x += (N.load === 'fish' ? 11 : 15) * dt;
+    if (!N.said && N.x > 120) {
+      N.said = true;
+      if (N.load === 'gift') { // pays back the lent lure, and a little extra
+        lureCount.lippa += 2;
+        const col = GEAR.color.find(c => c.price && !owned.has(c.id));
+        if (col && Math.random() < 0.5) { owned.add(col.id); reiskaSay('TÄSSÄ KAKSI LIPPAA JA ' + col.fi + '-VÄRI!'); }
+        else { money += 30; reiskaSay('TÄSSÄ KAKSI LIPPAA JA 30 MARKKAA!'); }
+        saveGame();
+      } else if (S.sayBack) reiskaSay(S.sayBack);
+      else { tone(196, 0.1, 'square', 0.04); setTimeout(() => tone(196, 0.1, 'square', 0.04), 160); } // a satisfied chuckle
+    }
+    if (N.x > W + 40) { neighbor = null; encDone('neighbor', rnd(900, 1800)); }
+  }
+}
+function drawClipped(fn) { const cx = scene.boat ? 64 : 54; g.save(); g.beginPath(); g.rect(cx, 0, W - cx, H); g.clip(); fn(); g.restore(); }
+function drawBubble(text, px, y) {
+  const bw = text.length * 8 + 8, bx = clamp(px - bw / 2, 4, W - bw - 4), by = y;
+  g.fillStyle = '#000'; g.fillRect(bx - 1, by - 1, bw + 2, 14);
+  g.fillStyle = '#fff'; g.fillRect(bx, by, bw, 12);
+  for (let i = 0; i < 5; i++) g.fillRect(clamp(px, bx + 4, bx + bw - 8) - 2 + Math.round(i / 2), by + 12 + i, 4 - i, 1);
+  txt(text, bx + 4, by + 2, '#000', false);
+}
+function drawNeighbor(now) {
+  const N = neighbor; if (!N || N.phase === 'wait') return;
+  const S = REISKA[N.sc], dir = N.phase === 'out' ? -1 : 1, x = Math.round(N.x), y = WATER_Y + (N.load === 'fish' && N.phase === 'back' ? 1 : 0);
+  const px = x + 6 * dir;
+  drawClipped(() => {
+    for (let i = 0; i < 30; i++) { // small wooden boat
+      const t = i / 29, bot = Math.round(y + 2 - Math.pow(Math.abs(t - 0.5) * 2, 2) * 2);
+      g.fillStyle = '#7a5a30'; g.fillRect(x - 15 + i, y - 3, 1, bot - y + 4);
+      g.fillStyle = '#d8c8a0'; g.fillRect(x - 15 + i, y - 3, 1, 1);
+    }
+    const sx = x - 15 * dir; // stern
+    if (S.motor) { // the outboard bracket: broken motor smoking, or nothing left at all
+      g.fillStyle = '#505050'; g.fillRect(sx - 1, y - 6, 3, 3);
+      if (S.motor === 'broken') {
+        g.fillStyle = '#606870'; g.fillRect(sx - 3, y - 10, 6, 5);
+        for (let i = 0; i < 4; i++) { const ph = (now * 0.8 + i * 0.25) % 1; g.fillStyle = `rgba(90,90,90,${(1 - ph).toFixed(2)})`; g.fillRect(sx + Math.round(Math.sin(now * 2 + i) * 2), y - 12 - Math.round(ph * 14), 2, 2); }
+      }
+    }
+    if (N.phase === 'back' && N.load === 'fish') { // a mountain of fish
+      for (let i = 0; i < 70; i++) {
+        const a = (hash(i, 4) % 100) / 100 * Math.PI, r = (hash(i, 5) % 100) / 100;
+        g.fillStyle = ['#c0c8cc', '#8ea83a', '#dfe6ea', '#6b8a3a', '#a08a50'][hash(i, 6) % 5];
+        g.fillRect(x - 6 * dir + Math.round(Math.cos(a) * 11 * r), y - 4 - Math.round(Math.sin(a) * 10 * r), 2, 1);
+      }
+    }
+    g.fillStyle = '#3a6a3a'; g.fillRect(px - 2, y - 11, 5, 8);
+    g.fillStyle = S.angry ? '#e07a6a' : '#f0c090'; g.fillRect(px - 1, y - 15, 4, 4);
+    g.fillStyle = '#a02020'; g.fillRect(px - 2, y - 17, 6, 2);
+    if (S.brag && N.phase === 'out') { // holds a big pike over his head
+      const spr = makeSprite('hauki', 30); g.save(); g.translate(px, y - 22); if (dir < 0) g.scale(-1, 1); g.drawImage(spr, -15, -Math.round(spr.height / 2)); g.restore();
+      g.fillStyle = '#f0c090'; g.fillRect(px - 3, y - 20, 1, 6); g.fillRect(px + 3, y - 20, 1, 6);
+    } else {
+      const sw = Math.sin(now * (N.load === 'fish' && N.phase === 'back' ? 3 : S.angry ? 7 : 4.5)) * 4;
+      pixLine(g, px, y - 7, px - 9 - sw, y + 2, '#8a6a3a'); pixLine(g, px, y - 7, px + 9 + sw, y + 2, '#8a6a3a');
+    }
+  });
+  if (N.bubble > 0 && N.text) drawBubble(N.text, px, y - (S.brag && N.phase === 'out' ? 48 : 40));
+}
+function drawChoice() {
+  const y = 150, opts = choice.opts;
+  g.fillStyle = 'rgba(0,0,0,0.5)'; g.fillRect(0, y - 6, W, 34);
+  opts.forEach((o, i) => {
+    const bx = 160 + (i ? 8 : -110), on = i === choice.sel;
+    g.fillStyle = on ? '#000080' : '#c0c0c0'; g.fillRect(bx, y, 102, 16);
+    g.fillStyle = on ? '#404040' : '#fff'; g.fillRect(bx, y, 102, 1); g.fillRect(bx, y, 1, 16);
+    g.fillStyle = on ? '#fff' : '#404040'; g.fillRect(bx, y + 15, 102, 1); g.fillRect(bx + 101, y, 1, 16);
+    txt(o, Math.round(bx + 51 - o.length * 4), y + 4, on ? '#fff' : '#000', false);
+  });
+}
+function choose(i) { const c = choice; choice = null; c.cb(i); }
+// ---- osprey: dives for a fish near the surface; sometimes the one you are reeling in ----
+function startOsprey() {
+  const fromLeft = Math.random() < 0.5;
+  osprey = { x: fromLeft ? -20 : W + 20, y: 26, vx: fromLeft ? 40 : -40, phase: 'fly', t: 0, cry: 1 };
+}
+function ospreyStep(dt) {
+  const O = osprey; if (!O) return;
+  O.t += dt; O.cry -= dt;
+  if (O.cry <= 0 && O.phase !== 'dive') { O.cry = rnd(2, 4); tone(1800, 0.08, 'sine', 0.03, 300); setTimeout(() => tone(1900, 0.08, 'sine', 0.03, 300), 120); setTimeout(() => tone(1700, 0.1, 'sine', 0.03, 300), 240); }
+  if (O.phase === 'fly') {
+    O.x += O.vx * dt; O.y = 26 + Math.sin(O.t * 1.3) * 6;
+    if (O.t > 3 && !O.target) {
+      const mine = fight && !fight.grab && !fight.jump && fight.f.w < 0.6 && !fight.f.legend && (rod === 'pole' ? fight.d > 0.3 : fight.L > 3) && fight.f.d < 2;
+      if (mine && Math.random() < 0.4) O.target = 'hooked';
+      else { const cands = fishes.filter(f => f.d < 1.6 && f.w < 1.5 && !isFightFish(f) && !f.legend && mToX(f.m) > 70 && mToX(f.m) < W - 10); if (cands.length) O.target = cands[Math.floor(Math.random() * cands.length)]; }
+      if (O.target) O.phase = 'dive';
+    }
+    if (O.x < -40 || O.x > W + 40) { osprey = null; encDone('osprey', rnd(600, 1200)); }
+  } else if (O.phase === 'dive') {
+    const tf = O.target === 'hooked' ? (fight && fight.f) : O.target;
+    if (!tf || (O.target === 'hooked' && !fight)) { O.phase = 'rise'; O.got = null; return; }
+    const tx = mToX(tf.m), ty = WATER_Y;
+    const dx = tx - O.x, dy = ty - O.y, d = Math.hypot(dx, dy) || 1;
+    O.x += dx / d * 140 * dt; O.y += dy / d * 140 * dt; O.vx = dx >= 0 ? 40 : -40;
+    if (d < 4) {
+      splash(O.x, WATER_Y, 14); sfx.splash();
+      O.got = { sp: tf.sp, w: tf.w };
+      if (O.target === 'hooked') { lose('Sääski vei ' + SPECIES[tf.sp].acc + '!'); removeFish(tf); }
+      else removeFish(tf);
+      O.phase = 'rise';
+    }
+  } else {
+    O.x += O.vx * dt; O.y -= 30 * dt;
+    if (O.y < -20 || O.x < -40 || O.x > W + 40) { osprey = null; encDone('osprey', rnd(600, 1200)); }
+  }
+}
+function drawOsprey(now) {
+  const O = osprey; if (!O) return;
+  const x = Math.round(O.x), y = Math.round(O.y), flap = O.phase === 'dive' ? 2 : Math.floor(now * 8) % 2;
+  g.fillStyle = '#f0ece0'; g.fillRect(x - 1, y, 3, 2);
+  g.fillStyle = '#5a4630';
+  if (flap === 2) { g.fillRect(x - 3, y - 2, 2, 2); g.fillRect(x + 2, y - 2, 2, 2); } // wings folded for the dive
+  else if (flap) { g.fillRect(x - 6, y - 2, 5, 1); g.fillRect(x + 2, y - 2, 5, 1); g.fillRect(x - 7, y - 3, 2, 1); g.fillRect(x + 6, y - 3, 2, 1); }
+  else { g.fillRect(x - 6, y + 1, 5, 1); g.fillRect(x + 2, y + 1, 5, 1); g.fillRect(x - 3, y, 2, 1); g.fillRect(x + 2, y, 2, 1); }
+  g.fillStyle = '#2a2018'; g.fillRect(x + (O.vx > 0 ? 2 : -2), y, 1, 1);
+  if (O.got) { const spr = makeSprite(O.got.sp, 10); g.drawImage(spr, x - 5, y + 3); }
+}
+// ---- speedboat from the city, or a cowboy in speedos on a jet ski ----
+function startSpeedboat() {
+  const jet = Math.random() < 0.3, fromLeft = Math.random() < 0.5;
+  speedboat = { jet, x: fromLeft ? -50 : W + 50, vx: (fromLeft ? 1 : -1) * (jet ? 110 : 85), said: false, bubble: 0 };
+  if (AC && !muted) { // engine: pitch drops as it passes
+    const t = AC.currentTime, o = AC.createOscillator(), gn = AC.createGain(), dur = (W + 100) / Math.abs(speedboat.vx);
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(jet ? 210 : 130, t); o.frequency.linearRampToValueAtTime(jet ? 230 : 140, t + dur * 0.45); o.frequency.linearRampToValueAtTime(jet ? 150 : 95, t + dur);
+    gn.gain.setValueAtTime(0.0001, t); gn.gain.linearRampToValueAtTime(0.035, t + dur * 0.45); gn.gain.linearRampToValueAtTime(0.0001, t + dur);
+    o.connect(gn); gn.connect(AC.destination); o.start(t); o.stop(t + dur + 0.1);
+  }
+}
+function speedboatStep(dt) {
+  const B = speedboat; if (!B) return;
+  B.x += B.vx * dt;
+  if (B.bubble > 0) B.bubble -= dt;
+  if (Math.random() < dt * 25) particles.push({ x: B.x - Math.sign(B.vx) * 14, y: WATER_Y - 1, vx: -B.vx * 0.2 + rnd(-10, 10), vy: rnd(-30, -10), life: rnd(0.2, 0.5) });
+  if (!B.said && B.x > 110 && B.x < 210) {
+    B.said = true; B.bubble = 2.5; wakeT = 20;
+    for (const f of fishes) if (!isFightFish(f)) { f.cool = Math.max(f.cool, 15); f.chase = false; } // the fish scatter
+  }
+  if (B.x < -60 || B.x > W + 60) { speedboat = null; encDone('speedboat', rnd(700, 1400)); }
+}
+function drawSpeedboat(now) {
+  const B = speedboat; if (!B) return;
+  const x = Math.round(B.x), y = WATER_Y, dir = Math.sign(B.vx);
+  drawClipped(() => {
+    if (B.jet) {
+      g.fillStyle = '#ffd84a'; g.fillRect(x - 7, y - 3, 14, 3); g.fillStyle = '#202020'; g.fillRect(x - 2, y - 5, 4, 2);
+      g.fillStyle = '#e0a070'; g.fillRect(x - 1, y - 14, 3, 9); // tanned cowboy, standing
+      g.fillStyle = '#c02020'; g.fillRect(x - 1, y - 8, 3, 2); // speedos
+      g.fillStyle = '#e0a070'; g.fillRect(x - 1, y - 18, 3, 3); g.fillRect(x + 2 * dir, y - 12, 3, 1);
+      g.fillStyle = '#7a4a1a'; g.fillRect(x - 4, y - 19, 9, 1); g.fillRect(x - 1, y - 21, 3, 2); // cowboy hat
+    } else {
+      for (let i = 0; i < 36; i++) { const nose = dir > 0 ? i : 35 - i; g.fillStyle = '#f4f4f4'; g.fillRect(x - 18 + i, y - 4 + (nose > 30 ? nose - 30 : 0) * 0, 1, 4 - (nose > 28 ? Math.min(3, nose - 28) : 0)); }
+      g.fillStyle = '#c02020'; g.fillRect(x - 18, y - 2, 36, 1);
+      g.fillStyle = '#8ab0d8'; g.fillRect(x + 2 * dir - 3, y - 8, 7, 4); // windscreen
+      g.fillStyle = '#202020'; g.fillRect(x - 18 * dir - 1, y - 6, 3, 6); // outboard
+      g.fillStyle = '#f0c090'; g.fillRect(x - 4 * dir, y - 10, 3, 3); g.fillStyle = '#ffd84a'; g.fillRect(x - 4 * dir, y - 7, 3, 3);
+    }
+    for (let i = 0; i < 6; i++) { g.fillStyle = 'rgba(230,240,240,0.8)'; g.fillRect(x - dir * (16 + i * 5), y - (i % 2), 4, 1); } // wake
+  });
+  if (B.bubble > 0) drawBubble(B.jet ? 'JIIHAA!' : 'HYVÄÄ JUHANNUSTA!', x, y - (B.jet ? 40 : 30));
+}
 function legendStep(dt) {
   if (omen) { omen.t += dt; if (omen.t > 4) omen = null; }
   if (state === 'title') return;
@@ -1031,8 +1305,9 @@ function setRod(r) {
 function cycleLure() {
   if (rod !== 'spin' || state === 'card' || state === 'landing') return;
   if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
-  lureType = LURE_ORDER[(LURE_ORDER.indexOf(lureType) + 1) % LURE_ORDER.length];
-  syncButtons();
+  const i0 = LURE_ORDER.indexOf(lureType); // skip lure types you have none of
+  for (let k = 1; k < LURE_ORDER.length; k++) { const nx = LURE_ORDER[(i0 + k) % LURE_ORDER.length]; if (lureCount[nx] > 0) { lureType = nx; syncButtons(); return; } }
+  showMsg('Ei muita uistimia - kioski: K', '#ffd84a', 1.6);
 }
 function toggleGear() { if (rod !== 'spin') return; gear = gear === 'fast' ? 'slow' : 'fast'; syncButtons(); }
 function adjust(dir) {
@@ -1469,6 +1744,14 @@ function fightPole(dt) {
 function removeFish(f) { const i = fishes.indexOf(f); if (i >= 0) fishes.splice(i, 1); }
 function land() {
   const F = fight, f = F.f;
+  const NET = eq('net');
+  if (f.w >= 1 && f.w > NET.cap && Math.random() < Math.min(0.85, 0.25 + 0.6 * (f.w - NET.cap) / NET.cap)) { // too big for the net
+    if (Math.random() < 0.5) { lose('Kala pomppasi haavista!'); return; }
+    F.mode = 'run'; F.modeT = rnd(1, 2); F.stam = Math.max(F.stam, 0.35);
+    if (rod === 'spin') F.L = 2; else F.d = 0.3;
+    showMsg('Ei mahtunut haaviin!', '#ffd84a', 1.6); sfx.splash(); splash(mToX(1.2), WATER_Y, 10);
+    return;
+  }
   wearLine(0.02 + 0.04 * Math.min(1.2, F.peak || 0));
   removeFish(f);
   let note = '';
@@ -1849,6 +2132,7 @@ function draw() {
     pixLine(g, x, yb, x + sway, top, '#6a8a3a');
     g.fillStyle = '#5a3a1e'; g.fillRect(Math.round(x + sway), top, 1, 3);
   }
+  drawNeighbor(now); drawSpeedboat(now); drawOsprey(now);
   // angler + rod
   const R = rodTarget();
   tip.x = lerp(tip.x, R.x, 0.25); tip.y = lerp(tip.y, R.y, 0.25);
@@ -1940,6 +2224,7 @@ function draw() {
   if (contestOpen) drawContestScreen();
   if (mapOpen) drawMap();
   if (homeOpen) drawHome(now);
+  if (choice) drawChoice();
   if (contestResults) drawContestResults(now);
   if (pwShow) drawPassword();
 }
@@ -1959,10 +2244,10 @@ function drawLanding(now) {
     pixLine(g, bx + 1, by - 1, hx - 6, hy, '#8a6a3a');
     for (let a = 0; a < 24; a++) { // hoop
       const t = a / 24 * Math.PI * 2;
-      g.fillStyle = '#c8c8c0'; g.fillRect(Math.round(hx + Math.cos(t) * 7), Math.round(hy + Math.sin(t) * 2), 1, 1);
+      g.fillStyle = '#c8c8c0'; g.fillRect(Math.round(hx + Math.cos(t) * eq('net').r), Math.round(hy + Math.sin(t) * 2), 1, 1);
     }
     for (let y = 1; y <= 9; y++) { // mesh bag
-      const half = Math.round(7 - y * 0.55);
+      const half = Math.round(eq('net').r - y * 0.55);
       for (let x = -half; x <= half; x++) if ((x + y + Math.round(hx)) % 2 === 0) {
         g.fillStyle = 'rgba(230,230,215,0.75)'; g.fillRect(Math.round(hx + x), Math.round(hy + y), 1, 1);
       }
@@ -2122,7 +2407,8 @@ const GUIDE_A = [
     '1 VIRVELI, 2 MATO-ONKI. NUOLET YLÖS JA ALAS SÄÄTÄVÄT JARRUA TAI KOHON SYVYYTTÄ.',
     'T ODOTTAA TUNNIN. ESC PALAA ALKUVALIKKOON. O AVAA TÄMÄN OPPAAN, K KIOSKIN, P SALASANAN. N MUSIIKKI, M ÄÄNI.']],
   ['VIRVELI', [
-    'Q VAIHTAA UISTINTA, V KELAUSNOPEUTTA, X TAI OIKEA HIIRENNAPPI NYKÄISEE.',
+    'Q VAIHTAA UISTINTA, V KELAUSNOPEUTTA, X TAI OIKEA HIIRENNAPPI NYKÄISEE. ALUKSI ON VAIN LIPPOJA - MUUT UISTIMET KIOSKILTA.',
+    'PIENI HAAVI RIITTÄÄ ALLE 2 KILON KALOILLE. ISOMMAT HAAVIT VAPA-OSASTOLTA.',
     'LIPPA: AHVENEN SUOSIKKI. LUSIKKA: HAUELLE. VAAPPU: KELLUU, HARVOIN POHJASSA. JIGI: POMPII POHJAA, KUHA OTTAA VAJOTESSA. RUOHOUISTIN: EI TARTU KAISLAAN.',
     'TASAINEN KELAUS TUO SEURAAJIA. NYKÄISY, TAUKO TAI POHJAKOSKETUS SAA NE ISKEMÄÄN.']],
   ['VÄSYTYS', [
@@ -2157,7 +2443,7 @@ const GUIDE_B = [
     'SIIMA KULUU JA HEIKKENEE - VAIHDA UUSI KIOSKILLA. TERÄSPERUKE ESTÄÄ HAUKEA KATKAISEMASTA SIIMAA.']],
   ['KILPAILUT', [
     'C AVAA KALENTERIN: KE VIRVELIKISA (SUURIN KALA), PE YÖLLÄ KUHAMESTARUUS (KUHIEN PAINO, ALAMITTA 37 CM), LA KYLÄN ONKIKISAT (KAIKKI KALAT).',
-    'ILMOITTAUTUMINEN MAKSAA JA SIIRTÄÄ KISAPÄIVÄÄN. KISAN AIKANA KELLO KULKEE HITAAMMIN. KALAT PUNNITAAN JA VAPAUTETAAN.',
+    'ILMOITTAUTUMINEN MAKSAA JA SIIRTÄÄ KISAPÄIVÄÄN. KISAN AIKANA KELLO KULKEE HITAAMMIN. KALAT PUNNITAAN JA VAPAUTETAAN.', 'T ODOTTAA TUNNIN MYÖS KISASSA. C TAI ESC KAHDESTI LOPETTAA KISAN ETUAJASSA.',
     'LEGENDOJA EI LASKETA - TUOMARI EI USKO NIIHIN. KOLME PARASTA SAA RAHAA JA POKAALIN.']],
   ['TALOUS', [
     'SAALISKORTILLA: VAPAUTA (NUOLI VASEMMALLE) TAI MYY (OIKEALLE). MYYMINEN HARVENTAA JÄRVEN KALAKANTAA, SE TOIPUU PÄIVITTÄIN.',
@@ -2237,7 +2523,8 @@ function drawGuide() {
     if (known) {
       ctr('SAATU ' + b.n + ' KERTAA, PARAS ' + b.best.toFixed(2).replace('.', ',') + ' KG', yy, '#2a5a8a'); yy += 14;
       for (const l of wrapText('TIEDOT: ' + L.info, 34)) { ctr(l, yy, ink); yy += 10; }
-    } else for (const l of wrapText('TARKAT TIEDOT PALJASTUVAT ENSIMMÄISEN SAALIIN JÄLKEEN.', 34)) { ctr(l, yy, '#7a6a50'); yy += 10; }
+    } else if (reiska.known[k]) { for (const l of wrapText('REISKAN VINKKI: ' + L.info, 34)) { ctr(l, yy, '#2a5a8a'); yy += 10; } }
+    else for (const l of wrapText('TARKAT TIEDOT PALJASTUVAT ENSIMMÄISEN SAALIIN JÄLKEEN.', 34)) { ctr(l, yy, '#7a6a50'); yy += 10; }
   }
   g.fillStyle = '#d8caa0'; g.fillRect(x, y + h - 14, w, 14);
   txt('<', x + 6, y + h - 11, ink, false); txt('>', x + w - 14, y + h - 11, ink, false);
@@ -2300,9 +2587,16 @@ let trophies = { onki: [0, 0, 0], virveli: [0, 0, 0], kuha: [0, 0, 0] }; // gold
 const clockK = () => contest ? 0.4 : 1;
 const fmtKg = w => w < 1 ? Math.round(w * 1000) + ' G' : w.toFixed(2).replace('.', ',') + ' KG';
 const daysUntil = c => { const wd = (dayNum - 1) % 7; let d = (c.day - wd + 7) % 7; if (d === 0 && gameMin > c.start) d = 7; return d; };
+let endAsk = 0;
+function endContestAsk() { // press C or Esc twice to stop a contest early; the current catch counts
+  if (!contest) return;
+  if (state !== 'idle' && state !== 'fishing') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
+  if (endAsk && performance.now() - endAsk < 3000) { endAsk = 0; contest.over = true; contest.t = Math.max(contest.t, CONTESTS[contest.key].len); showMsg('Kisa lopetettu', '#ffd84a', 1.6); return; }
+  endAsk = performance.now(); showMsg('Paina uudelleen: lopeta kisa', '#ffd84a', 2.8);
+}
 function toggleContest() {
   if (contestOpen) { contestOpen = false; return; }
-  if (contest) { showMsg('Kilpailu on käynnissä', '#ffd84a', 1.2); return; }
+  if (contest) { endContestAsk(); return; }
   if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
   contestOpen = true; contestMsg = ''; if (actionHeld) release();
 }
@@ -2729,9 +3023,14 @@ const GEAR = {
     { id: 'c1', fi: 'KULTA', price: 40, d: 'HYVÄ PILVELLÄ JA HÄMÄRÄSSÄ' },
     { id: 'c2', fi: 'MUSTA', price: 60, d: 'HYVÄ YÖLLÄ' },
     { id: 'c3', fi: 'FLUORESOIVA', price: 80, d: 'HYVÄ SATEELLA JA SYVÄLLÄ' }],
+  net: [
+    { id: 'h1', fi: 'PIENI HAAVI', price: 0, cap: 2, r: 7, d: 'ISOT KALAT VOIVAT POMPATA POIS' },
+    { id: 'h2', fi: 'KESKIKOKOINEN HAAVI', price: 90, cap: 5, r: 9, d: 'VARMA 5 KILOON ASTI' },
+    { id: 'h3', fi: 'ISO HAAVI', price: 250, cap: 10, r: 11, d: 'VARMA 10 KILOON ASTI' },
+    { id: 'h4', fi: 'JÄTTIHAAVI', price: 700, cap: 30, r: 13, d: 'MAHTUU MÖRKÖKIN' }],
 };
 const GEAR_SLOTS = Object.keys(GEAR);
-const GEAR_START = { spinLine: 's25', reel: 'r1', spinRod: 'v1', pole: 'p1', poleLine: 'o20', float: 'k1', color: 'c0' };
+const GEAR_START = { spinLine: 's25', reel: 'r1', spinRod: 'v1', pole: 'p1', poleLine: 'o20', float: 'k1', color: 'c0', net: 'h1' };
 const GEAR_BUYABLE = GEAR_SLOTS.flatMap(s => GEAR[s].filter(g => g.price > 0).map(g => g.id)); // order fixed: password bits
 let owned = new Set(Object.values(GEAR_START)), equip = Object.assign({}, GEAR_START);
 const eq = slot => GEAR[slot].find(g => g.id === equip[slot]) || GEAR[slot].find(g => g.id === GEAR_START[slot]);
@@ -2749,7 +3048,7 @@ const tackleK = () => rod === 'spin' ? eq('spinLine').bite * colorK() * (leaderO
 // ---- kiosk with tabs ----
 const SHOP_TABS = [
   { fi: 'TARV.', items: () => SHOP }, { fi: 'SIIMA', items: () => [...GEAR.spinLine, ...GEAR.poleLine, LEADER] },
-  { fi: 'VAPA', items: () => [...GEAR.spinRod, ...GEAR.pole] }, { fi: 'KELA', items: () => GEAR.reel },
+  { fi: 'VAPA', items: () => [...GEAR.spinRod, ...GEAR.pole, ...GEAR.net] }, { fi: 'KELA', items: () => GEAR.reel },
   { fi: 'KOHO', items: () => GEAR.float }, { fi: 'VÄRI', items: () => GEAR.color }, { fi: 'VENE', items: () => BOAT_ITEMS }];
 const SHOP = [
   { id: 'lippa', fi: 'LIPPA', price: 18, d: 'AHVENEN SUOSIKKI' }, { id: 'lusikka', fi: 'LUSIKKA', price: 22, d: 'HAUELLE' },
@@ -2839,13 +3138,17 @@ function drawShop() {
 // ---- saving: browser storage + a 90s-style password ----
 const PW_ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const PW_LEGENDS = ['morko', 'kormy', 'siika', 'kaani', 'paansarki', 'suklaa', 'dalai'];
-const PW_VERSION = 6; // older passwords still load
+const PW_VERSION = 7; // older passwords still load
 function pwLayout(v) { // bit widths per field for a password version
   const PW_LURES = ['lippa', 'lusikka', 'vaappu', 'jigi']; // the original four; newer lures are appended at the end
   const base = [4, 24, 10, ...PW_LURES.map(() => 7), 8, 4, ...PW_LEGENDS.map(() => 4)];
-  return v === 1 ? base : v === 2 ? [...base, GEAR_BUYABLE.length] : v === 3 ? [...base, GEAR_BUYABLE.length, 4, 4, 4] : v === 4 ? [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length]
-    : v === 5 ? [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length, 3, 3, 3, 1, 3, 3, 3, 3]
-    : [...base, GEAR_BUYABLE.length, 4, 4, 4, EXTRA_ORDER.length, 3, 3, 3, 1, 3, 3, 3, 3, 7, 3, 3];
+  if (v === 1) return base;
+  const L = [...base, v >= 7 ? GEAR_BUYABLE.length : 17]; // v2-v6 had 17 buyable gear items; v7 added the landing nets
+  if (v >= 3) L.push(4, 4, 4);
+  if (v >= 4) L.push(EXTRA_ORDER.length);
+  if (v >= 5) L.push(3, 3, 3, 1, 3, 3, 3, 3);
+  if (v >= 6) L.push(7, 3, 3);
+  return L;
 }
 function pwValues() {
   let mask = 0; GEAR_BUYABLE.forEach((id, i) => { if (owned.has(id)) mask |= 1 << i; });
@@ -2874,7 +3177,7 @@ function loadPassword(code) {
   for (let i = 0; i < bits.length; i++) bits[i] ^= pwMask(i);
   if (bits.length < 4) return false;
   const ver = bits[0] * 8 + bits[1] * 4 + bits[2] * 2 + bits[3];
-  if (ver < 1 || ver > 6) return false;
+  if (ver < 1 || ver > 7) return false;
   const layout = pwLayout(ver), dataLen = layout.reduce((a, b) => a + b, 0);
   if (bits.length < dataLen + 10) return false;
   let p = 0; const read = n => { let v = 0; for (let i = 0; i < n; i++) v = v * 2 + bits[p++]; return v; };
@@ -2901,7 +3204,7 @@ function loadPassword(code) {
   return true;
 }
 function saveGame() {
-  try { localStorage.setItem('kesakalastus.save', JSON.stringify({ v: 1, money, dayNum, lureCount, worms, lakeStock, owned: [...owned], equip, trophies, rentDay, lineCond, leaderOn, lux, cos, stuffed })); } catch (e) {}
+  try { localStorage.setItem('kesakalastus.save', JSON.stringify({ v: 1, money, dayNum, lureCount, worms, lakeStock, owned: [...owned], equip, trophies, rentDay, lineCond, leaderOn, lux, cos, stuffed, reiska })); } catch (e) {}
   const el = document.getElementById('pwNow'); if (el) el.textContent = makePassword();
 }
 function loadGame() {
@@ -2918,6 +3221,7 @@ function loadGame() {
     if (d.lux) for (const L of LUX) if (typeof d.lux[L.id] === 'number') lux[L.id] = Math.min(L.max, d.lux[L.id]);
     if (d.cos) for (const C of COSMETIC) if (d.cos[C.id]) { const own = Math.min(5, d.cos[C.id].own || 1); cos[C.id] = { own, wear: Math.min(own - 1, d.cos[C.id].wear || 0) }; }
     if (d.stuffed) stuffed = d.stuffed;
+    if (d.reiska) reiska = { mood: clamp(+d.reiska.mood || 0, -3, 3), known: d.reiska.known || {} };
     if (d.trophies) for (const k of CONTEST_ORDER) if (Array.isArray(d.trophies[k])) trophies[k] = d.trophies[k].slice(0, 3);
     if (d.equip) for (const s of GEAR_SLOTS) if (owned.has(d.equip[s])) equip[s] = d.equip[s];
   } catch (e) {}
@@ -2953,14 +3257,14 @@ function drawPassword() {
 
 // ---------- main loop ----------
 function update(dt) {
-  if (guideOpen || shopOpen || pwShow || contestOpen || contestResults || mapOpen || homeOpen) { ambientUpdate(performance.now() / 1000); return; } // overlays pause the game
+  if (guideOpen || shopOpen || pwShow || contestOpen || contestResults || mapOpen || homeOpen || choice) { ambientUpdate(performance.now() / 1000); return; } // overlays pause the game
   const prevMin = gameMin;
   gameMin = (gameMin + dt * clockK()) % 1440;
   if (gameMin < prevMin && state !== 'title') newDay();
   saveT -= dt; if (saveT <= 0) { saveT = 60; saveGame(); }
   titleT += dt;
   contestStep(dt);
-  updateWeather(dt * clockK()); updateWx(dt); updateActs(); ambientUpdate(performance.now() / 1000); legendStep(dt);
+  updateWeather(dt * clockK()); updateWx(dt); updateActs(); ambientUpdate(performance.now() / 1000); legendStep(dt); encounterStep(dt);
   if (fade > 0) fade = Math.max(0, fade - dt * 1.2);
   if (Math.abs(gameMin - skyMin) >= 3 || Math.abs(wx.cloud - skyCloud) > 0.04) renderSky();
   twitchCd -= dt;
@@ -3021,6 +3325,13 @@ function updateLog() {
 // ---------- input ----------
 window.addEventListener('keydown', e => {
   if (e.target && e.target.tagName === 'INPUT') return; // typing a password
+  if (choice) { // answering Reiska
+    if (['Space', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+    if (e.code === 'ArrowLeft') choice.sel = 0; else if (e.code === 'ArrowRight') choice.sel = 1;
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) choose(choice.sel);
+    else if (e.code === 'Escape') choose(1);
+    return;
+  }
   if (guideOpen) {
     if (['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
     if (e.repeat) return;
@@ -3088,7 +3399,7 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'KeyX') twitch();
   else if (e.code === 'KeyM') toggleMute();
   else if (e.code === 'KeyN') cycleMusic();
-  else if (e.code === 'Escape') { if (state === 'idle' && !contest) { state = 'title'; titleT = 0; syncButtons(); } else if (contest) showMsg('Kilpailu on kesken', '#ffd84a', 1.2); }
+  else if (e.code === 'Escape') { if (state === 'idle' && !contest) { state = 'title'; titleT = 0; syncButtons(); } else if (contest) endContestAsk(); }
   else if (e.code === 'KeyA') cycleTime();
   else if (e.code === 'KeyS') cycleWeather();
   else if (e.code === 'KeyT') waitHour();
@@ -3096,6 +3407,7 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => { if (e.code === 'Space') { e.preventDefault(); release(); } });
 cv.addEventListener('pointerdown', e => {
   e.preventDefault();
+  if (choice) { const r = cv.getBoundingClientRect(); choose(e.clientX - r.left < r.width / 2 ? 0 : 1); return; }
   if (guideOpen) { const r = cv.getBoundingClientRect(); guideTurn(e.clientX - r.left < r.width / 2 ? -1 : 1); return; }
   if (pwShow) { pwShow = false; return; }
   if (contestResults) { contestResults = null; return; }
@@ -3141,6 +3453,13 @@ cv.addEventListener('pointerdown', e => {
 cv.addEventListener('pointerup', e => { if (e.button !== 2) release(); });
 cv.addEventListener('pointercancel', release);
 cv.addEventListener('contextmenu', e => e.preventDefault());
+// iOS: holding a finger on the screen (reeling) would otherwise select text or open the magnifier
+cv.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+cv.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+if (document.addEventListener) document.addEventListener('selectstart', e => {
+  const t = e.target && e.target.nodeType === 3 ? e.target.parentNode : e.target; // Safari may report a text node
+  if (t === cv || (t && t.closest && t.closest('.screen, .bar'))) e.preventDefault();
+});
 window.addEventListener('blur', release);
 function toggleMute() {
   muted = !muted;
