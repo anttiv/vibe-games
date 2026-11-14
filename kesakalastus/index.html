@@ -36,8 +36,15 @@ h1{font-size:16px;margin:4px 0 2px;letter-spacing:1px}
 canvas{display:block;width:100%;aspect-ratio:4/3;image-rendering:pixelated;image-rendering:crisp-edges;
   touch-action:none;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 /* long presses on the game must never start text selection or the iOS callout */
-h1,.sub,.screen,.bar{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px auto 0;max-width:760px}
+h1,.sub,.screen,.bar,.pad{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+/* fishing pad right under the screen: a big jerk / strike button within thumb reach, and the drag or depth buttons */
+.pad{display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;margin:8px auto 0;max-width:760px}
+.pad button{min-height:52px;font-size:12px}
+.pad .big{font-size:14px}
+/* menu buttons in a fixed grid, so a longer label never pushes buttons to another row */
+.bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:6px;margin:8px auto 0;max-width:760px}
+.bar button{min-height:40px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ghost{visibility:hidden}
 button{font:inherit;font-size:10px;padding:9px 10px;background:var(--panel);color:var(--ink);
   border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);cursor:pointer;touch-action:manipulation;
   -webkit-user-select:none;user-select:none}
@@ -62,17 +69,19 @@ kbd{font:inherit;border:2px solid var(--lo);padding:0 3px}
   <h1>Kesäkalastus</h1>
   <p class="sub">Rantakalastusta mökkijärvellä keskikesällä.</p>
   <div class="screen"><canvas id="c" width="320" height="200" aria-label="Kalastuspelin näyttö. Pidä välilyöntiä tai näyttöä pohjassa."></canvas></div>
+  <div class="pad">
+    <button id="bTwitch" class="big">X Nykäise</button>
+    <button id="bMinus">− <span class="adj">Jarru</span></button>
+    <button id="bPlus">+ <span class="adj">Jarru</span></button>
+  </div>
   <div class="bar">
     <button id="bSpin" aria-pressed="true">1 Virveli</button>
     <button id="bPole" aria-pressed="false">2 Mato-onki</button>
     <button id="bLure" class="spinOnly">Q Lippa</button>
     <button id="bGear" class="spinOnly">V Hidas</button>
-    <button id="bTwitch" class="spinOnly">X Nykäise</button>
     <button id="bTime" class="titleOnly">A Aika</button>
     <button id="bWeather" class="titleOnly">S Sää</button>
     <button id="bWait" class="gameOnly">T Odota tunti</button>
-    <button id="bMinus">− <span class="adj">Jarru</span></button>
-    <button id="bPlus">+ <span class="adj">Jarru</span></button>
     <button id="bMute" aria-pressed="false">Ääni päällä</button>
     <button id="bMusic">N Musiikki: Auto</button>
     <button id="bGuide">O Opas</button>
@@ -226,7 +235,11 @@ function drawIsland(c) {
   c.fillStyle = '#1c3524';
   for (let y = 0; y < 22; y++) { const w = Math.round(y / 4); c.fillRect(268 - w, WATER_Y - 34 + y, w * 2 + 1, 1); }
 }
+let bobY = 0; // how far the boat is lifted by the waves this frame
 function drawSittingAngler(g) {
+  g.save(); g.translate(0, bobY); drawBoatHull(g); drawSittingAnglerBody(g); g.restore();
+}
+function drawSittingAnglerBody(g) {
   if (owned.has('m4') || owned.has('m8')) { // outboard on the stern
     g.fillStyle = owned.has('m8') ? '#c02020' : '#606870'; g.fillRect(1, WATER_Y - 13, 6, 6);
     if (lux.motor) { g.fillStyle = MOTOR_STRIPES[lux.motor]; g.fillRect(1, WATER_Y - 11, 6, 1); } // tuning stripe
@@ -247,7 +260,7 @@ const boatScene = (name, o) => Object.assign({
     pole: { rest: [84, 44], fishing: [88, 48], charge: () => [26, 28], lift: [70, 32], give: d => [86 + 3 * d, 52 + 6 * d] },
   },
   reeds: [3, 8], reedCount: 0, lilies: [0, 0], lilyCount: 0, mosquito: [36, 52], cabin: false, treeK: 0.7, stones: 10,
-  foreground(c) { drawBoatHull(c); }, drawAngler: drawSittingAngler,
+  foreground() {}, drawAngler: drawSittingAngler, // the hull is drawn every frame so it can rock
 }, o);
 Object.assign(SCENES.ranta, { pos: 0, d: 'LAITURI JA RANTAKALLIO' });
 Object.assign(SCENES, {
@@ -257,7 +270,7 @@ Object.assign(SCENES, {
   luoto: boatScene('Kivikkoluoto', { pos: 2, d: 'JYRKKÄ REUNA. AHVEN, KUHA, HAUKI', vpm: 11, stones: 80, stoneR: 5, treeK: 0.8,
     depth: m => { const x = Math.max(0, m); return 1.1 + 0.08 * x + 6.4 / (1 + Math.exp(-(x - 13) / 2.6)) + 0.35 * Math.sin(x * 0.9) * Math.sin(x * 0.23) + 0.2 * Math.sin(x * 2.1); },
     speciesK: { ahven: 1.6, hauki: 1.3, kuha: 1.5, sarki: 0.7, lahna: 0.6, kiiski: 1, salakka: 1, siika: 0.5 },
-    foreground(c) { drawIsland(c); drawBoatHull(c); } }),
+    foreground(c) { drawIsland(c); } }),
   syvanne: boatScene('Syvänne', { pos: 2.5, d: 'JYRKKÄ ROTKO 12 M. KUHA, SIIKA, LAHNA', vpm: 9, treeK: 1.1, stones: 6,
     water: ['#2a4a48', '#22403e', '#1c3634', '#162c2c', '#122424', '#0e1e1e', '#0a1818', '#081212'], bottomCols: ['#3a3a30', '#2a2a22', '#1e1e18', '#121210'],
     depth: m => { const x = Math.max(0, m); return 2.2 + 10 / (1 + Math.exp(-(x - 7) / 1.6)) + 0.4 * Math.sin(x * 0.35); },
@@ -919,7 +932,7 @@ const REISKA = {
   bragger:  { w: () => 1.5, say: 'KAHDEKSAN KILOA! NO, MELKEIN.', brag: true },
   coffee:   { w: m => 1 + m * 0.4, say: 'TULE KAHVILLE!', ask: ['MENE', 'EI KIITOS'] },
   engine:   { w: () => scene.boat ? 2 : 0.8, say: 'PERÄPRUTKU LEVISI!', motor: 'broken', ask: ['HINAA', 'EI'] },
-  stolen:   { w: () => 1, say: 'MERCURY PÖLLITTIIN TAAS!', motor: 'gone', angry: true },
+  stolen:   { w: () => 1, say: 'PERÄMOOTTORI PÖLLITTIIN TAAS!', motor: 'gone', angry: true },
 };
 function startNeighbor() {
   let tot = 0; const ws = {};
@@ -1289,9 +1302,10 @@ function syncButtons() {
   const $ = id => document.getElementById(id);
   $('bSpin').setAttribute('aria-pressed', rod === 'spin');
   $('bPole').setAttribute('aria-pressed', rod === 'pole');
-  document.querySelectorAll('.spinOnly').forEach(e => { e.hidden = rod !== 'spin'; });
+  document.querySelectorAll('.spinOnly').forEach(e => { e.classList.toggle('ghost', rod !== 'spin'); }); // keeps its place in the grid
+  $('bTwitch').textContent = rod === 'spin' ? 'X Nykäise' : 'Vastaisku / nosta';
   document.querySelectorAll('.adj').forEach(e => { e.textContent = rod === 'spin' ? 'Jarru' : 'Syvyys'; });
-  $('bLure').textContent = 'Q ' + LURES[lureType].fi;
+  $('bLure').textContent = 'Q ' + nice(LURES[lureType].hud || LURES[lureType].fi.toUpperCase());
   $('bGear').textContent = 'V ' + (gear === 'fast' ? 'Nopea' : 'Hidas');
   document.querySelectorAll('.titleOnly').forEach(e => { e.hidden = state !== 'title'; });
   document.querySelectorAll('.gameOnly').forEach(e => { e.hidden = state === 'title'; });
@@ -1997,7 +2011,7 @@ function rodTarget() {
   else if (state === 'landing') v = rod === 'pole' ? P.lift : P.rest;
   else if (state === 'fishing' || state === 'strike' || state === 'fight' || (rod === 'pole' && state === 'fly')) v = P.fishing;
   else v = P.rest;
-  return { x: v[0], y: v[1] };
+  return { x: v[0], y: v[1] + bobY };
 }
 function fishMouth(f) {
   const len = spriteLen(f);
@@ -2023,26 +2037,28 @@ function drawFishAt(f, x, y, alpha, rot) {
   g.drawImage(spr, -Math.round(spr.width / 2), -Math.round(spr.height / 2));
   g.restore(); g.globalAlpha = 1;
 }
+const LURE_TINT = { c0: ['#c0c0c8', '#ffffff'], c1: ['#e8c050', '#fff4c0'], c2: ['#2a2a30', '#606068'], c3: ['#ff5ac8', '#ffb0e8'] };
 function drawLure(x, y, now) {
   x = Math.round(x); y = Math.round(y);
   if (lux.gold && Math.floor(now * 6) % 3 === 0) { g.fillStyle = '#ffd84a'; g.fillRect(x - 1, y - 2, 3, 1); } // golden glint
   const moving = lure.moving || lure.flashT > 0 || state === 'fly';
   const blink = Math.floor(now * 14) % 2;
+  const tint = LURE_TINT[equip.color] || LURE_TINT.c0; // the lure colour bought at the kiosk
   switch (lureType) {
     case 'lippa':
-      g.fillStyle = '#c0c0c8'; g.fillRect(x - 1, y, 3, 1);
-      g.fillStyle = moving && blink ? '#ffffff' : '#9098a0'; g.fillRect(x - 3, y - 1, 2, 3);
+      g.fillStyle = tint[0]; g.fillRect(x - 1, y, 3, 1);
+      g.fillStyle = moving && blink ? tint[1] : tint[0]; g.fillRect(x - 3, y - 1, 2, 3);
       g.fillStyle = '#d02a20'; g.fillRect(x + 2, y, 1, 1);
       break;
     case 'lusikka': {
       const tilt = moving ? (blink ? -1 : 1) : 0;
-      g.fillStyle = '#e8c860'; g.fillRect(x - 2, y + (tilt < 0 ? -1 : 0), 4, 2);
-      g.fillStyle = '#fff4c0'; g.fillRect(x - 2, y + (tilt < 0 ? -1 : 0), 2, 1);
+      g.fillStyle = tint[0]; g.fillRect(x - 2, y + (tilt < 0 ? -1 : 0), 4, 2);
+      g.fillStyle = tint[1]; g.fillRect(x - 2, y + (tilt < 0 ? -1 : 0), 2, 1);
       g.fillStyle = '#b02020'; g.fillRect(x + 2, y + (tilt > 0 ? 1 : 0), 1, 1);
       break;
     }
     case 'vaappu':
-      g.fillStyle = '#5ac83a'; g.fillRect(x - 3, y - 1, 6, 1);
+      g.fillStyle = tint[0]; g.fillRect(x - 3, y - 1, 6, 1);
       g.fillStyle = '#f08a2a'; g.fillRect(x - 3, y, 6, 1);
       g.fillStyle = '#000'; g.fillRect(x - 2, y - 1, 1, 1);
       g.fillStyle = '#d8e8f0'; g.fillRect(x - 5, y + 1, 2, 1);
@@ -2057,7 +2073,7 @@ function drawLure(x, y, now) {
     case 'jigi': {
       const wig = moving ? blink : 0;
       g.fillStyle = '#d02020'; g.fillRect(x - 2, y - 1, 2, 2);
-      g.fillStyle = '#e8e060'; g.fillRect(x, y, 2, 1); g.fillRect(x + 2, y - wig, 2, 1);
+      g.fillStyle = tint[0]; g.fillRect(x, y, 2, 1); g.fillRect(x + 2, y - wig, 2, 1);
       break;
     }
   }
@@ -2065,6 +2081,7 @@ function drawLure(x, y, now) {
 
 function draw() {
   const now = performance.now() / 1000;
+  bobY = scene.boat ? Math.round(Math.sin(now * 1.7) * (0.6 + wx.wind * 1.4 + (wakeT > 0 ? 1.5 * wakeT / 20 : 0))) : 0;
   g.drawImage(skyCv, 0, 0);
   const h = hourNow(), alt = sunAlt(h);
   const sx = 160 + Math.sin(2 * Math.PI * (h - 13) / 24) * 150, sy = 76 - alt * 1.15;
@@ -2146,7 +2163,7 @@ function draw() {
     tx += dx / d * bend; ty += dy / d * bend;
   }
   if (lure.flashT > 0.2 && rod === 'spin') { tx += 2; ty -= 3; }
-  const bx = scene.rodBase.x, by = scene.rodBase.y;
+  const bx = scene.rodBase.x, by = scene.rodBase.y + bobY;
   const rodPts = quadPts(bx, by, tip.x, tip.y, tx, ty, 12);
   drawCurve(rodPts, rod === 'pole' ? '#c9a44a' : ROD_COLS[lux.rod]);
   if (rod === 'spin' && lux.rod >= 3) { g.fillStyle = '#ffd84a'; g.fillRect(Math.round(tx), Math.round(ty), 1, 1); } // gold tip
@@ -2224,6 +2241,7 @@ function draw() {
   if (contestOpen) drawContestScreen();
   if (mapOpen) drawMap();
   if (homeOpen) drawHome(now);
+  if (pick) drawPick();
   if (choice) drawChoice();
   if (contestResults) drawContestResults(now);
   if (pwShow) drawPassword();
@@ -2306,8 +2324,9 @@ function drawHud(now) {
   drawWxIcon(45, 1);
   if (rod === 'spin') {
     const n = lureCount[lureType];
-    txt((LURES[lureType].hud || LURES[lureType].fi.toUpperCase()) + ' ' + n, 60, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
-    txt('JARRU ' + fi1(drag), 136, 2, '#9cd8ff');
+    g.fillStyle = '#000'; g.fillRect(59, 2, 7, 7); g.fillStyle = (LURE_TINT[equip.color] || LURE_TINT.c0)[0]; g.fillRect(60, 3, 5, 5); // lure colour
+    txt((LURES[lureType].hud || LURES[lureType].fi.toUpperCase()) + ' ' + n, 69, 2, n > 0 ? '#ffd84a' : '#ff6a4a');
+    txt('JARRU ' + fi1(drag), 152, 2, '#9cd8ff');
     txt(gear === 'fast' ? 'NOPEA' : 'HIDAS', 276, 2, gear === 'fast' ? '#ff9a4a' : '#9cff7a');
   } else {
     txt('MATO-ONKI', 60, 2, '#ffd84a');
@@ -2317,7 +2336,8 @@ function drawHud(now) {
   if (state === 'idle' || state === 'fishing') { const ms = money + ' MK'; txt(ms, W - 4 - ms.length * 8, 14, '#ffd84a'); }
   if (contest && state !== 'title') {
     const c = CONTESTS[contest.key], left = Math.max(0, c.len - contest.t), lt = Math.floor(left / 60) + ':' + String(Math.floor(left % 60)).padStart(2, '0');
-    txt('KISA ' + (contest.over ? 'LOPPU' : lt) + ' ' + fmtKg(contest.score), 4, 14, contest.over || left < 30 ? '#ff9a4a' : '#9cff7a');
+    const rank = standings().findIndex(r => r.you) + 1;
+    txt('KISA ' + (contest.over ? 'LOPPU' : lt) + ' ' + fmtKg(contest.score) + ' ' + rank + '.', 4, 14, contest.over || left < 30 ? '#ff9a4a' : '#9cff7a');
   }
   if ((state === 'idle' || state === 'fishing') && lineCond[rod] < 0.45) txt('SIIMA KULUNUT', 4, 34, Math.floor(now * 2) % 2 ? '#ff8a4a' : '#ffd84a');
   if (scene.boat && owned.has('e1') && state !== 'title') drawSonar();
@@ -2374,9 +2394,12 @@ function drawCard(now) {
   g.fillStyle = f.legend ? '#806000' : '#000080'; g.fillRect(x + 3, y + 3, w - 6, 11);
   txt(f.legend ? 'LEGENDA!' : 'SAALIS!', x + 6, y + 5, '#fff', false);
   g.fillStyle = '#3e5a3a'; g.fillRect(x + 8, y + 18, w - 16, 54);
-  const spr = makeSprite(f.sp, Math.min(70, Math.max(26, spriteLen(f) * 2)), f.legend);
-  const sc = 2;
-  g.drawImage(spr, Math.round(x + w / 2 - spr.width * sc / 2), Math.round(y + 45 - spr.height * sc / 2), spr.width * sc, spr.height * sc);
+  const pc = f.legend ? null : fishPortraitCanvas(f.sp); // detailed portrait; legends keep their own sprite for now
+  if (pc) g.drawImage(pc, Math.round(x + w / 2 - pc.width / 2), Math.round(y + 45 - pc.height / 2));
+  else {
+    const spr = makeSprite(f.sp, Math.min(70, Math.max(26, spriteLen(f) * 2)), f.legend), sc = 2;
+    g.drawImage(spr, Math.round(x + w / 2 - spr.width * sc / 2), Math.round(y + 45 - spr.height * sc / 2), spr.width * sc, spr.height * sc);
+  }
   txt((card.name || S.fi).toUpperCase(), x + 10, y + 78, '#000', false);
   const ptxt = card.pts + ' P';
   txt(ptxt, x + w - 10 - ptxt.length * 8, y + 78, '#006000', false);
@@ -2608,7 +2631,7 @@ function startContest(key, free) {
   if (!free) money -= c.fee;
   if (spot !== 'ranta') { spot = 'ranta'; setScene('ranta'); }
   gameMin = c.start; renderSky(); updateWeather(0); wx = wxTargets();
-  rod = c.rod; contest = { key, t: 0, score: 0, n: 0, over: false };
+  rod = c.rod; contest = { key, t: 0, score: 0, n: 0, over: false, rivals: makeRivals(c), report: 0 };
   contestOpen = false;
   if (state === 'title') state = 'idle';
   newTrip(); syncButtons(); saveGame();
@@ -2630,18 +2653,13 @@ function contestStep(dt) {
   if (!contest) return;
   contest.t += dt * clockK();
   const c = CONTESTS[contest.key];
+  if (!contest.over && Math.floor(contest.t / 60) > contest.report && contest.t < c.len) { contest.report = Math.floor(contest.t / 60); reportStandings(); } // every contest hour
   if (contest.t >= c.len && !contest.over) { contest.over = true; showMsg('Aika loppui! Viimeinen kala saa tulla.', '#ffd84a', 2.4); sfx.bite(); }
   if (contest.over && (state === 'idle' || state === 'fishing' || state === 'title')) finishContest();
 }
 function finishContest() {
   const key = contest.key, c = CONTESTS[key], you = contest.score;
-  const names = RIVALS.slice().sort(() => Math.random() - 0.5).slice(0, 7);
-  const rows = names.map(name => { // rivals: a skill level and a good or bad day
-    const skill = rnd(0.45, 1.15);
-    let s = c.base * skill * Math.exp(rnd(-0.45, 0.45));
-    if (Math.random() < 0.18 * (1.2 - skill)) s = 0; // blanked
-    return { name, s };
-  });
+  const rows = contest.rivals.map(r => ({ name: r.name, s: r.final })); // the rivals finish their day too
   rows.push({ name: 'SINÄ', s: you, you: true });
   rows.sort((a, b) => b.s - a.s);
   const place = rows.findIndex(r => r.you) + 1, prize = you > 0 ? (c.prizes[place - 1] || 0) : 0;
@@ -2652,6 +2670,120 @@ function finishContest() {
   if (state === 'fishing') state = 'idle';
   syncButtons(); saveGame();
   sfx[place === 1 && you > 0 ? 'catch' : 'lose']();
+}
+// ---- item cards for lists (catalogue, contests, boat trips): tap a row, then the card's buttons ----
+let pick = null; // { title, body(x, y, w), actions: () => [{ label, enabled, fn }], sel }
+const PICK = { x: 30, y: 26, w: 260, h: 152 };
+function openPick(p) { pick = Object.assign({ sel: 0 }, p); }
+function closePick() { pick = null; }
+function pickPress(i) { const a = pick.actions()[i]; if (a && a.enabled) a.fn(); }
+function drawPick() {
+  const { x, y, w, h } = PICK, P = pick, acts = P.actions();
+  g.fillStyle = 'rgba(0,0,0,0.45)'; g.fillRect(0, 0, W, H);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#000080'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  txt(P.title.slice(0, 30), x + 7, y + 5, '#fff', false);
+  P.body(x + 8, y + 20, w - 16);
+  const n = acts.length, bw = Math.floor((w - 20 - (n - 1) * 6) / n);
+  acts.forEach((a, i) => {
+    const bx = x + 10 + i * (bw + 6), by = y + h - 26, on = i === P.sel, lab = a.label.slice(0, Math.floor((bw - 6) / 8));
+    g.fillStyle = on ? '#000080' : '#c0c0c0'; g.fillRect(bx, by, bw, 18);
+    g.fillStyle = on ? '#404040' : '#fff'; g.fillRect(bx, by, bw, 1); g.fillRect(bx, by, 1, 18);
+    g.fillStyle = on ? '#fff' : '#404040'; g.fillRect(bx, by + 17, bw, 1); g.fillRect(bx + bw - 1, by, 1, 18);
+    txt(lab, Math.round(bx + bw / 2 - lab.length * 4), by + 5, a.enabled ? (on ? '#fff' : '#000') : '#808080', false);
+  });
+}
+function pickTap(px, py) {
+  const { x, y, w, h } = PICK, acts = pick.actions(), n = acts.length, bw = Math.floor((w - 20 - (n - 1) * 6) / n), by = y + h - 26;
+  if (px < x || px > x + w || py < y || py > y + h) { closePick(); return; }
+  if (py >= by - 4 && py < by + 22) for (let i = 0; i < n; i++) { const bx = x + 10 + i * (bw + 6); if (px >= bx - 2 && px < bx + bw + 2) { pick.sel = i; pickPress(i); return; } }
+}
+const pickLines = (lines, x, y, col = '#000') => lines.forEach((l, i) => txt(l, x, y + i * 10, col, false));
+function openContestCard(i) {
+  const k = CONTEST_ORDER[i], c = CONTESTS[k]; contestSel = i; contestMsg = '';
+  openPick({ title: c.fi, body: (x, y) => {
+    const d = daysUntil(c), t = String(c.start / 60).padStart(2, '0') + '-' + String(((c.start + c.len) / 60) % 24).padStart(2, '0');
+    pickLines(wrapText(c.d, 30), x, y, '#000080');
+    pickLines(['AIKA: ' + (d === 0 ? 'TÄNÄÄN' : WEEKDAYS[c.day] + ' (' + d + ' PV)'), 'KLO ' + t, 'MAKSU: ' + c.fee + ' MK', 'PALKINNOT: ' + c.prizes.join(' / ') + ' MK',
+      'POKAALIT: ' + trophies[k].join(' / ')], x, y + 22);
+    if (contestMsg) txt(contestMsg.toUpperCase().slice(0, 30), x, y + 76, '#a00000', false);
+  }, actions: () => [{ label: 'ILMOITTAUDU', enabled: true, fn: () => { if (startContest(k, false)) closePick(); } }, { label: 'TAKAISIN', enabled: true, fn: closePick }] });
+}
+function openSpotCard(i) {
+  const k = SPOT_ORDER[i], S = SCENES[k]; mapSel = i; mapMsg = '';
+  let lo = 99, hi = 0; for (let m = 0; m <= 35; m += 0.5) { const d = S.depth(m); lo = Math.min(lo, d); hi = Math.max(hi, d); }
+  openPick({ title: S.name.toUpperCase(), body: (x, y, w) => {
+    const t = trip(k);
+    pickLines(wrapText(S.d, 30), x, y, '#000080');
+    pickLines(['SYVYYS ' + fi1(lo) + '-' + fi1(hi) + ' M', k === spot ? 'OLET TÄÄLLÄ' : 'MATKA ' + t.min + ' MIN' + (t.fuel ? ', BENSA ' + t.fuel + ' MK' : ''),
+      'VENE: ' + (owned.has('b1') ? 'OMA' : rentDay === dayNum ? 'VUOKRATTU' : 'EI VENETTÄ')], x, y + 22);
+    g.fillStyle = '#3e5a3a'; g.fillRect(x, y + 56, w, 28); g.fillStyle = '#5c4b30'; // the bottom profile
+    for (let px = 0; px < w; px++) { const d = S.depth(px / w * 35), py = Math.round(d / Math.max(hi, 1) * 24); g.fillRect(x + px, y + 58 + py, 1, 26 - py); }
+    if (mapMsg) txt(mapMsg.toUpperCase().slice(0, 30), x, y + 88, '#a00000', false);
+  }, actions: () => [{ label: k === spot ? 'TÄSSÄ' : 'LÄHDE', enabled: k !== spot, fn: () => { travel(k); if (!mapOpen) closePick(); } }, { label: 'TAKAISIN', enabled: true, fn: closePick }] });
+}
+function cosBuy(C) {
+  const st = cos[C.id];
+  if (st.own >= C.names.length) return;
+  if (C.need && !C.need()) { homeMsg = C.needMsg; return; }
+  if (money < C.prices[st.own]) { homeMsg = 'Rahat eivät riitä.'; return; }
+  money -= C.prices[st.own]; st.own++; st.wear = st.own - 1; sfx.catch();
+  homeMsg = nice(C.fi) + ': ' + C.names[st.wear].toLowerCase();
+  if (C.id === 'paint' && (scene.boat || (lux.cabin >= 2 && spot === 'ranta'))) buildStatic();
+  saveGame();
+}
+function openCatalogCard(row) {
+  const r = catalogRows()[row]; homeSel = row; homeMsg = '';
+  if (r.kind === 'back') { catalogAct(0); return; }
+  if (r.kind === 'lux') {
+    const L = r.L;
+    openPick({ title: L.fi, body: (x, y) => {
+      const lv = lux[L.id];
+      pickLines(wrapText(L.d, 30), x, y, '#000080');
+      pickLines(['TASO ' + lv + '/' + L.max, lv >= L.max ? 'HUIPUSSA' : 'SEURAAVA TASO: ' + luxPrice(L) + ' MK', 'RAHAA: ' + money + ' MK'], x, y + 26);
+      if (homeMsg) txt(homeMsg.toUpperCase().slice(0, 30), x, y + 62, '#804000', false);
+    }, actions: () => [{ label: 'OSTA', enabled: lux[L.id] < L.max, fn: () => { homeSel = row; catalogAct(0); } }, { label: 'TAKAISIN', enabled: true, fn: closePick }] });
+    return;
+  }
+  const C = r.C;
+  openPick({ title: C.fi, body: (x, y) => {
+    const st = cos[C.id], col = C.cols[st.wear];
+    g.fillStyle = Array.isArray(col) ? col[0] : col; g.fillRect(x, y, 26, 26);
+    if (Array.isArray(col)) { g.fillStyle = col[1]; g.fillRect(x + 13, y, 13, 26); }
+    pickLines(['PÄÄLLÄ:', C.names[st.wear]], x + 34, y + 4, '#000080');
+    pickLines(['OMISTAT ' + st.own + '/' + C.names.length, st.own < C.names.length ? 'SEURAAVA: ' + C.names[st.own] : 'KAIKKI OSTETTU', st.own < C.names.length ? 'HINTA: ' + C.prices[st.own] + ' MK' : ''], x, y + 34);
+    if (homeMsg) txt(homeMsg.toUpperCase().slice(0, 30), x, y + 68, '#804000', false);
+  }, actions: () => [{ label: 'OSTA', enabled: cos[C.id].own < C.names.length, fn: () => cosBuy(C) },
+    { label: 'VAIHDA', enabled: cos[C.id].own > 1, fn: () => { homeSel = row; catalogAct(1); } }, { label: 'TAKAISIN', enabled: true, fn: closePick }] });
+}
+// ---- live contest standings: the rivals' catches happen during the contest ----
+function makeRivals(c) {
+  return RIVALS.slice().sort(() => Math.random() - 0.5).slice(0, 7).map(name => {
+    const skill = rnd(0.45, 1.15);
+    let s = c.base * skill * Math.exp(rnd(-0.45, 0.45));
+    if (Math.random() < 0.18 * (1.2 - skill)) s = 0; // blanked
+    const ev = [];
+    if (s > 0) {
+      const n = c.score === 'biggest' ? 1 + Math.floor(Math.random() * 4) : 2 + Math.floor(Math.random() * 6);
+      const parts = Array.from({ length: n }, () => rnd(0.3, 1)), sum = parts.reduce((a, b) => a + b, 0);
+      parts.forEach((p, i) => ev.push({ t: rnd(10, c.len - 5), v: c.score === 'biggest' ? (i === 0 ? s : s * rnd(0.3, 0.9)) : s * p / sum }));
+      ev.sort((a, b) => a.t - b.t);
+    }
+    return { name, final: s, ev };
+  });
+}
+function rivalNow(r, t, mode) { let v = 0; for (const e of r.ev) if (e.t <= t) v = mode === 'biggest' ? Math.max(v, e.v) : v + e.v; return v; }
+function standings() {
+  const c = CONTESTS[contest.key], rows = contest.rivals.map(r => ({ name: r.name, s: rivalNow(r, contest.t, c.score) }));
+  rows.push({ name: 'SINÄ', s: contest.score, you: true });
+  rows.sort((a, b) => b.s - a.s || (a.you ? -1 : 1));
+  return rows;
+}
+function reportStandings() {
+  const rows = standings(), me = rows.findIndex(r => r.you) + 1, lead = rows[0], first = n => n.split(' ')[0];
+  if (lead.s <= 0) showMsg('Välitilanne: kukaan ei ole saanut kalaa', '#9cd8ff', 3);
+  else if (lead.you) showMsg('Välitilanne: johdat! 2. ' + first(rows[1].name) + ' ' + fmtKg(rows[1].s), '#9cff7a', 3.2);
+  else showMsg('Välitilanne: ' + first(lead.name) + ' ' + fmtKg(lead.s) + ', olet ' + me + '.', '#9cd8ff', 3.2);
 }
 function contestBuy() {
   const key = CONTEST_ORDER[contestSel];
@@ -2679,7 +2811,7 @@ function drawContestScreen() {
   });
   const tr = trophies[CONTEST_ORDER[contestSel]];
   txt(contestMsg ? contestMsg.toUpperCase().slice(0, 34) : 'POKAALIT: ' + tr[0] + ' KULTA ' + tr[1] + ' HOPEA ' + tr[2] + ' PRONSSI', x + 8, y + h - 28, contestMsg ? '#a00000' : '#804000', false);
-  txt('PAINA: ILMOITTAUDU  C: SULJE', x + 8, y + h - 15, '#404040', false);
+  txt('PAINA: AVAA  C: SULJE', x + 8, y + h - 15, '#404040', false);
 }
 function drawContestResults(now) {
   const R = contestResults, c = CONTESTS[R.key], x = 30, y = 14, w = 260, h = 172;
@@ -2755,7 +2887,7 @@ function drawMap() {
     txt(S.d.slice(0, 34), x + 10, yy + 9, sel ? '#c8d8ff' : '#404040', false);
   });
   if (mapMsg) txt(mapMsg.toUpperCase().slice(0, 34), x + 8, y + h - 27, '#a00000', false);
-  txt('PAINA: LÄHDE   B: SULJE', x + 8, y + h - 15, '#404040', false);
+  txt('PAINA: AVAA   B: SULJE', x + 8, y + h - 15, '#404040', false);
 }
 function drawSonar() { // 90s green LCD: bottom profile and fish arches 0-17 m ahead of the boat
   const X = 246, Y = 24, w = 70, h = 40, range = 17;
@@ -2986,7 +3118,7 @@ function drawHome(now) {
   const r = catalogRows()[homeSel];
   const info = homeMsg ? homeMsg.toUpperCase() : r.kind === 'lux' ? r.L.d : r.kind === 'cos' ? 'PÄÄLLÄ: ' + r.C.names[cos[r.C.id].wear] : '';
   txt(info.slice(0, 34), x + 8, y + h - 34, homeMsg ? '#804000' : '#000080', false);
-  txt('PAINA: OSTA  < >: VAIHDA ASUA', x + 8, y + h - 20, '#404040', false);
+  txt('PAINA: AVAA  < >: VAIHDA ASUA', x + 8, y + h - 20, '#404040', false);
   txt('H: SULJE', x + 8, y + h - 10, '#404040', false);
 }
 // ---- kiosk ----
@@ -3065,9 +3197,9 @@ const shopItems = () => SHOP_TABS[shopTab].items();
 const slotOf = id => GEAR_SLOTS.find(s => GEAR[s].some(g => g.id === id));
 const shopHours = () => { const h = hourNow(); return h >= 6 && h < 23; };
 function toggleShop() {
-  if (shopOpen) { shopOpen = false; saveGame(); return; }
+  if (shopOpen) { shopOpen = false; shopModal = false; saveGame(); return; }
   if (state !== 'idle' && state !== 'title') { showMsg('Kelaa ensin sisään', '#ffd84a', 1.2); return; }
-  shopOpen = true; shopMsg = ''; if (actionHeld) release();
+  shopOpen = true; shopModal = false; shopMsg = ''; if (actionHeld) release();
 }
 function shopTabTurn(d) { shopTab = (shopTab + d + SHOP_TABS.length) % SHOP_TABS.length; shopSel = 0; shopMsg = ''; }
 const itemPrice = it => it.id === 'respool' ? (rod === 'spin' ? 25 : 12) : it.price;
@@ -3105,6 +3237,604 @@ function shopBuy() {
   else if (it.id === 'spray') { repellent = true; shopMsg = 'Hyttyset pysyvät poissa tämän päivän.'; }
   else if (it.id === 'coffee') { shopMsg = ['Pirteä olo!', 'Munkki oli vielä lämmin.', 'Kahvi oli laihaa, mutta kelpasi.'][Math.floor(Math.random() * 3)]; }
 }
+// ---- kiosk item card: tap a row to see the item, then OSTA / TAKAISIN (easier than tapping small rows twice) ----
+let shopModal = false, shopModalSel = 0;
+function openShopModal() { shopModal = true; shopModalSel = 0; shopMsg = ''; }
+function closeShopModal() { shopModal = false; shopMsg = ''; }
+function shopAction(it) { // label of the main button, and whether it does anything
+  const slot = slotOf(it.id), price = itemPrice(it);
+  if (slot) return equip[slot] === it.id ? ['KÄYTÖSSÄ', false] : owned.has(it.id) ? ['KÄYTTÖÖN', true] : ['OSTA ' + price + ' MK', true];
+  if (it.id === 'l1' && owned.has('l1')) return [leaderOn ? 'POIS PÄÄLTÄ' : 'PÄÄLLE', true];
+  if (EXTRA_ORDER.includes(it.id) && owned.has(it.id)) return ['OMISTAT', false];
+  if (it.id === 'dig') return ['KAIVA', true];
+  if (it.id === 'rent') return rentDay === dayNum || owned.has('b1') ? ['VUOKRATTU', false] : ['VUOKRAA ' + price + ' MK', true];
+  return ['OSTA ' + price + ' MK', true];
+}
+function shopStatus(it) {
+  const slot = slotOf(it.id);
+  if (LURES[it.id]) return 'SINULLA: ' + lureCount[it.id];
+  if (it.id === 'worms' || it.id === 'dig') return 'MATOJA: ' + worms;
+  if (it.id === 'respool') return 'SIIMAN KUNTO: ' + Math.round(lineCond[rod] * 100) + '%';
+  if (it.id === 'spray') return repellent ? 'KÄYTÖSSÄ TÄNÄÄN' : '';
+  if (it.id === 'rent') return owned.has('b1') ? 'SINULLA ON OMA VENE' : rentDay === dayNum ? 'VUOKRATTU TÄNÄÄN' : '';
+  if (slot) return equip[slot] === it.id ? 'KÄYTÖSSÄ' : owned.has(it.id) ? 'OMISTAT' : '';
+  if (it.id === 'l1' && owned.has('l1')) return leaderOn ? 'KÄYTÖSSÄ' : 'OMISTAT, POIS PÄÄLTÄ';
+  if (EXTRA_ORDER.includes(it.id)) return owned.has(it.id) ? 'OMISTAT' : '';
+  return '';
+}
+function itemKind(it) { if (LURES[it.id]) return 'lure'; return slotOf(it.id) || it.id; }
+// Detailed fish and gear portraits for close-up views (catch card, cabin wall, guide, kiosk cards).
+// Everything is drawn pixel by pixel into a small grid, so it stays pixel art at the game's 1x scale.
+// Detailed fish and gear portraits for close-up views (catch card, cabin wall, guide, kiosk cards).
+// Everything is drawn pixel by pixel into a small grid, so it stays pixel art at the game's 1x scale.
+// Detailed fish and gear portraits for close-up views (catch card, cabin wall, guide, kiosk cards).
+// Everything is drawn pixel by pixel into a small grid, so it stays pixel art at the game's 1x scale.
+// Detailed fish and gear portraits for close-up views (catch card, cabin wall, guide, kiosk cards).
+// Everything is drawn pixel by pixel into a small grid, so it stays pixel art at the game's 1x scale.
+const PORTRAITS = {};
+(function (root) {
+'use strict';
+const BAYER4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + 0.5) / 16);
+function hx(c) { const n = parseInt(c.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+function toHex([r, g, b]) { return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join(''); }
+function mix(a, b, t) { const A = hx(a), B = hx(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); }
+const pxMix = (...a) => mix(...a), pxHash = (...a) => hash(...a), pxPoly = (...a) => poly(...a);
+const pxLine = (...a) => line(...a);
+function hash(a, b) { let h = (a * 374761393 + b * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177; return (h ^ (h >>> 16)) >>> 0; }
+// pixel grid with layers: 0 empty, 1 fin, 2 body
+function Grid(w, h) { this.w = w; this.h = h; this.col = new Array(w * h).fill(null); this.kind = new Uint8Array(w * h); }
+Grid.prototype.set = function (x, y, c, k) { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= this.w || y >= this.h) return; const i = y * this.w + x; if (k < this.kind[i] && this.col[i]) return; this.col[i] = c; this.kind[i] = k; };
+Grid.prototype.get = function (x, y) { if (x < 0 || y < 0 || x >= this.w || y >= this.h) return null; return this.col[y * this.w + x]; };
+Grid.prototype.outline = function (dark) { // 1-px dark edge on the outside, the classic pixel-art look
+  const add = [];
+  for (let y = 0; y < this.h; y++) for (let x = 0; x < this.w; x++) {
+    if (this.get(x, y)) continue;
+    const n = [this.get(x - 1, y), this.get(x + 1, y), this.get(x, y - 1), this.get(x, y + 1)].find(Boolean);
+    if (n) add.push([x, y, mix(n, dark, 0.7)]);
+  }
+  for (const [x, y, c] of add) this.set(x, y, c, 3);
+};
+Grid.prototype.paint = function (ctx, ox, oy, flip) {
+  for (let y = 0; y < this.h; y++) for (let x = 0; x < this.w; x++) { const c = this.col[y * this.w + x]; if (c) { ctx.fillStyle = c; ctx.fillRect(ox + (flip ? this.w - 1 - x : x), oy + y, 1, 1); } }
+};
+function poly(G, pts, colorAt, k) { // fill a polygon, colour chosen per pixel
+  let minY = Infinity, maxY = -Infinity; for (const p of pts) { minY = Math.min(minY, p[1]); maxY = Math.max(maxY, p[1]); }
+  for (let y = Math.floor(minY); y <= Math.ceil(maxY); y++) {
+    const xs = [];
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[i], b = pts[(i + 1) % pts.length];
+      if ((a[1] <= y + 0.5 && b[1] > y + 0.5) || (b[1] <= y + 0.5 && a[1] > y + 0.5)) xs.push(a[0] + (y + 0.5 - a[1]) / (b[1] - a[1]) * (b[0] - a[0]));
+    }
+    xs.sort((p, q) => p - q);
+    for (let j = 0; j + 1 < xs.length; j += 2) for (let x = Math.round(xs[j]); x < Math.round(xs[j + 1]); x++) G.set(x, y, colorAt(x, y), k);
+  }
+}
+function line(G, x0, y0, x1, y1, c, k) {
+  x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+  const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1; let e = dx + dy, n = 0;
+  while (n++ < 500) { G.set(x0, y0, c, k); if (x0 === x1 && y0 === y1) break; const e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } }
+}
+const spineH = u => 0.55 + 0.45 * Math.sin(Math.PI * Math.min(1, u * 1.15 + 0.08)); // tallest spines in the front half
+const beta = (t, p, q) => { const m = p / (p + q), peak = Math.pow(m, p) * Math.pow(1 - m, q); return Math.pow(Math.max(0, t), p) * Math.pow(Math.max(0, 1 - t), q) / peak; };
+
+// ---------- fish ----------
+// body: L length (peduncle to snout), top/bot half-depths, pd peduncle half-depth, tp/tq & bp/bq profile shape (peak position, bluntness)
+// sh: shades from back to belly; fins: [{type, at:[t0,t1], h, col, col2, rays, spot}]
+const FISH = {
+  ahven: { L: 78, top: 15, bot: 11, pd: 3.5, tp: 1.1, tq: 0.65, bp: 1.2, bq: 0.55, head: { len: 0.24, st: 1.5, sb: 1, kt: 1.25, kb: 1.4 }, tail: 15, fork: 0.45,
+    sh: ['#3a4a20', '#6e7e2c', '#a8a83c', '#c8c45a', '#ded690', '#efe8c8'], dark: '#141a08',
+    pattern: { kind: 'bars', n: 7, from: 0.12, to: 0.82, col: '#28321a', w: 0.045 },
+    eye: { t: 0.9, r: 3, iris: '#e0b830', high: 2 }, gill: 0.8, mouth: 8,
+    fins: [{ type: 'dorsal', at: [0.38, 0.72], h: 13, col: '#c0c4b0', col2: '#6a7060', rays: 3, spiny: true, spot: '#1a1a12' },
+      { type: 'dorsal', at: [0.14, 0.36], h: 10, col: '#a8ac78', col2: '#6a7048', rays: 3 },
+      { type: 'anal', at: [0.13, 0.27], h: 7, col: '#f07a20', col2: '#ffb040', rays: 2 },
+      { type: 'pelvic', at: [0.58, 0.7], h: 9, col: '#f08a20', col2: '#ffc050', rays: 2 },
+      { type: 'pectoral', at: [0.66, 0.74], h: 7, col: '#d8c060', col2: '#f0d890' }],
+    tailCol: ['#d89a30', '#f0b040'], tailLow: '#f07a20' },
+  hauki: { L: 100, top: 9, bot: 8, pd: 4, tp: 0.8, tq: 0.9, bp: 0.8, bq: 0.9, tail: 15, fork: 0.35, head: { len: 0.27, st: 1.2, sb: 0.8, kt: 0.75, kb: 0.9, gape: 8 },
+    sh: ['#2a3618', '#3e4e26', '#566a34', '#6e8044', '#a8b080', '#eceadc'], dark: '#0e1408',
+    pattern: { kind: 'beans', col: '#d8d898' },
+    eye: { t: 0.86, r: 2, iris: '#e0c040', high: 0 }, gill: 0.8, mouth: 18,
+    fins: [{ type: 'dorsal', at: [0.06, 0.18], h: 9, col: '#7a4a2a', col2: '#b07040', rays: 2, spotted: '#2a1a10' },
+      { type: 'anal', at: [0.06, 0.17], h: 8, col: '#7a4a2a', col2: '#b07040', rays: 2, spotted: '#2a1a10' },
+      { type: 'pelvic', at: [0.42, 0.5], h: 7, col: '#8a5030', col2: '#c08050' },
+      { type: 'pectoral', at: [0.72, 0.77], h: 6, col: '#8a5030', col2: '#c08050' }],
+    tailCol: ['#6a3e22', '#a86a40'], tailSpots: '#2a1a10' },
+  kuha: { L: 90, top: 11, bot: 9, pd: 4, tp: 1.0, tq: 1.0, bp: 1.0, bq: 0.95, tail: 15, fork: 0.4, head: { len: 0.25, st: 1.5, sb: 1, kt: 0.95, kb: 1.05, gape: 7 },
+    sh: ['#3e3a1e', '#6a6430', '#9a9246', '#b4ac62', '#d4d0a8', '#f2f0e4'], dark: '#141408',
+    pattern: { kind: 'bars', n: 8, from: 0.1, to: 0.76, col: '#4a4626', w: 0.03, faint: true },
+    eye: { t: 0.88, r: 3, iris: '#a8b4b0', glassy: true, high: 1 }, gill: 0.8, mouth: 12,
+    fins: [{ type: 'dorsal', at: [0.42, 0.7], h: 12, col: '#b8b8a8', col2: '#6a6a58', rays: 3, spiny: true, spotted: '#1e1e14' },
+      { type: 'dorsal', at: [0.1, 0.38], h: 10, col: '#a8a890', col2: '#6a6a50', rays: 3, spotted: '#1e1e14' },
+      { type: 'anal', at: [0.12, 0.26], h: 7, col: '#d0ccb8', col2: '#e8e4d4' },
+      { type: 'pelvic', at: [0.62, 0.7], h: 7, col: '#e0dcc8', col2: '#f4f0e0' },
+      { type: 'pectoral', at: [0.7, 0.76], h: 6, col: '#b8b090', col2: '#d8d0b0' }],
+    tailCol: ['#8a8a70', '#b8b8a0'], tailSpots: '#2a2a1e' },
+  sarki: { L: 66, top: 11, bot: 10, pd: 4, tp: 1.0, tq: 0.8, bp: 1.0, bq: 0.75, head: { len: 0.2, st: 1.5, sb: 1, kt: 1.3, kb: 1.4 }, tail: 14, fork: 0.55,
+    sh: ['#2c3c50', '#5a6c80', '#a8b4bc', '#c8d0d6', '#e0e6ea', '#f6f8f8'], dark: '#101820', scales: true,
+    eye: { t: 0.9, r: 3, iris: '#d02818', high: 2 }, gill: 0.8, mouth: 4,
+    fins: [{ type: 'dorsal', at: [0.42, 0.6], h: 10, col: '#7a6a5a', col2: '#a08878', rays: 2 },
+      { type: 'anal', at: [0.16, 0.3], h: 7, col: '#d84028', col2: '#f07050', rays: 2 },
+      { type: 'pelvic', at: [0.44, 0.52], h: 7, col: '#e04a2a', col2: '#f88060' },
+      { type: 'pectoral', at: [0.72, 0.79], h: 6, col: '#d86040', col2: '#f09070' }],
+    tailCol: ['#8a6a5a', '#b08878'] },
+  lahna: { L: 70, top: 17, bot: 15, pd: 4, tp: 1.0, tq: 0.8, bp: 1.1, bq: 0.7, tail: 16, fork: 0.6, head: { len: 0.18, st: 1.5, sb: 1, kt: 1.15, kb: 1.6 },
+    sh: ['#3a3020', '#6a5a38', '#98824e', '#b8a064', '#d0bc84', '#e8dcb0'], dark: '#181208', scales: true,
+    eye: { t: 0.93, r: 2, iris: '#c8b070', high: 2 }, gill: 0.84, mouth: 3,
+    fins: [{ type: 'dorsal', at: [0.4, 0.56], h: 12, col: '#4a4030', col2: '#6a5c44', rays: 2 },
+      { type: 'anal', at: [0.08, 0.5], h: 8, col: '#4a4030', col2: '#6a5c44', rays: 4 },
+      { type: 'pelvic', at: [0.5, 0.58], h: 7, col: '#4a4030', col2: '#6a5c44' },
+      { type: 'pectoral', at: [0.76, 0.82], h: 6, col: '#5a5038', col2: '#7a6c50' }],
+    tailCol: ['#40382a', '#5a5040'] },
+  salakka: { L: 66, top: 7, bot: 7, pd: 3, tp: 1.0, tq: 1.0, bp: 1.0, bq: 0.9, tail: 13, fork: 0.6, snout: 0.03,
+    sh: ['#3a5060', '#7090a0', '#c8d6de', '#dde6ec', '#eef3f6', '#ffffff'], dark: '#142028', scales: true, shine: true,
+    eye: { t: 0.92, r: 2, iris: '#c8d0d8' }, gill: 0.82, mouth: 3, upturned: true,
+    fins: [{ type: 'dorsal', at: [0.36, 0.48], h: 7, col: '#a0aab0', col2: '#c8d0d6', rays: 2 },
+      { type: 'anal', at: [0.12, 0.36], h: 6, col: '#c8d0d6', col2: '#e8eef2', rays: 3 },
+      { type: 'pelvic', at: [0.48, 0.55], h: 5, col: '#d0d8de', col2: '#eef2f4' },
+      { type: 'pectoral', at: [0.76, 0.82], h: 5, col: '#d0d8de', col2: '#eef2f4' }],
+    tailCol: ['#90a0aa', '#c0ccd4'] },
+  kiiski: { L: 60, top: 11, bot: 9, pd: 3, tp: 1.2, tq: 0.6, bp: 1.2, bq: 0.55, head: { len: 0.26, st: 1.5, sb: 1, kt: 1.2, kb: 1.3 }, tail: 12, fork: 0.25,
+    sh: ['#3a3018', '#6a5830', '#94804a', '#b4a064', '#d0c090', '#e8dcb8'], dark: '#141008',
+    pattern: { kind: 'specks', col: '#2a2010' },
+    eye: { t: 0.89, r: 3, iris: '#7a6a8a', high: 1 }, gill: 0.78, mouth: 5,
+    fins: [{ type: 'dorsal', at: [0.12, 0.68], h: 11, col: '#b0a888', col2: '#6a6048', rays: 6, spiny: true, spotted: '#2a2410' },
+      { type: 'anal', at: [0.14, 0.26], h: 6, col: '#b8b090', col2: '#d8d0b0' },
+      { type: 'pelvic', at: [0.58, 0.66], h: 6, col: '#c0b898', col2: '#e0d8b8' },
+      { type: 'pectoral', at: [0.66, 0.74], h: 6, col: '#b0a880', col2: '#d0c8a0' }],
+    tailCol: ['#9a9070', '#c0b890'], tailSpots: '#3a3018' },
+  siika: { L: 76, top: 10, bot: 9, pd: 3, tp: 1.0, tq: 0.85, bp: 1.0, bq: 0.8, tail: 15, fork: 0.65, head: { len: 0.17, st: 1.5, sb: 1, kt: 1.2, kb: 1.3 },
+    sh: ['#2e3e4c', '#5a6c7a', '#a8b6c0', '#c8d2d8', '#e2e8ec', '#f6f8fa'], dark: '#101820', scales: true, shine: true,
+    eye: { t: 0.93, r: 2, iris: '#d0d6dc', high: 2 }, gill: 0.84, mouth: 2,
+    fins: [{ type: 'dorsal', at: [0.46, 0.6], h: 10, col: '#5a6670', col2: '#8a96a0', rays: 2 },
+      { type: 'adipose', at: [0.1, 0.15], h: 4, col: '#6a7680', col2: '#8a96a0' },
+      { type: 'anal', at: [0.12, 0.24], h: 6, col: '#a0aab2', col2: '#c8d0d6' },
+      { type: 'pelvic', at: [0.46, 0.53], h: 6, col: '#b8c2c8', col2: '#dce2e6' },
+      { type: 'pectoral', at: [0.76, 0.82], h: 6, col: '#a0aab2', col2: '#c8d0d6' }],
+    tailCol: ['#5a6670', '#8a96a0'] },
+};
+function fishPortrait(sp) {
+  const S = FISH[sp], L = S.L, finTop = Math.max(...S.fins.filter(f => f.type === 'dorsal' || f.type === 'adipose').map(f => f.h), 0);
+  const finBot = Math.max(...S.fins.filter(f => f.type !== 'dorsal' && f.type !== 'adipose' && f.type !== 'pectoral').map(f => f.h), 0);
+  const tailH = Math.round(S.top * 0.95) + 1;
+  const up = Math.max(S.top + finTop, tailH) + 2, dn = Math.max(S.bot + finBot, tailH) + 2;
+  const W = S.tail + L + 3, Hh = up + dn, mid = up, x0 = S.tail + 1;
+  const G = new Grid(W, Hh);
+  const bodyTop = t => S.pd + (S.top - S.pd) * beta(t, S.tp, S.tq) * (S.snout && t > 1 - S.snout ? Math.max(0.15, (1 - t) / S.snout) ** 0.6 : 1);
+  const bodyBot = t => S.pd + (S.bot - S.pd) * beta(t, S.bp, S.bq) * (S.snout && t > 1 - S.snout ? Math.max(0.12, (1 - t) / S.snout) ** 0.5 : 1);
+  const H = S.head; // { len, st, sb, kt, kb }: a tapered head from the nape to a pointed snout (k > 1 rounder, k < 1 flatter, like a pike's bill)
+  const headShape = (v0, v1, u, k) => v1 + (v0 - v1) * (1 - Math.pow(u, k));
+  const topAt = t => H && t > 1 - H.len ? headShape(bodyTop(1 - H.len), H.st, (t - 1 + H.len) / H.len, H.kt) : bodyTop(t);
+  const botAt = t => H && t > 1 - H.len ? headShape(bodyBot(1 - H.len), H.sb, (t - 1 + H.len) / H.len, H.kb) : bodyBot(t);
+  const tip = t => H ? 1 : t > 0.96 ? Math.pow(Math.max(0, (1 - t) / 0.04), 0.5) : 1; // round the very nose (only fish without a head shape)
+  const yTop = t => mid - Math.max(1, topAt(t) * tip(t)), yBot = t => mid + Math.max(1, botAt(t) * tip(t));
+  const tOf = x => (x - x0) / L;
+  // fins behind the body first
+  for (const f of S.fins) {
+    if (f.type === 'pectoral') continue;
+    const xa = x0 + f.at[0] * L, xb = x0 + f.at[1] * L, upper = f.type === 'dorsal' || f.type === 'adipose';
+    const base = x => upper ? yTop(tOf(x)) + 1 : yBot(tOf(x)) - 1, dir = upper ? -1 : 1;
+    let pts;
+    if (f.type === 'adipose') pts = [[xa, base(xa)], [xa + (xb - xa) * 0.3, base(xa) + dir * f.h], [xb, base(xb)]];
+    else if (f.type === 'pelvic') pts = [[xb, base(xb)], [xa - 3, base(xa) + dir * f.h], [xa - 1, base(xa) + dir * (f.h - 2)], [xa, base(xa)]];
+    else if (f.spiny) { // membrane with a scalloped edge; the spines are drawn over it below
+      pts = [[xa, base(xa)]]; const n = Math.max(3, Math.round((xb - xa) / 3));
+      for (let i = 0; i <= n; i++) { const x = xa + (xb - xa) * i / n, hh = f.h * spineH(i / n); pts.push([x, base(x) + dir * hh * 0.92]); if (i < n) pts.push([x + (xb - xa) / n / 2, base(x) + dir * hh * 0.62]); }
+      pts.push([xb, base(xb)]); f._n = n; }
+    else pts = [[xa, base(xa)], [xa + (xb - xa) * 0.25, base(xa) + dir * f.h], [xb, base(xb) + dir * f.h * 0.35], [xb, base(xb)]];
+    poly(G, pts, (x, y) => {
+      const r = Math.abs(y - base(x)) / f.h, ray = f.rays && Math.round((x - xa) / Math.max(1, (xb - xa) / (f.rays * 3))) % 2 === 0 && (x - xa) % 3 === 0;
+      let c = mix(f.col, f.col2, Math.min(1, r * 1.2));
+      if (ray && !f.spiny) c = mix(c, S.dark, 0.35);
+      if (f.spot && x > xb - (xb - xa) * 0.22 && r < 0.7) c = f.spot;
+      if (f.spotted && (x - Math.round(xa)) % 3 === 1 && hash(x >> 1, y >> 1) % 3 === 0) c = mix(c, f.spotted, 0.8); // spots along the rays
+      return c;
+    }, 1);
+  }
+  for (const f of S.fins) if (f.spiny) { // spines
+    const xa = x0 + f.at[0] * L, xb = x0 + f.at[1] * L, n = f._n;
+    for (let i = 0; i <= n; i++) { const x = xa + (xb - xa) * i / n, b = yTop(tOf(x)) + 1; line(G, x, b, x + 1, b - f.h * spineH(i / n), mix(f.col2, '#000000', 0.35), 1); }
+  }
+  // tail
+  const tw = S.pd + 1, spread = Math.round(S.top * 0.95), nx = 1 + S.tail * S.fork;
+  poly(G, [[x0 + 1, mid - tw], [x0 - S.tail * 0.5, mid - spread * 0.62], [1, mid - spread], [nx, mid - 1], [nx, mid + 1], [1, mid + spread], [x0 - S.tail * 0.5, mid + spread * 0.62], [x0 + 1, mid + tw]], (x, y) => {
+    let c = mix(S.tailCol[0], S.tailCol[1], Math.min(1, (x0 - x) / S.tail));
+    if (S.tailLow && y > mid + 1) c = mix(c, S.tailLow, Math.min(1, (y - mid) / spread * 1.6));
+    if ((y - mid) % 3 === 0 && x < x0 - 2) c = mix(c, S.dark, 0.25); // rays
+    if (S.tailSpots && (y - mid) % 3 === 1 && hash(x >> 1, (y + 7) >> 1) % 3 === 0) c = mix(c, S.tailSpots, 0.75);
+    return c;
+  }, 1);
+  // body: shaded from back to belly with ordered dithering
+  for (let x = x0; x <= x0 + L; x++) {
+    const t = tOf(x), yt = yTop(t), yb = yBot(t);
+    for (let y = Math.round(yt); y <= Math.round(yb); y++) {
+      const rel = Math.min(1, Math.max(0, (y - yt) / Math.max(1, yb - yt))), f = rel * (S.sh.length - 1), lo = Math.floor(f), fr = f - lo;
+      const th = fr < 0.3 ? 1 : fr > 0.7 ? 0 : BAYER4[(x & 3) + ((y & 3) << 2)] * 0.4 + 0.3; // dither only in a narrow band between shades
+      let c = S.sh[Math.min(S.sh.length - 1, fr > th ? lo + 1 : lo)];
+      const P = S.pattern;
+      if (P && P.kind === 'bars' && t > P.from && t < P.to && rel < 0.78) {
+        for (let i = 0; i < P.n; i++) {
+          const ct = P.from + (P.to - P.from) * (i + 0.5) / P.n, wv = P.w * (1 - rel * 0.75) * (i % 2 ? 0.8 : 1) + (hash(x, i) % 3 === 0 ? 0.004 : 0);
+          if (Math.abs(t - ct) < wv) c = mix(c, P.col, P.faint ? 0.45 : 0.75 * (1 - rel * 0.4));
+        }
+      }
+      if (P && P.kind === 'spots' && rel > 0.12 && rel < 0.78 && t > 0.05 && t < 0.78 && hash(Math.floor(x / 3), Math.floor(y / 2)) % 3 === 0 && (x + y) % 3) c = mix(c, P.col, 0.8);
+      if (P && P.kind === 'specks' && rel < 0.75 && hash(x, y) % 5 === 0) c = mix(c, P.col, 0.7);
+      if (P && P.kind === 'beans' && rel > 0.12 && rel < 0.8 && t < 0.97) { // pale bean-shaped spots scattered in loose rows
+        const cx = Math.floor(x / 5), cy = Math.floor((y - yt) / 3), hsh = hash(cx * 7 + 3, cy * 13 + 5);
+        if (hsh % 5 < 3) { const sx = cx * 5 + (hsh >> 3) % 3, sy = Math.round(yt) + cy * 3 + 1, len = 2 + (hsh >> 6) % 2; if (y === sy && x >= sx && x < sx + len) c = mix(c, P.col, 0.8); } }
+      if (S.scales && rel > 0.1 && rel < 0.85 && (x * 2 + y * 3) % 7 === 0) c = mix(c, '#ffffff', 0.18);
+      if (S.shine && rel > 0.35 && rel < 0.5 && t > 0.15 && t < 0.85) c = mix(c, '#ffffff', 0.35);
+      G.set(x, y, c, 2);
+    }
+  }
+  // lateral line, gill cover, mouth, eye
+  for (let x = x0 + 2; x < x0 + L * (S.gill - 0.02); x += 2) { const t = tOf(x), y = Math.round(yTop(t) + (yBot(t) - yTop(t)) * 0.32); G.set(x, y, mix(G.get(x, y) || S.sh[2], S.dark, 0.35), 2); }
+  const gx = x0 + L * S.gill;
+  for (let y = Math.round(yTop(S.gill) + 2); y <= Math.round(yBot(S.gill) - 2); y++) { const k = (y - mid) / (yBot(S.gill) - mid + 0.01), x = Math.round(gx + 2 - Math.abs(k) * k * 2); G.set(x, y, mix(G.get(x, y) || S.sh[3], S.dark, 0.5), 2); }
+  const mx = x0 + L, my = Math.round(mid + (H ? (H.sb - H.st) / 2 : (S.upturned ? -1 : 1)));
+  line(G, mx, my, mx - S.mouth, my + (S.upturned ? -1 : 1) * Math.max(1, Math.round(S.mouth / (H && H.gape ? H.gape : 5))), mix(S.sh[1], S.dark, 0.6), 2);
+  const E = S.eye, ex = Math.round(x0 + L * E.t), ey = Math.round(E.high ? mid - topAt(E.t) + E.r + E.high : mid - topAt(E.t) * 0.35);
+  for (let dy = -E.r; dy <= E.r; dy++) for (let dx = -E.r; dx <= E.r; dx++) { const d = dx * dx + dy * dy; if (d <= E.r * E.r + 1) G.set(ex + dx, ey + dy, d <= (E.r - 1) * (E.r - 1) + 0.5 ? E.iris : S.dark, 2); }
+  const pr = Math.max(0, E.r - 2); for (let dy = -pr; dy <= pr; dy++) for (let dx = -pr; dx <= pr; dx++) if (dx * dx + dy * dy <= pr * pr + 0.5) G.set(ex + dx + 1, ey + dy, E.glassy ? '#4a4a40' : '#080808', 2);
+  G.set(ex, ey - Math.max(1, E.r - 2), '#ffffff', 2);
+  // pectoral fin lies over the body
+  const pf = S.fins.find(f => f.type === 'pectoral');
+  if (pf) { const xa = x0 + pf.at[0] * L, xb = x0 + pf.at[1] * L, by = mid + botAt((pf.at[0] + pf.at[1]) / 2) * 0.35;
+    poly(G, [[xb, by - 1], [xb - pf.h * 1.1, by + pf.h * 0.25], [xb - pf.h * 0.9, by + pf.h * 0.7], [xb, by + 1.5]], (x, y) => { const base = G.get(x, y) || pf.col; const c = mix(base, mix(pf.col, pf.col2, Math.min(1, (xb - x) / pf.h)), 0.6); return (x + y) % 4 === 0 ? mix(c, S.dark, 0.25) : c; }, 2); }
+  G.outline(S.dark);
+  return G;
+}
+
+// ---------- gear (64 x 48) ----------
+const GEAR_ART = {
+  lippa(G, tint, pat) { // in-line spinner (front on the left): line eye, clevis, patterned blade, red segmented body, treble hook at the back
+    const t = tint || ['#c8ccd4', '#ffffff'];
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (Math.abs(dx * dx + dy * dy - 4) < 2) G.set(4 + dx, 30 + dy, '#a8a8b0', 2); // line eye
+    pxLine(G, 6, 30, 50, 30, '#9a9aa2', 2);
+    // blade: a willow-leaf oval beside the wire, silver with a black saw-tooth band (the classic pattern)
+    for (let y = 12; y <= 28; y++) for (let x = 7; x <= 35; x++) {
+      const u = (x - 21) / 14, v = (y - 20) / 8; if (u * u + v * v > 1) continue; // a long oval along the wire
+      const k = (u + v) * 0.5, tooth = ((x + 40) % 6) < 3 ? (x + 40) % 3 : 3 - (x + 40) % 3;
+      let c = pxMix(t[0], '#6a6e78', Math.max(0, k + 0.2));
+      if (!pat || pat === 'c0') { if (v > 0.2 - tooth * 0.18) c = '#141418'; }           // silver: black band with a saw-tooth edge
+      else if (pat === 'c1') { if ([[13, 18], [20, 23], [24, 16], [30, 21], [15, 24]].some(([px, py]) => Math.hypot(x - px, y - py) < 1.8)) c = '#c02018'; } // gold: red dots
+      else if (pat === 'c2') { if (Math.hypot(x - 15, y - 21) < 3 || Math.hypot(x - 25, y - 17) < 2.5 || Math.hypot(x - 29, y - 23) < 2) c = '#f0d020'; } // black: yellow spots
+      else if (pat === 'c3') { if ((x - 7) % 6 < 2) c = '#141418'; }                     // fluorescent: black bars
+      if (u > 0.3 && v < -0.45) c = t[1];                  // highlight
+      G.set(x, y, c, 2);
+    }
+    pxLine(G, 8, 30, 10, 26, '#9a9aa2', 2); // clevis
+    // body: three red segmented pieces with grooves, a brass bead between
+    for (let i = 0; i < 3; i++) for (let dy = -4; dy <= 4; dy++) for (let dx = -3; dx <= 3; dx++) {
+      if (dx * dx / 10 + dy * dy / 17 > 1) continue;
+      G.set(38 + i * 6 + dx, 30 + dy, dx === 3 ? '#5a0a0a' : pxMix('#e83a30', '#7a1010', (dy + 4) / 9 + (dx > 1 ? 0.15 : 0)), 2);
+    }
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -1; dx <= 1; dx++) G.set(34 + dx, 30 + dy, '#d8b048', 2);
+    // treble hook: eye, shank and three bends, dark bronze
+    pxLine(G, 52, 30, 56, 30, '#4a4030', 2);
+    for (const dy of [-1, 1]) { pxLine(G, 56, 30, 61, 30 + dy * 7, '#4a4030', 2); pxLine(G, 61, 30 + dy * 7, 58, 30 + dy * 9, '#4a4030', 2); }
+    pxLine(G, 56, 30, 62, 31, '#4a4030', 2); pxLine(G, 62, 31, 61, 34, '#4a4030', 2);
+  },
+  lusikka(G, tint) { // casting spoon: curved teardrop, hammered surface, split ring, treble hook
+    const t = tint || ['#e8c050', '#fff4c0'];
+    for (let y = 0; y < 48; y++) for (let x = 0; x < 64; x++) {
+      const u = (x - 30) / 20, v = (y - 23) / (9 + u * 2.5); // wide end at the hook
+      if (u > -1 && u < 1 && v * v + u * u * 0.9 < 1) { const shade = 0.5 - v * 0.45 + (pxHash(x >> 1, y >> 1) % 3) * 0.06; G.set(x, y, pxMix('#5a4a20', pxMix(t[0], t[1], Math.max(0, shade - 0.4)), Math.min(1, shade + 0.3)), 2); }
+    }
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (Math.abs(dx * dx + dy * dy - 4) < 2) G.set(8 + dx, 23 + dy, '#a0a0a8', 2);
+    line(G, 50, 23, 54, 23, '#909098', 2); line(G, 54, 23, 58, 17, '#909098', 2); line(G, 54, 23, 58, 29, '#909098', 2); line(G, 54, 23, 60, 24, '#909098', 2);
+    for (let i = 0; i < 6; i++) G.set(55 + (i % 2), 19 + i, '#e03020', 2);
+  },
+  vaappu(G) { // slim minnow-style wobbler (front on the left): clear diving lip, blue back with perch bars, yellow sides, two trebles
+    const cy = 21, top = u => 5.5 * Math.pow(Math.sin(Math.PI * Math.min(1, 0.12 + u * 0.88)), 0.55), bot = u => 4.5 * Math.pow(Math.sin(Math.PI * Math.min(1, 0.12 + u * 0.88)), 0.6);
+    for (let x = 10; x <= 56; x++) {
+      const u = (x - 10) / 46, yt = cy - Math.max(1.2, top(u)), yb = cy + Math.max(1, bot(u));
+      for (let y = Math.round(yt); y <= Math.round(yb); y++) {
+        const r = (y - yt) / Math.max(1, yb - yt);
+        let c = r < 0.18 ? '#1e5aa8' : r < 0.45 ? pxMix('#3a8ad8', '#8cc8f0', (r - 0.18) / 0.27) : r < 0.8 ? '#f0d040' : '#f8e890';
+        if (r < 0.62 && x > 19 && x < 52 && (x + Math.round(r * 5)) % 7 < 2) c = pxMix(c, '#0a2a50', 0.65); // perch bars, slanted
+        if (r > 0.2 && r < 0.4 && (x + y) % 5 === 0) c = pxMix(c, '#ffffff', 0.35);                        // scale shimmer
+        G.set(x, y, c, 2);
+      }
+    }
+    for (let y = 18; y <= 24; y++) G.set(17, y, '#d83020', 2); G.set(18, 22, '#d83020', 2); // red gill mark
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (dx * dx + dy * dy <= 5) G.set(14 + dx, 19 + dy, dx * dx + dy * dy <= 1 ? '#000' : '#e85020', 2); // eye
+    pxPoly(G, [[11, 22], [9, 24], [2, 32], [5, 34], [13, 25]], () => '#d8eaf4', 1); // clear diving lip
+    for (let y = 25; y < 32; y++) G.set(6 + Math.round((31 - y) * 0.6), y, '#a8c4d4', 1);
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (dx || dy) G.set(9 + dx, 25 + dy, '#a0a0a8', 3); // line tie
+    for (const [hx0, hy0] of [[32, 26], [57, 22]]) { // trebles: belly and tail
+      const down = hx0 === 32;
+      pxLine(G, hx0, hy0, hx0 + (down ? 0 : 3), hy0 + (down ? 5 : 3), '#9a9aa2', 2);
+      const bx = hx0 + (down ? 0 : 3), by = hy0 + (down ? 5 : 3);
+      pxLine(G, bx, by, bx - 4, by + 4, '#3a3a40', 2); pxLine(G, bx, by, bx + 4, by + 4, '#3a3a40', 2); pxLine(G, bx, by, bx, by + 6, '#3a3a40', 2);
+      G.set(bx - 4, by + 3, '#3a3a40', 2); G.set(bx + 4, by + 3, '#3a3a40', 2); G.set(bx + 1, by + 6, '#3a3a40', 2);
+    }
+  },
+  jigi(G) { // the classic: a chartreuse grub with glitter on a jig head; ribbed body and a curly tail
+    // jig head with an eye; the hook comes out of the back of the body
+    for (let dy = -6; dy <= 6; dy++) for (let dx = -6; dx <= 6; dx++) if (dx * dx + dy * dy <= 36) G.set(54 + dx, 16 + dy, pxMix('#e83a30', '#801010', (dy + 6) / 13), 2);
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (dx * dx + dy * dy <= 5) G.set(56 + dx, 14 + dy, dx * dx + dy * dy <= 1 ? '#000' : '#ffe080', 2);
+    // body: tapered, darker back, lighter belly, ribs towards the tail
+    for (let x = 22; x <= 48; x++) {
+      const u = (x - 22) / 26, th = 2 + u * 3.5, cy = 18 + (1 - u) * 1.5;
+      for (let y = Math.round(cy - th); y <= Math.round(cy + th); y++) {
+        const r = (y - (cy - th)) / (2 * th);
+        let c = pxMix('#7a9a10', '#e8f870', r);
+        if (x < 30 && (x % 3 === 0)) c = pxMix(c, '#5a7008', 0.5); // ribs
+        if (pxHash(x, y) % 9 === 0) c = pxHash(x + 1, y) % 2 ? '#ffffff' : '#ffe080'; // glitter
+        G.set(x, y, c, 2);
+      }
+    }
+    // curly tail: a thin flat blade from the end of the body, sweeping back and down in a big C
+    const P = [[23, 19.5], [13, 19], [6, 24], [5, 31], [10, 37], [19, 39]];
+    const at = (u) => { const f = u * (P.length - 1), i = Math.min(P.length - 2, Math.floor(f)), r = f - i, p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(P.length - 1, i + 2)];
+      const cr = (a, b, c, d) => 0.5 * (2 * b + (-a + c) * r + (2 * a - 5 * b + 4 * c - d) * r * r + (-a + 3 * b - 3 * c + d) * r * r * r);
+      return [cr(p0[0], p1[0], p2[0], p3[0]), cr(p0[1], p1[1], p2[1], p3[1])]; };
+    for (let a = 0; a <= 120; a++) {
+      const u = a / 120, [cx, cy] = at(u), w = 2.4 - u * 1.6;
+      for (let d = -w; d <= w; d += 0.5) for (let e = -w; e <= w; e += 0.5) { if (d * d + e * e > w * w) continue;
+        const x = Math.round(cx + d), y = Math.round(cy + e); G.set(x, y, pxHash(x, y) % 11 === 0 ? '#ffffff' : pxMix('#c8e030', '#f0ff90', (e + w) / (2 * w + 0.1)), 2); }
+    }
+    pxLine(G, 46, 15, 40, 9, '#909098', 2); pxLine(G, 40, 9, 42, 6, '#909098', 2); // hook point out of the back
+  },
+  ruoho(G) { // weedless spoon: green spoon, single hook, wire weed guard over the point
+    for (let y = 0; y < 48; y++) for (let x = 0; x < 64; x++) { const u = (x - 30) / 20, v = (y - 23) / (8 + u * 2); if (u > -1 && u < 1 && v * v + u * u * 0.9 < 1) G.set(x, y, pxMix('#2a5a20', '#8ad060', 0.5 - v * 0.45), 2); }
+    line(G, 50, 24, 56, 30, '#a0a0a8', 2); line(G, 56, 30, 54, 34, '#a0a0a8', 2); line(G, 54, 34, 50, 32, '#a0a0a8', 2);
+    line(G, 44, 20, 58, 30, '#d0d0d8', 2);
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (Math.abs(dx * dx + dy * dy - 4) < 2) G.set(8 + dx, 23 + dy, '#a0a0a8', 2);
+  },
+  reel(G) { // spinning reel (avokela) hanging from the rod: foot and stem on top, gold spool and bail on the left, handle down to the right
+    const disc = (cx, cy, rx, ry, f) => { for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) { const u = (x - cx) / rx, v = (y - cy) / ry, d = u * u + v * v; if (d <= 1) G.set(x, y, f(u, v, d), 2); } };
+    // reel foot and the curved stem down to the body
+    pxPoly(G, [[30, 2], [60, 2], [60, 5], [30, 5]], (x, y) => pxMix('#3a3e46', '#16181c', (y - 2) / 4), 2);
+    for (let i = 0; i <= 16; i++) { const u = i / 16, x = 52 - u * 8 + Math.sin(u * Math.PI) * 3, y = 5 + u * 14; for (let d = -2; d <= 1; d++) G.set(Math.round(x + d), Math.round(y), d === -2 ? '#4a4e58' : '#1a1c20', 2); }
+    // body with a silver rim at the back
+    disc(43, 27, 12, 10, (u, v, d) => d > 0.8 && u > 0.3 ? '#b8bcc4' : u + v < -0.6 ? '#4a4e58' : pxMix('#2a2d33', '#16181c', (v + 1) / 2));
+    // rotor cup
+    pxPoly(G, [[20, 15], [31, 18], [31, 36], [20, 38]], (x, y) => pxMix('#30333a', '#121316', (y - 15) / 24), 2);
+    for (let y = 17; y <= 36; y++) G.set(28, y, '#c8a030', 2); // gold ring on the rotor
+    // gold spool with the line wound on it, black front lip and the drag knob
+    pxPoly(G, [[9, 18], [20, 18], [20, 35], [9, 35]], (x, y) => (y % 2 ? '#e8c050' : '#b88a20'), 2);
+    for (let y = 18; y <= 35; y++) G.set(14, y, '#7a5a10', 2);
+    pxPoly(G, [[6, 16], [9, 16], [9, 37], [6, 37]], () => '#141518', 2);
+    disc(4, 26, 2, 3, (u, v) => (v < -0.3 ? '#4a4e58' : '#141518'));
+    // bail wire arching from the rotor over the spool
+    for (let a = 0; a <= 40; a++) { const t = Math.PI * (a / 40), x = 26 - Math.cos(t) * 0 - (a / 40) * 18, y = 17 - Math.sin(t) * 9; G.set(Math.round(x), Math.round(y), '#d0d4dc', 3); }
+    G.set(26, 17, '#d0d4dc', 3); G.set(8, 17, '#d0d4dc', 3);
+    // handle arm down to the knob
+    for (let i = 0; i <= 18; i++) { const u = i / 18, x = 44 - u * 9, y = 29 + u * 14; for (let d = -1; d <= 1; d++) G.set(Math.round(x + d), Math.round(y), d === -1 ? '#4a4e58' : '#1a1c20', 2); }
+    disc(33, 44, 5, 3, (u, v, d) => d > 0.6 ? '#b8bcc4' : '#2a2d33');
+    G.set(43, 27, '#b8bcc4', 2);
+  },
+  float(G) { // balsa float: red tip, white body, line eye; the water line across
+    for (let y = 4; y < 42; y++) { const t = (y - 4) / 38, w = Math.round(Math.sin(Math.PI * Math.min(1, t * 1.15)) * 6); for (let x = -w; x <= w; x++) G.set(32 + x, y, y < 16 ? pxMix('#ff4030', '#a01010', (x + w) / (2 * w + 1)) : pxMix('#ffffff', '#b8b8b0', (x + w) / (2 * w + 1)), 2); }
+    line(G, 32, 0, 32, 4, '#ff4030', 2); line(G, 32, 42, 32, 46, '#909098', 2);
+    for (let x = 4; x < 60; x++) if (x % 3) G.set(x, 30, pxMix(G.get(x, 30) || '#4a7a8a', '#4a7a8a', 0.35), 3);
+  },
+
+  spool(G, _, id) { // line spool: thicker line = thicker windings; spinning lines blue-clear, pole lines green
+    const pole = /^o/.test(id || ''), thick = { s20: 1, s25: 2, s30: 2, s35: 3, o18: 1, o20: 2, o25: 3 }[id] || 2;
+    const lc = pole ? ['#7aa860', '#c8e8a8'] : ['#6a9ac8', '#d8ecf8'];
+    for (let y = 6; y <= 42; y++) for (let x = 14; x <= 50; x++) { // flanges and core seen from the side
+      const flange = x <= 17 || x >= 47;
+      if (flange) { G.set(x, y, pxMix('#d8d8dc', '#7a7a84', (y - 6) / 36), 2); continue; }
+      if (y < 10 || y > 38) continue;
+      G.set(x, y, Math.floor((y - 10) / thick) % 2 ? lc[0] : lc[1], 2);
+    }
+    for (let y = 6; y <= 42; y++) { G.set(14, y, '#9a9aa4', 2); G.set(50, y, '#5a5a64', 2); }
+    for (let x = 18; x <= 46; x++) if (x % 5 === 0) G.set(x, 24, '#ffffff', 2); // a glint
+    pxPoly(G, [[22, 44], [42, 44], [42, 47], [22, 47]], () => '#f0f0e8', 2); // label strip
+    for (let x = 24; x < 41; x += 2) G.set(x, 45, '#c02020', 2);
+    pxLine(G, 50, 14, 60, 8, lc[1], 2); // loose end
+  },
+  rod(G, _, id) { // rods diagonally: spinning rods have a long cork handle and reel seat and a slim blank; poles a short cork grip
+    const spec = { v1: { blank: '#e8d8a0', wrap: '#2a8a3a', w: 1, guides: 5 }, v2: { blank: '#26282e', wrap: '#e04aa0', w: 1, guides: 6 }, v3: { blank: '#141416', wrap: '#c02020', w: 1.5, guides: 5 },
+      p1: { blank: '#d8b860', wrap: '#7a5a20', w: 1, nodes: true }, p2: { blank: '#c8e0c0', wrap: '#4a6a4a', w: 1, tele: true }, p3: { blank: '#1e2024', wrap: '#7a7a84', w: 1, tele: true } }[id] || { blank: '#e8d8a0', wrap: '#2a6a2a', w: 1, guides: 5 };
+    const pole = /^p/.test(id || ''), ax = 3, ay = 45, bx = 62, by = 2;
+    const at = u => [ax + (bx - ax) * u, ay + (by - ay) * u];
+    const stroke = (u, w, col) => { const [x, y] = at(u); for (let d = -w; d <= w; d += 0.5) G.set(Math.round(x + d * 0.6), Math.round(y + d * 0.8), typeof col === 'function' ? col(d) : col, 2); };
+    if (!pole) { // a two-piece spinning rod laid side by side, like in a shop photo: butt section with the handle, and the tip section
+      const seg = (ax0, ay0, bx0, by0) => u => [ax0 + (bx0 - ax0) * u, ay0 + (by0 - ay0) * u];
+      const butt = seg(6, 47, 63, 6), tipS = seg(0, 41, 57, 0);
+      const put = (P, u, w, col) => { const [x, y] = P(u); for (let d = -w; d <= w; d += 0.5) G.set(Math.round(x + d * 0.6), Math.round(y + d * 0.8), typeof col === 'function' ? col(d) : col, 2); };
+      const blank = d => d < 0 ? pxMix(spec.blank, '#ffffff', 0.3) : spec.blank, cork = i => pxHash(i, 7) % 3 ? '#c89a5a' : '#a87a3a';
+      for (let i = 0; i <= 240; i++) {
+        const u = i / 240;
+        if (u < 0.04) put(butt, u, 1.1, spec.wrap);                    // butt cap
+        else if (u < 0.25) put(butt, u, 1.3, cork(i));                 // long rear cork grip
+        else if (u < 0.37) put(butt, u, u > 0.29 && u < 0.33 ? 1.6 : 1.1, '#1e2024'); // reel seat with its hood
+        else if (u < 0.45) put(butt, u, 1.1, cork(i));                 // short fore grip
+        else if (u < 0.56) put(butt, u, 0.5, spec.wrap);               // coloured section of the blank
+        else put(butt, u, u < 0.8 ? spec.w * 0.5 : 0, blank);
+        put(tipS, u, u < 0.3 && spec.w > 1 ? 0.5 : 0, blank);         // the tip section, a pixel wide
+      }
+      const guide = (P, u, len) => { const [x, y] = P(u); for (let k = 1; k <= len; k++) G.set(Math.round(x - 0.6 * k), Math.round(y - 0.8 * k), k === len ? '#e8e8f0' : '#8a8a94', 2); };
+      guide(butt, 0.72, 2); guide(butt, 0.9, 2);
+      for (const u of [0.16, 0.38, 0.6, 0.8]) guide(tipS, u, 2);
+      const [tx, ty] = tipS(1); G.set(Math.round(tx), Math.round(ty), '#c8c8d0', 2); // tip-top
+      const [fx, fy] = butt(0.31); G.set(Math.round(fx + 1), Math.round(fy + 2), '#5a5e66', 2); // reel foot slot
+    } else {
+      for (let i = 0; i <= 260; i++) {
+        const u = i / 260;
+        if (u < 0.16) { stroke(u, 1.6, pxHash(i, 3) % 3 ? '#c89a5a' : '#a87a3a'); continue; }
+        const w = 1.3 * (1 - u * 0.7); stroke(u, w, d => d < 0 ? pxMix(spec.blank, '#ffffff', 0.25) : spec.blank);
+        if (spec.nodes && i % 36 === 0) stroke(u, 1.8, spec.wrap);
+        if (spec.tele && i % 52 === 0) stroke(u, w + 0.8, spec.wrap);
+      }
+      const [x, y] = at(1); G.set(Math.round(x) - 1, Math.round(y) + 1, '#c02020', 2);
+    }
+  },
+  boat(G, _, id) { // classic Finnish rowing boat from the side: long and low, gunwale strip, sheer rising at both ends
+    const own = id === 'b1', hull = own ? (root.boatPaint || '#3a8a3a') : '#f2f2ee';
+    const x0 = 2, x1 = 61, L = x1 - x0;
+    const sheer = t => 18 - 2.5 * Math.pow((t - 0.55) / 0.55, 2); // top edge: a gentle sheer, rising at both ends
+    const keel = t => 32 - (t < 0.3 ? 13 * Math.pow(1 - t / 0.3, 2) : 0) - (t > 0.82 ? 5 * Math.pow((t - 0.82) / 0.18, 2) : 0); // bottom sweeps up to a pointed bow; short rise to the transom
+    for (let x = x0; x <= x1; x++) {
+      const t = (x - x0) / L, yt = Math.round(sheer(t)), yb = Math.max(yt + 1, Math.round(keel(t)));
+      for (let y = yt; y <= yb; y++) {
+        const r = (y - yt) / Math.max(1, yb - yt);
+        let c = y <= yt + 1 ? (y === yt ? '#f0e090' : '#c8a850') : r < 0.3 ? pxMix(hull, '#ffffff', 0.18) : r > 0.8 ? pxMix(hull, '#000000', 0.3) : hull;
+        if (y === Math.round(yt + (yb - yt) * 0.45) && t > 0.04 && t < 0.97) c = pxMix(hull, '#000000', 0.18); // a strake line along the hull
+        if (!own && y === yt + 3 && t > 0.05 && t < 0.95) c = '#2a5ab0';                                        // rental: blue stripe
+        G.set(x, y, c, 2);
+      }
+    }
+    if (!own) { const dig = { 1: [[1, 0], [0, 1], [1, 1], [1, 2], [1, 3], [0, 4], [1, 4], [2, 4]], 2: [[0, 0], [1, 0], [2, 0], [2, 1], [0, 2], [1, 2], [2, 2], [0, 3], [0, 4], [1, 4], [2, 4]] };
+      [[1, 44], [2, 48]].forEach(([d, x0d]) => dig[d].forEach(([dx, dy]) => G.set(x0d + dx, 23 + dy, '#2a2a30', 2))); } // the rental number 12
+    else for (let x = 40; x < 52; x++) if (x % 3) G.set(x, 23, pxMix(hull, '#ffffff', 0.55), 2); // a small name on the side
+  },
+  motor(G, _, id) { // outboard motor: cowling, tiller, shaft, propeller
+    const big = id === 'm8', cow = big ? ['#e03028', '#801010'] : ['#8a929c', '#4a5058'];
+    const cx = 32, top = big ? 4 : 8, ch = big ? 16 : 12, cw = big ? 22 : 18;
+    for (let y = top; y < top + ch; y++) for (let x = cx - cw / 2; x < cx + cw / 2; x++) { const u = (x - cx) / (cw / 2), v = (y - top) / ch; if (u * u * 0.6 + Math.pow(v - 0.5, 2) * 1.6 < 1) G.set(x, y, pxMix(cow[0], cow[1], v + (u > 0.4 ? 0.2 : 0)), 2); }
+    for (let x = cx - cw / 2 + 3; x < cx + cw / 2 - 3; x++) G.set(x, top + ch - 4, '#ffffff', 2); // stripe
+    if (big) for (let x = cx - 4; x <= cx + 4; x++) G.set(x, top + 5, '#202020', 2);
+    pxLine(G, cx - cw / 2, top + ch - 2, 4, top + ch + 4, '#202024', 2); G.set(3, top + ch + 5, '#202024', 2); // tiller
+    pxPoly(G, [[cx - 3, top + ch], [cx + 3, top + ch], [cx + 3, 40], [cx - 3, 40]], (x, y) => x < cx ? '#3a3e46' : '#24272c', 2); // shaft
+    pxPoly(G, [[cx - 5, 38], [cx + 7, 38], [cx + 7, 42], [cx - 5, 42]], () => '#2a2d33', 2); // gearcase
+    pxPoly(G, [[cx + 7, 36], [cx + 10, 33], [cx + 11, 47], [cx + 8, 45]], () => '#a0a4ac', 2); // propeller
+    pxPoly(G, [[cx - 8, top + ch + 2], [cx - 3, top + ch + 2], [cx - 3, top + ch + 6], [cx - 8, top + ch + 6]], () => '#5a5e66', 2); // clamp
+  },
+  sonar(G) { // 90s fish finder: grey case, green LCD with the bottom and fish arches, buttons
+    pxPoly(G, [[8, 6], [56, 6], [58, 8], [58, 40], [56, 42], [8, 42], [6, 40], [6, 8]], (x, y) => pxMix('#5a5e66', '#2a2d33', (y - 6) / 36), 2);
+    for (let y = 10; y <= 32; y++) for (let x = 11; x <= 53; x++) G.set(x, y, '#a8b878', 2);
+    for (let x = 11; x <= 53; x++) { const b = Math.round(26 + Math.sin(x * 0.25) * 2 + Math.sin(x * 0.7)); for (let y = b; y <= 32; y++) G.set(x, y, y === b ? '#18240e' : '#3a4a26', 2); }
+    for (const [fx, fy, a] of [[20, 16, 2], [34, 20, 3], [44, 14, 1]]) for (let i = -a; i <= a; i++) G.set(fx + i, fy + (Math.abs(i) >> 1), '#18240e', 2);
+    for (const bx of [14, 24, 34, 44]) pxPoly(G, [[bx, 35], [bx + 7, 35], [bx + 7, 38], [bx, 38]], () => '#1a1c20', 2);
+    G.set(52, 36, '#e03028', 2); G.set(52, 37, '#e03028', 2);
+    pxPoly(G, [[26, 42], [38, 42], [36, 46], [28, 46]], () => '#2a2d33', 2); // mount
+  },
+  leader(G) { // wire leader: steel wire with a swivel at one end and a snap at the other
+    pxLine(G, 10, 24, 52, 24, '#c8ccd4', 2); pxLine(G, 10, 23, 52, 23, '#8a8e96', 2);
+    for (let i = 0; i < 3; i++) G.set(14 + i * 2, 25, '#8a8e96', 2); for (let i = 0; i < 3; i++) G.set(46 + i * 2, 25, '#8a8e96', 2); // crimps
+    for (let dy = -2; dy <= 2; dy++) for (let dx = -3; dx <= 3; dx++) if (Math.abs(dx * dx / 9 + dy * dy / 4 - 1) < 0.5) G.set(6 + dx, 24 + dy, '#a0a4ac', 2); // swivel ring
+    pxPoly(G, [[52, 20], [58, 20], [60, 24], [58, 28], [52, 28]], () => '#b8bcc4', 2); pxPoly(G, [[54, 22], [57, 22], [58, 24], [57, 26], [54, 26]], () => null, 2); // snap
+    pxLine(G, 60, 24, 62, 20, '#b8bcc4', 2);
+  },
+  worms(G, _, id) { // worm tin, lid open, worms peeking out; digging adds a spade and soil
+    pxPoly(G, [[14, 18], [44, 18], [44, 42], [14, 42]], (x, y) => pxMix('#b0b4bc', '#6a6e78', (x - 14) / 30), 2);
+    for (let x = 14; x <= 44; x++) { G.set(x, 18, '#e0e4ea', 2); G.set(x, 42, '#4a4e56', 2); }
+    for (let x = 18; x <= 40; x++) G.set(x, 30, '#e8c050', 2); pxLine(G, 20, 31, 38, 31, '#c02020', 2); // label
+    pxPoly(G, [[14, 18], [44, 18], [50, 8], [20, 8]], () => '#3a2a1a', 1); // soil
+    for (const [x0, y0, a] of [[24, 12, 0], [32, 10, 1], [38, 14, 2]]) for (let i = 0; i < 9; i++) G.set(x0 + Math.round(Math.sin(i * 0.8 + a) * 2), y0 - i + 4, i % 3 ? '#d86a7a' : '#b04a5a', 2);
+    pxPoly(G, [[44, 18], [52, 6], [54, 7], [46, 19]], () => '#c0c4cc', 1); // open lid
+    if (id === 'dig') { pxLine(G, 50, 46, 60, 10, '#8a6a3a', 2); pxLine(G, 51, 46, 61, 10, '#6a4a2a', 2); pxPoly(G, [[45, 40], [55, 42], [53, 48], [44, 47]], () => '#9aa0a8', 2); }
+  },
+  spray(G) { // mosquito repellent: green can, white label with a crossed-out mosquito
+    pxPoly(G, [[22, 12], [42, 12], [42, 44], [22, 44]], (x) => pxMix('#3aa04a', '#1a5a2a', (x - 22) / 20), 2);
+    pxPoly(G, [[25, 6], [39, 6], [42, 12], [22, 12]], () => '#c0c4cc', 2); pxPoly(G, [[29, 2], [35, 2], [35, 6], [29, 6]], () => '#f0f0f0', 2);
+    pxPoly(G, [[22, 20], [42, 20], [42, 34], [22, 34]], () => '#f4f4ee', 2);
+    G.set(31, 26, '#202020', 2); G.set(32, 26, '#202020', 2); G.set(30, 25, '#202020', 2); G.set(33, 25, '#202020', 2); G.set(32, 27, '#202020', 2); // mosquito
+    pxLine(G, 26, 23, 37, 31, '#e03020', 2); pxLine(G, 26, 31, 37, 23, '#e03020', 2);
+    for (let i = 0; i < 6; i++) G.set(38 + i * 3, 4 + (i % 2), '#d0e8ff', 3); // spray mist
+  },
+  coffee(G) { // a steaming mug of coffee
+    pxPoly(G, [[20, 16], [42, 16], [40, 44], [22, 44]], (x) => pxMix('#f4f0e6', '#c8c0b0', (x - 20) / 22), 2);
+    for (let x = 21; x <= 41; x++) G.set(x, 17, '#5a3418', 2);
+    for (let a = 0; a < 36; a++) { const t = a / 36 * Math.PI * 2; G.set(Math.round(45 + Math.cos(t) * 5), Math.round(29 + Math.sin(t) * 6), '#e8e4da', 2); }
+    for (let i = 0; i < 11; i++) { G.set(26 + Math.round(Math.sin(i * 0.9) * 2), 13 - i, '#e8eef4', 3); G.set(35 + Math.round(Math.sin(i * 0.9 + 1) * 2), 12 - i, '#e8eef4', 3); }
+  },
+  net(G) { // small landing net: hoop, diamond mesh, wooden handle
+    for (let a = 0; a < 80; a++) { const t = a / 80 * Math.PI * 2; G.set(Math.round(36 + Math.cos(t) * 20), Math.round(12 + Math.sin(t) * 6), '#909098', 2); }
+    for (let y = 13; y < 44; y++) { const hw = Math.round(19 * Math.sqrt(Math.max(0, 1 - Math.pow((y - 13) / 31, 1.6)))); for (let x = -hw; x <= hw; x++) if ((x + y) % 4 === 0 || (x - y) % 4 === 0) G.set(36 + x, y, '#e0e0d0', 1); }
+    line(G, 16, 12, 2, 4, '#8a6a3a', 2); line(G, 16, 13, 2, 5, '#6a4a2a', 2);
+  },
+};
+function gearPortrait(id, tint, pat) { const G = new Grid(64, 48); (GEAR_ART[id] || (() => {}))(G, tint, pat); if (!(id === 'rod' && /^v/.test(pat || ''))) G.outline('#101010'); return G; } // spinning rods stay slim without an outline
+root.gearPortrait = gearPortrait; root.GEAR_ART = GEAR_ART;
+root.FISH_PORTRAITS = FISH; root.fishPortrait = fishPortrait; root.Grid = Grid; root.pxPoly = poly; root.pxLine = line; root.pxMix = mix; root.pxHash = hash;
+})(PORTRAITS);
+
+
+
+
+// cached canvases of the detailed portraits (catch card, kiosk cards); anything not drawn yet falls back to the old sprite
+const portraitCache = new Map();
+function portraitCanvas(key, make) {
+  if (!portraitCache.has(key)) { const G = make(), c = document.createElement('canvas'); c.width = G.w; c.height = G.h; G.paint(c.getContext('2d'), 0, 0); portraitCache.set(key, c); }
+  return portraitCache.get(key);
+}
+const fishPortraitCanvas = sp => PORTRAITS.FISH_PORTRAITS[sp] ? portraitCanvas('f:' + sp, () => PORTRAITS.fishPortrait(sp)) : null;
+function gearPortraitFor(it) {
+  const k = itemKind(it), col = equip.color, T = LURE_TINT[col] || LURE_TINT.c0;
+  if (k === 'lure') {
+    if (it.id === 'lippa') return portraitCanvas('g:lippa:' + col, () => PORTRAITS.gearPortrait('lippa', T, col)); // blade pattern follows the lure colour
+    if (it.id === 'lusikka') return portraitCanvas('g:lusikka:' + col, () => PORTRAITS.gearPortrait('lusikka', T));
+    return portraitCanvas('g:' + it.id, () => PORTRAITS.gearPortrait(it.id));
+  }
+  if (k === 'color') return portraitCanvas('g:lippa:' + it.id, () => PORTRAITS.gearPortrait('lippa', LURE_TINT[it.id], it.id));
+  if (k === 'reel' || k === 'float' || k === 'net') return portraitCanvas('g:' + k, () => PORTRAITS.gearPortrait(k));
+  if (k === 'spinLine' || k === 'poleLine') return portraitCanvas('g:spool:' + it.id, () => PORTRAITS.gearPortrait('spool', null, it.id));
+  if (it.id === 'respool') { const id = rod === 'spin' ? equip.spinLine : equip.poleLine; return portraitCanvas('g:spool:' + id, () => PORTRAITS.gearPortrait('spool', null, id)); }
+  if (k === 'spinRod' || k === 'pole') return portraitCanvas('g:rod:' + it.id, () => PORTRAITS.gearPortrait('rod', null, it.id));
+  if (it.id === 'b1' || it.id === 'rent') { PORTRAITS.boatPaint = paintCol(); return portraitCanvas('g:boat:' + it.id + ':' + cos.paint.wear, () => PORTRAITS.gearPortrait('boat', null, it.id)); }
+  if (it.id === 'm4' || it.id === 'm8') return portraitCanvas('g:motor:' + it.id, () => PORTRAITS.gearPortrait('motor', null, it.id));
+  if (it.id === 'e1') return portraitCanvas('g:sonar', () => PORTRAITS.gearPortrait('sonar'));
+  if (it.id === 'l1') return portraitCanvas('g:leader', () => PORTRAITS.gearPortrait('leader'));
+  if (it.id === 'worms' || it.id === 'dig') return portraitCanvas('g:worms:' + it.id, () => PORTRAITS.gearPortrait('worms', null, it.id));
+  if (it.id === 'spray' || it.id === 'coffee') return portraitCanvas('g:' + it.id, () => PORTRAITS.gearPortrait(it.id));
+  return null;
+}
+
+function drawItemIcon(it, cx, cy) { // a small pixel picture of the item, drawn 3x
+  g.save(); g.translate(cx, cy); g.scale(3, 3);
+  const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, y, w, h); };
+  switch (itemKind(it)) {
+    case 'lure': { const lt = lureType, mv = lure.moving; lureType = it.id; lure.moving = true; drawLure(0, 0, performance.now() / 1000); lureType = lt; lure.moving = mv; break; }
+    case 'spinLine': case 'poleLine': case 'respool':
+      R(-7, -6, 14, 12, '#c0c0c0'); R(-5, -4, 10, 8, '#e8e8e0'); for (let i = -3; i <= 3; i += 2) R(-5, i, 10, 1, '#9aa8b0'); R(-1, -1, 2, 2, '#404040'); break;
+    case 'reel': R(-6, -5, 10, 10, '#9a9a9a'); R(-4, -3, 6, 6, '#d0d0d0'); R(4, -1, 4, 2, '#606060'); R(7, -3, 1, 6, '#303030'); R(-2, 5, 4, 3, '#606060'); break;
+    case 'spinRod': for (let i = 0; i < 20; i++) R(-10 + i, 6 - Math.round(i * 0.6), 1, 1, i < 5 ? '#5a3a20' : '#2a2a2a'); R(-6, 2, 3, 2, '#9a9a9a'); break;
+    case 'pole': for (let i = 0; i < 22; i++) R(-11 + i, 7 - Math.round(i * 0.65), 1, 1, i % 5 === 4 ? '#7a5a20' : '#c9a44a'); break;
+    case 'float': R(0, -8, 1, 3, '#e02a20'); R(-1, -5, 3, 4, '#e02a20'); R(-1, -1, 3, 4, '#f4f4ec'); R(0, 3, 1, 4, '#9aa8a0'); break;
+    case 'color': { const col = { c0: '#c0c0c8', c1: '#e8c050', c2: '#202020', c3: '#ff5ac8' }[it.id]; R(-6, -2, 8, 4, col); R(2, -1, 3, 2, '#c0c0c8'); R(5, 0, 2, 1, '#d02a20'); break; }
+    case 'net': {
+      const r = (it.r || 7) * 0.7;
+      for (let a = 0; a < 24; a++) { const t = a / 24 * Math.PI * 2; R(Math.round(Math.cos(t) * r), -4 + Math.round(Math.sin(t) * 2), 1, 1, '#c8c8c0'); }
+      for (let y = 1; y <= 6; y++) for (let x = -Math.round(r - y * 0.5); x <= Math.round(r - y * 0.5); x++) if ((x + y) % 2 === 0) R(x, -4 + y, 1, 1, '#e6e6d8');
+      pixLine(g, -Math.round(r), -4, -11, 7, '#8a6a3a'); break;
+    }
+    case 'b1': case 'rent': for (let x = -9; x <= 9; x++) { const b = Math.round(3 - Math.abs(x) / 4); R(x, 0, 1, b + 1, paintCol()); R(x, 0, 1, 1, '#e8e0c8'); } R(-12, 4, 24, 1, '#3e7a8a'); break;
+    case 'm4': case 'm8': R(-3, -8, 7, 6, it.id === 'm8' ? '#c02020' : '#606870'); R(-1, -2, 2, 9, '#303030'); R(-3, 6, 5, 1, '#303030'); break;
+    case 'e1': R(-8, -6, 16, 12, '#28381a'); R(-7, -5, 14, 10, '#a8b878'); for (let x = -7; x < 7; x++) R(x, 2 + Math.round(Math.sin(x * 0.6)), 1, 3, '#28381a'); R(-3, -2, 3, 1, '#18240e'); R(2, -3, 3, 1, '#18240e'); break;
+    case 'l1': pixLine(g, -8, -4, 8, 4, '#c8c8d0'); R(-9, -5, 2, 2, '#808080'); R(7, 3, 2, 2, '#808080'); break;
+    case 'worms': case 'dig':
+      R(-6, -4, 12, 10, '#8a8a90'); R(-6, -4, 12, 2, '#b0b0b8'); R(-4, -6, 2, 3, '#d86a7a'); R(0, -7, 1, 4, '#d86a7a'); R(2, -6, 2, 3, '#d86a7a');
+      if (it.id === 'dig') { pixLine(g, 7, -8, 10, 5, '#8a6a3a'); R(9, 5, 3, 3, '#909090'); }
+      break;
+    case 'spray': R(-3, -6, 6, 12, '#2a8a3a'); R(-2, -8, 4, 2, '#c0c0c0'); R(-3, -2, 6, 3, '#f0f0f0'); break;
+    case 'coffee': R(-8, -2, 8, 7, '#f0ece0'); R(0, 0, 2, 3, '#f0ece0'); R(-7, -1, 6, 2, '#5a3418'); R(3, 1, 8, 5, '#c8862a'); R(6, 3, 2, 1, '#5a3418'); break;
+    default: R(-4, -4, 8, 8, '#888');
+  }
+  g.restore();
+}
+const SHOP_MODAL = { x: 36, y: 30, w: 248, h: 144 };
+function drawShopModal() {
+  const it = shopItems()[shopSel]; if (!it) { shopModal = false; return; }
+  const { x, y, w, h } = SHOP_MODAL;
+  g.fillStyle = 'rgba(0,0,0,0.45)'; g.fillRect(16, 12, 288, 176);
+  bevelBox(x, y, w, h);
+  g.fillStyle = '#000080'; g.fillRect(x + 3, y + 3, w - 6, 12);
+  const name = it.id === 'respool' ? 'UUSI SIIMA ' + (rod === 'spin' ? 'VIRVELIIN' : 'ONKEEN') : it.fi;
+  txt(name.slice(0, 29), x + 7, y + 5, '#fff', false);
+  g.fillStyle = '#3e5a3a'; g.fillRect(x + 8, y + 20, 72, 60);
+  const pc = gearPortraitFor(it);
+  if (pc) g.drawImage(pc, Math.round(x + 44 - pc.width / 2), Math.round(y + 50 - pc.height / 2)); else drawItemIcon(it, x + 44, y + 50);
+  wrapText(it.d || '', 19).slice(0, 5).forEach((l, i) => txt(l, x + 88, y + 22 + i * 10, '#000', false));
+  const st = shopStatus(it); if (st) txt(st.slice(0, 29), x + 8, y + 88, '#000080', false);
+  if (shopMsg) txt(shopMsg.toUpperCase().slice(0, 29), x + 8, y + 100, '#804000', false);
+  else if (!shopHours() && !slotOf(it.id) && it.id !== 'dig') txt('KIOSKI KIINNI (6-23)', x + 8, y + 100, '#a00000', false);
+  const [label, active] = shopAction(it);
+  const btn = (bx, lab, on, enabled) => {
+    g.fillStyle = on ? '#000080' : '#c0c0c0'; g.fillRect(bx, y + h - 26, 110, 18);
+    g.fillStyle = on ? '#404040' : '#fff'; g.fillRect(bx, y + h - 26, 110, 1); g.fillRect(bx, y + h - 26, 1, 18);
+    g.fillStyle = on ? '#fff' : '#404040'; g.fillRect(bx, y + h - 9, 110, 1); g.fillRect(bx + 109, y + h - 26, 1, 18);
+    txt(lab, Math.round(bx + 55 - lab.length * 4), y + h - 21, enabled ? (on ? '#fff' : '#000') : '#808080', false);
+  };
+  btn(x + 10, label, shopModalSel === 0, active);
+  btn(x + w - 120, 'TAKAISIN', shopModalSel === 1, true);
+}
 function drawShop() {
   const x = 16, y = 12, w = 288, h = 176, ink = '#2a2418';
   g.fillStyle = 'rgba(0,0,0,0.6)'; g.fillRect(0, 0, W, H);
@@ -3133,7 +3863,8 @@ function drawShop() {
   const it = shopItems()[shopSel];
   const info = shopMsg ? shopMsg.toUpperCase() : it ? it.d : '';
   txt(info.slice(0, 34), x + 8, y + h - 28, shopMsg ? '#804000' : '#000080', false);
-  txt('< > OSASTO  PAINA: OSTA/VALITSE', x + 8, y + h - 15, '#404040', false);
+  txt('< > OSASTO  PAINA: AVAA', x + 8, y + h - 15, '#404040', false);
+  if (shopModal) drawShopModal();
 }
 // ---- saving: browser storage + a 90s-style password ----
 const PW_ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -3325,6 +4056,14 @@ function updateLog() {
 // ---------- input ----------
 window.addEventListener('keydown', e => {
   if (e.target && e.target.tagName === 'INPUT') return; // typing a password
+  if (pick) { // an item card is open
+    if (['Space', 'Enter', 'ArrowLeft', 'ArrowRight', 'Backspace'].includes(e.code)) e.preventDefault();
+    const n = pick.actions().length;
+    if (e.code === 'ArrowLeft') pick.sel = (pick.sel + n - 1) % n; else if (e.code === 'ArrowRight') pick.sel = (pick.sel + 1) % n;
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) pickPress(pick.sel);
+    else if (e.code === 'Escape' || e.code === 'Backspace') closePick();
+    return;
+  }
   if (choice) { // answering Reiska
     if (['Space', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
     if (e.code === 'ArrowLeft') choice.sel = 0; else if (e.code === 'ArrowRight') choice.sel = 1;
@@ -3341,13 +4080,20 @@ window.addEventListener('keydown', e => {
     return;
   }
   if (shopOpen) {
-    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.code)) e.preventDefault();
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'Backspace'].includes(e.code)) e.preventDefault();
+    if (shopModal) { // item card: left/right picks a button, space presses it, Esc goes back
+      if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') shopModalSel = 1 - shopModalSel;
+      else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { if (shopModalSel === 0) { if (shopAction(shopItems()[shopSel])[1]) shopBuy(); } else closeShopModal(); }
+      else if (e.code === 'Escape' || e.code === 'Backspace') closeShopModal();
+      else if (e.code === 'KeyK') toggleShop();
+      return;
+    }
     const n = shopItems().length;
     if (e.code === 'ArrowUp') { shopSel = (shopSel + n - 1) % n; shopMsg = ''; }
     else if (e.code === 'ArrowDown') { shopSel = (shopSel + 1) % n; shopMsg = ''; }
     else if (e.code === 'ArrowLeft') shopTabTurn(-1);
     else if (e.code === 'ArrowRight') shopTabTurn(1);
-    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) shopBuy();
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) openShopModal();
     else if (e.code === 'KeyK' || e.code === 'Escape') toggleShop();
     return;
   }
@@ -3355,7 +4101,7 @@ window.addEventListener('keydown', e => {
     if (['Space', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.code)) e.preventDefault();
     if (e.code === 'ArrowUp') { contestSel = (contestSel + 2) % 3; contestMsg = ''; }
     else if (e.code === 'ArrowDown') { contestSel = (contestSel + 1) % 3; contestMsg = ''; }
-    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) contestBuy();
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) openContestCard(contestSel);
     else if (e.code === 'KeyC' || e.code === 'Escape') toggleContest();
     return;
   }
@@ -3367,7 +4113,7 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'ArrowDown') { homeSel = homePage === 'wall' ? (homeSel >= 8 ? homeSel : homeSel >= 4 ? (homeSel < 6 ? 8 : 9) : homeSel + 4) : (homeSel + 1) % n; homeMsg = ''; }
     else if (e.code === 'ArrowLeft') homeAct(-1);
     else if (e.code === 'ArrowRight') homeAct(1);
-    else if (e.code === 'Space' || e.code === 'Enter') homeAct(0);
+    else if (e.code === 'Space' || e.code === 'Enter') { if (homePage === 'catalog') openCatalogCard(homeSel); else homeAct(0); }
     else if (e.code === 'KeyH' || e.code === 'Escape') toggleHome();
     return;
   }
@@ -3375,7 +4121,7 @@ window.addEventListener('keydown', e => {
     if (['Space', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.code)) e.preventDefault();
     if (e.code === 'ArrowUp') { mapSel = (mapSel + SPOT_ORDER.length - 1) % SPOT_ORDER.length; mapMsg = ''; }
     else if (e.code === 'ArrowDown') { mapSel = (mapSel + 1) % SPOT_ORDER.length; mapMsg = ''; }
-    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) travel(SPOT_ORDER[mapSel]);
+    else if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) openSpotCard(mapSel);
     else if (e.code === 'KeyB' || e.code === 'Escape') toggleMap();
     return;
   }
@@ -3407,6 +4153,7 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => { if (e.code === 'Space') { e.preventDefault(); release(); } });
 cv.addEventListener('pointerdown', e => {
   e.preventDefault();
+  if (pick) { const r = cv.getBoundingClientRect(); pickTap((e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H); return; }
   if (choice) { const r = cv.getBoundingClientRect(); choose(e.clientX - r.left < r.width / 2 ? 0 : 1); return; }
   if (guideOpen) { const r = cv.getBoundingClientRect(); guideTurn(e.clientX - r.left < r.width / 2 ? -1 : 1); return; }
   if (pwShow) { pwShow = false; return; }
@@ -3423,26 +4170,33 @@ cv.addEventListener('pointerdown', e => {
       if (hit >= 0) { if (hit === homeSel) homeAct(0); else { homeSel = hit; homeMsg = ''; } }
     } else {
       const row = Math.floor((py - 20) / 11);
-      if (row >= 0 && row < catalogRows().length) { if (row === homeSel) homeAct(0); else { homeSel = row; homeMsg = ''; } }
+      if (row >= 0 && row < catalogRows().length) openCatalogCard(row);
     }
     return;
   }
   if (mapOpen) { // tap a spot to select it, tap again to go, tap the header to close
     const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H, row = Math.floor((py - 42) / 22);
-    if (py < 28) toggleMap(); else if (row >= 0 && row < SPOT_ORDER.length) { if (row === mapSel) travel(SPOT_ORDER[row]); else { mapSel = row; mapMsg = ''; } }
+    if (py < 28) toggleMap(); else if (row >= 0 && row < SPOT_ORDER.length) openSpotCard(row);
     return;
   }
   if (contestOpen) { // tap a contest to select it, tap again to enter, tap the header to close
     const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H, row = Math.floor((py - 44) / 34);
-    if (py < 28) toggleContest(); else if (row >= 0 && row < 3) { if (row === contestSel) contestBuy(); else { contestSel = row; contestMsg = ''; } }
+    if (py < 28) toggleContest(); else if (row >= 0 && row < 3) openContestCard(row);
     return;
   }
-  if (shopOpen) { // tap a row to select it, tap the selected row to buy, tap the header to close
+  if (shopOpen) { // tap a row to open the item card, tap the header to close
     const r = cv.getBoundingClientRect(), py = (e.clientY - r.top) / r.height * H;
     const px = (e.clientX - r.left) / r.width * W, row = Math.floor((py - 57) / 10);
+    if (shopModal) {
+      const M = SHOP_MODAL, by = M.y + M.h - 26;
+      if (py >= by - 4 && py < by + 22 && px >= M.x + 6 && px < M.x + 124) { shopModalSel = 0; if (shopAction(shopItems()[shopSel])[1]) shopBuy(); }
+      else if (py >= by - 4 && py < by + 22 && px >= M.x + M.w - 124 && px < M.x + M.w - 6) closeShopModal();
+      else if (px < M.x || px > M.x + M.w || py < M.y || py > M.y + M.h) closeShopModal();
+      return;
+    }
     if (py < 28) toggleShop();
     else if (py < 44) { const t = Math.floor((px - 20) / 40); if (t >= 0 && t < SHOP_TABS.length) { shopTab = t; shopSel = 0; shopMsg = ''; } }
-    else if (row >= 0 && row < shopItems().length) { if (row === shopSel) shopBuy(); else { shopSel = row; shopMsg = ''; } }
+    else if (row >= 0 && row < shopItems().length) { shopSel = row; openShopModal(); }
     return;
   }
   if (state === 'card' && card && !card.f.legend) { const r = cv.getBoundingClientRect(); card.choice = e.clientX - r.left < r.width / 2 ? 'release' : 'sell'; cardChoose(card.choice === 'sell'); return; }
@@ -3495,7 +4249,11 @@ btn('bTime', cycleTime);
 btn('bWeather', cycleWeather);
 btn('bWait', waitHour);
 // twitch on pointerdown so it works while another finger holds the screen
-document.getElementById('bTwitch').addEventListener('pointerdown', e => { e.preventDefault(); twitch(); });
+// the big pad button: jerk the lure with the spinning rod; with the mato-onki it works like holding the screen (strike / lift)
+const bTw = document.getElementById('bTwitch');
+bTw.addEventListener('pointerdown', e => { e.preventDefault(); if (rod === 'spin') twitch(); else press(); });
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => bTw.addEventListener(ev, () => { if (rod === 'pole') release(); }));
+bTw.addEventListener('contextmenu', e => e.preventDefault());
 
 buildClouds();
 setWeather(pickStartWx(), true);
