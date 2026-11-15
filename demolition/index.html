@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blastworks ’96</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --page: #8e8e86; --ink: #101010; --panel: #0000a8; --panel-ink: #fcfcfc; --panel-dim: #54fcfc;
+  --accent: #fcfc54; --btn: #c0c0c0; --btn-ink: #000; --btn-hi: #fff; --btn-lo: #404040;
+  --bad: #fc5454; --good: #54fc54; --sel: #a80000; --sel-ink: #fcfc54; --bar: #000; --bar-ink: #a8a8a8;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #101018; --ink: #d0d0c8; --btn: #a8a8a8; --btn-hi: #e0e0e0; --btn-lo: #303030;
+    --bar: #000; --bar-ink: #a8a8a8; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #101018; --ink: #d0d0c8; --btn: #a8a8a8; --btn-hi: #e0e0e0; --btn-lo: #303030;
+  --bar: #000; --bar-ink: #a8a8a8; color-scheme: dark;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font-family: "VT323", "Courier New", monospace; font-size: 20px; line-height: 1.1;
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+#app {
+  position: relative; margin: 0 auto;
+  width: min(960px, 100%, calc((100dvh - 150px) * 1.6667));
+  min-width: min(100%, 340px);
+}
+.bar {
+  display: flex; align-items: center; gap: 10px; padding: 4px 6px;
+  background: var(--bar); color: var(--bar-ink); font-size: 20px;
+}
+.bar .grow { flex: 1; color: var(--panel-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#cash { color: var(--accent); white-space: nowrap; }
+#cash.neg { color: var(--bad); }
+#stage { position: relative; line-height: 0; background: #000; }
+#cv {
+  display: block; width: 100%; aspect-ratio: 5 / 3; height: auto;
+  image-rendering: pixelated; image-rendering: crisp-edges; touch-action: none; cursor: crosshair;
+}
+#hud {
+  position: absolute; left: 6px; top: 4px; right: 6px; line-height: 1;
+  display: flex; justify-content: space-between; gap: 8px; pointer-events: none;
+  color: #fcfcfc; text-shadow: 2px 2px 0 #000; font-size: clamp(16px, 3.2vw, 24px);
+}
+#hud b { color: var(--accent); font-weight: normal; }
+#banner {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  pointer-events: none; line-height: 1; text-align: center;
+  font-size: clamp(40px, 12vw, 110px); color: var(--accent);
+  text-shadow: 3px 3px 0 #a80000, 6px 6px 0 #000;
+}
+.tools {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px; background: var(--bar);
+}
+button {
+  font: inherit; font-size: 20px; line-height: 1; color: var(--btn-ink); background: var(--btn);
+  border: 0; padding: 8px 6px 7px; cursor: pointer; min-height: 40px;
+  box-shadow: inset -2px -2px 0 var(--btn-lo), inset 2px 2px 0 var(--btn-hi);
+}
+button:active, button[aria-pressed="true"] {
+  box-shadow: inset 2px 2px 0 var(--btn-lo), inset -2px -2px 0 var(--btn-hi);
+  background: var(--sel); color: var(--sel-ink);
+}
+button:disabled { color: #707070; cursor: default; }
+button:focus-visible { outline: 2px dashed var(--accent); outline-offset: 2px; }
+#fire { background: #a80000; color: var(--accent); }
+#fire:disabled { background: #502020; color: #806060; }
+.tools small { display: block; font-size: 16px; opacity: .85; margin-top: 2px; }
+#status { padding: 4px 8px 8px; background: var(--bar); color: var(--panel-dim); min-height: 28px; font-size: 19px; }
+#overlay {
+  position: fixed; inset: 0; z-index: 5; overflow-y: auto; background: rgba(0, 0, 0, .6); padding-top: max(10px, env(safe-area-inset-top, 0px)); padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: flex-start; justify-content: center; padding-left: 10px; padding-right: 10px;
+}
+#overlay[hidden] { display: none; }
+.dos {
+  background: var(--panel); color: var(--panel-ink); width: min(560px, 100%);
+  border: 4px double var(--panel-ink); outline: 4px solid var(--panel); padding: 12px 14px 14px;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, .7);
+}
+.logo {
+  margin: 4px 0 2px; text-align: center; font-size: clamp(46px, 11vw, 78px); line-height: .9; font-weight: normal;
+  color: var(--accent); letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #fc5400, 4px 4px 0 #a80000, 6px 6px 0 #540000, 8px 8px 0 #000;
+}
+.tag { text-align: center; color: var(--panel-dim); margin: 6px 0 12px; }
+.dos h2 { font-weight: normal; font-size: 30px; margin: 0 0 8px; color: var(--accent); text-align: center; }
+.sites { display: grid; gap: 6px; }
+.site { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; text-align: left; align-items: center; }
+.site .mats { display: block; font-size: 16px; color: #404040; margin-top: 2px; }
+.site:disabled .mats { display: none; }
+.site .g { min-width: 1.4em; text-align: center; color: #a80000; }
+.site:disabled .g { color: #707070; }
+.how { margin: 12px 0 0; color: var(--panel-dim); font-size: 19px; }
+.rows { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; margin: 4px 0 10px; font-size: 22px; }
+.rows .v { text-align: right; }
+.rows .tot { border-top: 2px solid var(--panel-ink); padding-top: 4px; color: var(--accent); }
+.neg { color: var(--bad); } .pos { color: var(--good); }
+.grade { text-align: center; font-size: 72px; line-height: 1; color: var(--accent); text-shadow: 4px 4px 0 #a80000; }
+.verdict { text-align: center; margin: 2px 0 10px; color: var(--panel-dim); }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.acts button { flex: 1; }
+@media (max-width: 520px) { .tools button { font-size: 18px; padding: 6px 2px; } .tools small { font-size: 14px; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="bar">
+    <button id="menuBtn">Sites</button>
+    <span class="grow" id="lvlName">Blastworks ’96</span>
+    <span id="cash">$0</span>
+    <button id="sndBtn" aria-pressed="false">♪ On</button>
+  </div>
+  <div id="stage">
+    <canvas id="cv" width="400" height="240"></canvas>
+    <div id="hud"><span id="hudL"></span><span id="hudR"></span></div>
+    <div id="banner"></div>
+  </div>
+  <div class="tools">
+    <button id="tSmall" aria-pressed="true">Small<small>$250</small></button>
+    <button id="tBig" aria-pressed="false">Big<small>$800</small></button>
+    <button id="tDelay">Delay<small id="dVal">0.0s</small></button>
+    <button id="tRemove" aria-pressed="false">Remove<small>refund</small></button>
+    <button id="fire">Detonate<small id="fCost">$0</small></button>
+  </div>
+  <div id="status">Tap a block to rig it.</div>
+  <div id="overlay"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script>
+// ===CORE-START===
+const CELL = 20, GROUND_Y = 440, WORLD_W = 800, WORLD_H = 480;
+const PHYS = { sub: 2, impMin: 0.8, impK: 1.2, prop: 0.6, depth: 3, fragMin: 1.2, maxBodies: 700, burnFrames: 420, burnRate: 0.004, burnSpread: 0.006 };
+// hp: joint strength vs impacts/fire; brk: stretch (px) before a joint snaps; blast: charge power needed to cut it
+// split: how a loose block breaks up; crumble: chance a block breaks up once its last joint fails
+const MATS = {
+  concrete: { name: 'Concrete', dens: 0.003,  hp: 1.0,  brk: 3.2, stiff: 0.6,  blast: 1, crumble: 0.7, split: 'quad',    fric: 0.8 },
+  brick:    { name: 'Brick',    dens: 0.0028, hp: 0.55, brk: 2.6, stiff: 0.6,  blast: 1, crumble: 0.95, split: 'quad',   fric: 0.7 },
+  steel:    { name: 'Steel',    dens: 0.007,  hp: 2.0,  brk: 5.0, stiff: 0.5,  blast: 2, crumble: 0,   split: 'none',    fric: 0.4 },
+  wood:     { name: 'Timber',   dens: 0.0012, hp: 0.8,  brk: 4.5, stiff: 0.45, blast: 1, crumble: 0.4, split: 'plank',   fric: 0.9 },
+  glass:    { name: 'Glass',    dens: 0.0015, hp: 0.15, brk: 1.5, stiff: 0.6,  blast: 0, crumble: 1,   split: 'shatter', fric: 0.3 }
+};
+const CHAR_MAT = { '#': 'concrete', w: 'concrete', r: 'concrete', b: 'brick', B: 'brick', s: 'steel', o: 'wood', O: 'wood', g: 'glass' };
+const CHARGES = {
+  small: { cost: 250, power: 1, destroyR: 0, breakR: 30, forceR: 60, force: 5, label: 'Small' },
+  big:   { cost: 800, power: 2, destroyR: 24, breakR: 52, forceR: 110, force: 10, label: 'Big' }
+};
+const LEVELS = [
+  { name: "Joe’s Garage", fee: 4000, x: 340, lot: [250, 550], grid: [
+    "######","#w##w#","######","##..##" ] },
+  { name: "Hilltop Barn", fee: 5000, x: 340, lot: [240, 580], grid: [
+    "...oo...","..oooo..",".oooooo.","oooooooo","oOooooOo","oooooooo","oo....oo","oo....oo" ] },
+  { name: "Mill Smokestack", fee: 6000, x: 160, lot: [110, 780], grid:
+    Array.from({ length: 17 }, (_, i) => i === 0 ? "##" : "bb") },
+  { name: "Starlite Motel", fee: 9000, x: 350, lot: [270, 530], grid: [
+    "rrrrr","#w#w#","#####","#w#w#","#####","#w#w#",
+    "#####","#w#w#","#####","#w#w#","#####","##.##" ] },
+  { name: "County Water Tower", fee: 10000, x: 340, lot: [220, 580], grid: [
+    ".ssss.","ssssss","ssssss","ssssss",".ssss.",
+    ".s..s.",".s..s.",".ssss.",".s..s.",".s..s.",
+    ".s..s.",".ssss.",".s..s.",".s..s.",".s..s." ] },
+  { name: "Harbor Brick Warehouse", fee: 12000, x: 280, lot: [225, 575], grid: [
+    "bbbbbbbbbbbb","bBbbBbbBbbBb","bbbbbbbbbbbb","oooooooooooo",
+    "bBbbBbbBbbBb","bbbbbbbbbbbb","oooooooooooo","bBbb....bbBb","bbbb....bbbb" ] },
+  { name: "City Parking Deck", fee: 14000, x: 260, lot: [215, 585], grid: [
+    "##############","#....#..#....#","#....#..#....#",
+    "##############","#....#..#....#","#....#..#....#",
+    "##############","#....#..#....#","#....#..#....#" ] },
+  { name: "First Federal Glass Tower", fee: 20000, x: 320, lot: [215, 585], grid: [
+    "rrrrrrrr",
+    "sggssggs","sggssggs","########",
+    "sggssggs","sggssggs","########",
+    "sggssggs","sggssggs","########",
+    "sggssggs","sggssggs","########",
+    "sggssggs","sggssggs","########",
+    "sg.ss.gs","s..ss..s" ] },
+  { name: "Mercer Office Block", fee: 25000, x: 310, lot: [230, 570], grid: [
+    "rrrrrrrrr",
+    "#ww#s#ww#","#ww#s#ww#","####s####",
+    "#ww#s#ww#","#ww#s#ww#","####s####",
+    "#ww#s#ww#","#ww#s#ww#","####s####",
+    "#ww#s#ww#","#ww#s#ww#","####s####",
+    "#ww#s#ww#","#ww#s#ww#","####s####",
+    "##w#s#w##","##..s..##" ] }
+];
+
+function makeEngine() {
+  const { Engine, Bodies, Composite } = Matter;
+  const engine = Engine.create({ positionIterations: 10, velocityIterations: 8, constraintIterations: 6 });
+  const ground = Bodies.rectangle(WORLD_W / 2, GROUND_Y + 60, WORLD_W * 4, 120, { isStatic: true, friction: 1, label: 'ground' });
+  Composite.add(engine.world, ground);
+  return engine;
+}
+
+function newBody(x, y, w, h, mat, opts) {
+  const M = MATS[mat];
+  const b = Matter.Bodies.rectangle(x, y, w, h, Object.assign({
+    density: M.dens, friction: M.fric, frictionStatic: M.fric + 0.2, restitution: mat === 'steel' ? 0.1 : 0, label: 'block' }, opts || {}));
+  b.mat = mat; b.joints = []; b.alive = true; b.burn = 0; b.charred = false;
+  return b;
+}
+
+function buildLevel(engine, lvl, rnd) {
+  const { Constraint, Composite } = Matter;
+  rnd = rnd || Math.random;
+  const rows = lvl.grid.length;
+  const cols = Math.max(...lvl.grid.map(r => r.length));
+  const cells = [], blocks = [], joints = [];
+  const h = CELL / 2, ins = 2;
+  for (let r = 0; r < rows; r++) {
+    cells.push([]);
+    for (let c = 0; c < cols; c++) {
+      const ch = lvl.grid[r][c] || '.';
+      if (!CHAR_MAT[ch]) { cells[r].push(null); continue; }
+      const b = newBody(lvl.x + (c + 0.5) * CELL, GROUND_Y - (rows - r - 0.5) * CELL, CELL, CELL, CHAR_MAT[ch]);
+      b.kind = ch; b.shade = Math.floor(rnd() * 3); b.size = CELL; b.w = b.mat === 'glass' ? 0 : 1;
+      b.gx = c; b.gy = r;
+      cells[r].push(b); blocks.push(b);
+    }
+  }
+  const pin = (a, b, pa, pb) => {
+    const A = MATS[a.mat], B = b ? MATS[b.mat] : A;
+    const weak = A.hp <= B.hp ? A : B;
+    const c = Constraint.create({ bodyA: a, bodyB: b || undefined, pointA: pa, pointB: pb, length: 0, stiffness: Math.min(A.stiff, B.stiff) });
+    const j = { c, alive: true, a, b, hp: Math.min(A.hp, B.hp), brk: Math.min(A.brk, B.brk), blast: Math.min(A.blast, B.blast), weak };
+    a.joints.push(j); if (b) b.joints.push(j);
+    joints.push(j);
+  };
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const a = cells[r][c]; if (!a) continue;
+    const right = cells[r][c + 1], below = r + 1 < rows ? cells[r + 1][c] : null;
+    if (right) {
+      pin(a, right, { x: h, y: -h + ins }, { x: -h, y: -h + ins });
+      pin(a, right, { x: h, y: h - ins }, { x: -h, y: h - ins });
+    }
+    if (below) {
+      pin(a, below, { x: -h + ins, y: h }, { x: -h + ins, y: -h });
+      pin(a, below, { x: h - ins, y: h }, { x: h - ins, y: -h });
+    }
+    if (r === rows - 1) {
+      pin(a, null, { x: -h + ins, y: h }, { x: a.position.x - h + ins, y: GROUND_Y });
+      pin(a, null, { x: h - ins, y: h }, { x: a.position.x + h - ins, y: GROUND_Y });
+    }
+  }
+  Composite.add(engine.world, blocks);
+  Composite.add(engine.world, joints.map(j => j.c));
+  return engine.st = { lvl, blocks, joints, origH: rows * CELL, lost: 0, splitQ: new Set(), events: [] };
+}
+
+function killJoint(engine, j) {
+  if (!j.alive) return;
+  j.alive = false;
+  Matter.Composite.remove(engine.world, j.c);
+  const st = engine.st;
+  if (st) for (const b of [j.a, j.b]) if (b && b.alive && b.size === CELL && !b.joints.some(k => k.alive) && Math.random() < MATS[b.mat].crumble) st.splitQ.add(b);
+}
+
+function removeBlock(engine, st, b) {
+  if (!b.alive) return;
+  b.alive = false;
+  b.joints.forEach(j => killJoint(engine, j));
+  Matter.Composite.remove(engine.world, b);
+}
+
+function checkJoints(engine, st) {
+  const out = [];
+  const { Constraint } = Matter;
+  for (const j of st.joints) {
+    if (!j.alive) continue;
+    const pa = Constraint.pointAWorld(j.c);
+    const pb = j.b ? Constraint.pointBWorld(j.c) : j.c.pointB;
+    const dx = pa.x - pb.x, dy = pa.y - pb.y;
+    if (dx * dx + dy * dy > j.brk * j.brk) { killJoint(engine, j); out.push({ x: pa.x, y: pa.y, mat: j.weak === MATS.steel ? 'steel' : 'dust' }); }
+  }
+  return out;
+}
+
+function ignite(b) { if (b.alive && b.mat === 'wood' && !b.charred && b.burn <= 0) b.burn = PHYS.burnFrames * (0.7 + Math.random() * 0.6); }
+
+function explode(engine, st, ch) {
+  const def = CHARGES[ch.type];
+  const host = ch.body;
+  const p = host.alive ? { x: host.position.x, y: host.position.y } : ch.pos;
+  const destroyed = [];
+  let clang = false;
+  if (host.alive) {
+    if (MATS[host.mat].blast <= def.power) { destroyed.push(host); removeBlock(engine, st, host); }
+    else clang = true;
+  }
+  for (const b of st.blocks) {
+    if (!b.alive) continue;
+    const d = Math.hypot(b.position.x - p.x, b.position.y - p.y);
+    if (d < def.destroyR && MATS[b.mat].blast <= def.power) { destroyed.push(b); removeBlock(engine, st, b); }
+    else if (b.mat === 'glass' && d < def.forceR * 1.1) { shatter(engine, st, b); }
+    else if (b.mat === 'wood' && d < def.forceR * 0.7) ignite(b);
+  }
+  for (const j of st.joints) {
+    if (!j.alive || j.blast > def.power) continue;
+    const pa = Matter.Constraint.pointAWorld(j.c);
+    if (Math.hypot(pa.x - p.x, pa.y - p.y) < def.breakR) killJoint(engine, j);
+  }
+  for (const b of st.blocks) {
+    if (!b.alive) continue;
+    const dx = b.position.x - p.x, dy = b.position.y - p.y, d = Math.hypot(dx, dy) || 1;
+    if (d >= def.forceR) continue;
+    const f = def.force * (1 - d / def.forceR) * Math.sqrt(0.003 / MATS[b.mat].dens);
+    Matter.Body.setVelocity(b, { x: b.velocity.x + dx / d * f, y: b.velocity.y + dy / d * f });
+    Matter.Body.setAngularVelocity(b, b.angularVelocity + (Math.random() - 0.5) * 0.3 * f / def.force);
+  }
+  return { p, destroyed, def, clang };
+}
+
+function hookImpacts(engine, st, onHit) {
+  Matter.Events.on(engine, 'collisionStart', ev => {
+    for (const p of ev.pairs) {
+      const a = p.bodyA, b = p.bodyB, n = p.collision.normal;
+      const v = Math.abs((a.velocity.x - b.velocity.x) * n.x + (a.velocity.y - b.velocity.y) * n.y);
+      for (const body of [a, b]) if (body.mat === 'glass' && v > 0.6) st.splitQ.add(body);
+      if (v < PHYS.impMin) continue;
+      const dmg = (v - PHYS.impMin) * PHYS.impK;
+      for (const body of [a, b]) if (body.joints) {
+        damageBody(engine, body, dmg, PHYS.depth);
+        if (v > PHYS.fragMin && body.size > CELL / 2 - 1 && MATS[body.mat].split !== 'none' && !body.joints.some(j => j.alive)) st.splitQ.add(body);
+      }
+      if (onHit) onHit(p.collision.supports[0] || a.position, v, a.mat === 'steel' || b.mat === 'steel');
+    }
+  });
+}
+function damageBody(engine, body, dmg, depth) {
+  for (const j of body.joints) {
+    if (!j.alive) continue;
+    j.hp -= dmg * (0.5 + Math.random());
+    if (j.hp <= 0) killJoint(engine, j);
+  }
+  if (depth > 0) for (const j of body.joints) {
+    const o = j.a === body ? j.b : j.a;
+    if (o && j.alive) damageBody(engine, o, dmg * PHYS.prop, depth - 1);
+  }
+}
+
+function burnStep(engine, st) {
+  let burning = 0;
+  for (const b of st.blocks) {
+    if (!b.alive || b.burn <= 0) continue;
+    burning++;
+    b.burn--;
+    for (const j of b.joints) {
+      if (!j.alive) continue;
+      j.hp -= PHYS.burnRate;
+      if (j.hp <= 0) killJoint(engine, j);
+      const o = j.a === b ? j.b : j.a;
+      if (o && Math.random() < PHYS.burnSpread) ignite(o);
+    }
+    if (b.burn <= 0) b.charred = true;
+  }
+  return burning;
+}
+
+function stepPhysics(engine, st, dtMs) {
+  const broken = [];
+  for (let i = 0; i < PHYS.sub; i++) {
+    Matter.Engine.update(engine, dtMs / PHYS.sub);
+    broken.push(...checkJoints(engine, st));
+  }
+  st.burning = burnStep(engine, st);
+  if (st.splitQ.size) {
+    let n = st.blocks.length;
+    for (const b of st.splitQ) if (b.alive && (n < PHYS.maxBodies || b.mat === 'glass')) { n += splitBlock(engine, st, b); }
+    st.splitQ.clear();
+  }
+  for (const b of st.blocks) if (b.alive && (b.position.y > WORLD_H + 300 || Math.abs(b.position.x - WORLD_W / 2) > WORLD_W * 1.5)) {
+    removeBlock(engine, st, b); st.lost += b.w;
+  }
+  return broken;
+}
+
+function shatter(engine, st, b) {
+  st.events.push({ type: 'glass', x: b.position.x, y: b.position.y, vx: b.velocity.x, vy: b.velocity.y });
+  removeBlock(engine, st, b);
+}
+
+// returns number of bodies added
+function splitBlock(engine, st, b) {
+  const M = MATS[b.mat];
+  if (M.split === 'none') return 0;
+  if (M.split === 'shatter') { shatter(engine, st, b); return -1; }
+  const out = [], c = Math.cos(b.angle), sn = Math.sin(b.angle);
+  const place = (ox, oy) => ({ x: b.position.x + ox * c - oy * sn, y: b.position.y + ox * sn + oy * c });
+  removeBlock(engine, st, b);
+  if (M.split === 'plank') {
+    for (const oy of [-b.size / 4, b.size / 4]) {
+      const q = place(0, oy);
+      const p = newBody(q.x, q.y, b.size * (0.8 + Math.random() * 0.2), b.size / 2 - 2, b.mat, { angle: b.angle });
+      Matter.Body.setVelocity(p, { x: b.velocity.x + (Math.random() - 0.5) * 0.8, y: b.velocity.y + oy * 0.04 });
+      Matter.Body.setAngularVelocity(p, (Math.random() - 0.5) * 0.15);
+      p.kind = 'f'; p.shade = b.shade; p.size = b.size / 2; p.w = b.w / 2; p.burn = b.burn; p.charred = b.charred; p.plank = true;
+      out.push(p);
+    }
+  } else {
+    const s = b.size / 2, qq = s / 2, hs = s / 2;
+    for (const [ox, oy] of [[-qq, -qq], [qq, -qq], [-qq, qq], [qq, qq]]) {
+      const q = place(ox, oy);
+      const verts = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([vx, vy]) =>
+        ({ x: q.x + vx * hs * (0.55 + Math.random() * 0.45), y: q.y + vy * hs * (0.6 + Math.random() * 0.4) }));
+      const p = Matter.Bodies.fromVertices(q.x, q.y, [verts], {
+        density: M.dens, friction: M.fric * 0.8, frictionStatic: M.fric, restitution: 0.05, label: 'block' });
+      Matter.Body.setAngle(p, b.angle + Math.random() * 6.28);
+      Matter.Body.setVelocity(p, { x: b.velocity.x + ox * 0.08 + (Math.random() - 0.5) * 0.6, y: b.velocity.y + oy * 0.05 });
+      Matter.Body.setAngularVelocity(p, (Math.random() - 0.5) * 0.2);
+      p.mat = b.mat; p.kind = 'f'; p.shade = b.shade; p.joints = []; p.alive = true; p.size = s; p.w = b.w / 4; p.burn = 0;
+      out.push(p);
+    }
+  }
+  out.forEach(p => st.blocks.push(p));
+  Matter.Composite.add(engine.world, out);
+  return out.length - 1;
+}
+
+function measure(st) {
+  let top = GROUND_Y, spill = st.lost, energy = 0, n = 0;
+  const [L, R] = st.lvl.lot;
+  for (const b of st.blocks) {
+    if (!b.alive) continue;
+    top = Math.min(top, b.bounds.min.y);
+    if (b.position.x < L || b.position.x > R) spill += b.w;
+    energy += b.speed + Math.abs(b.angularVelocity) * 10; n++;
+  }
+  const height = GROUND_Y - top;
+  const demo = Math.max(0, Math.min(1, 1 - Math.max(0, height - CELL) / (st.origH - CELL)));
+  return { height, demo, spill, motion: n ? energy / n : 0 };
+}
+// ===CORE-END===
+// ===== GAME =====
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d');
+const SC = 0.5, GPX = GROUND_Y * SC, cam = { k: 0.5, x: 0 }, DELAYS = [0, 0.3, 0.6, 1.0];
+const money = n => (n < 0 ? '−$' : '$') + Math.abs(Math.round(n)).toLocaleString('en-US');
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+// ---------- save ----------
+function loadSave() {
+  try { const s = JSON.parse(localStorage.getItem('blastworks96b')); if (s && typeof s.cash === 'number') return s; } catch (e) {}
+  let cash = 6000;
+  try { const o = JSON.parse(localStorage.getItem('blastworks96')); if (o && typeof o.cash === 'number') cash = Math.max(cash, o.cash); } catch (e) {}
+  return { cash, best: {}, unlocked: 1, snd: true };
+}
+const save = loadSave();
+function persist() { try { localStorage.setItem('blastworks96b', JSON.stringify(save)); } catch (e) {} }
+
+// ---------- materials ----------
+const HINT = {
+  concrete: 'Concrete: solid all-rounder, cracks into rubble.',
+  brick: 'Brick: weak mortar, crumbles easily. Cheap to drop, hard to keep tidy.',
+  steel: 'Steel: only big charges cut it. Bends before it breaks, never crumbles.',
+  wood: 'Timber: light and flies far. Blasts set it alight and fire eats the joints.',
+  glass: 'Glass: shatters on any shock. Shards don’t count as rubble or spill.'
+};
+function siteMats(lvl) { return [...new Set(lvl.grid.join('').split('').map(c => CHAR_MAT[c]).filter(Boolean))]; }
+
+// ---------- state ----------
+const G = { phase: 'menu', li: 0, engine: null, st: null, charges: [], tool: 'small', delayIdx: 0,
+  t: 0, lastDelay: 0, calm: 0, cd: 0, shake: 0, flash: 0, parts: [], hover: null, neighbors: [] };
+
+// ---------- audio ----------
+let AC = null, noiseBuf = null, lastRumble = 0;
+function audioInit() {
+  if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    noiseBuf = AC.createBuffer(1, AC.sampleRate * 2, AC.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  if (AC.state === 'suspended') AC.resume();
+}
+function blip(f, dur = 0.06, type = 'square', vol = 0.05) {
+  if (!AC || !save.snd) return;
+  const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime;
+  o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(g).connect(AC.destination); o.start(t); o.stop(t + dur);
+}
+function noise(dur, f0, f1, vol) {
+  if (!AC || !save.snd) return;
+  const s = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain(), t = AC.currentTime;
+  s.buffer = noiseBuf; fl.type = 'lowpass'; fl.frequency.setValueAtTime(f0, t); fl.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  s.connect(fl).connect(g).connect(AC.destination); s.start(t, Math.random()); s.stop(t + dur);
+}
+function boom(big) {
+  noise(big ? 1.6 : 1.0, big ? 2400 : 1800, 60, big ? 0.9 : 0.6);
+  if (!AC || !save.snd) return;
+  const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime;
+  o.type = 'sine'; o.frequency.setValueAtTime(big ? 70 : 90, t); o.frequency.exponentialRampToValueAtTime(28, t + 0.8);
+  g.gain.setValueAtTime(0.7, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+  o.connect(g).connect(AC.destination); o.start(t); o.stop(t + 0.9);
+}
+function clank(f = 900) {
+  blip(f, 0.25, 'square', 0.04); blip(f * 1.48, 0.35, 'triangle', 0.05);
+}
+function tinkle() {
+  const now = performance.now(); if (now - (tinkle.t || 0) < 90) return; tinkle.t = now;
+  for (let i = 0; i < 4; i++) setTimeout(() => blip(2200 + Math.random() * 2400, 0.08, 'sine', 0.03), i * 35);
+}
+function crackle() {
+  const now = performance.now(); if (now - (crackle.t || 0) < 140) return; crackle.t = now;
+  noise(0.05, 4000, 1500, 0.05);
+}
+function rumble(v) {
+  const now = performance.now(); if (now - lastRumble < 70) return; lastRumble = now;
+  noise(0.25, 500, 80, Math.min(0.25, 0.04 * v));
+}
+
+// ---------- background (pre-rendered, pixel units) ----------
+const bg = document.createElement('canvas'); bg.width = 400; bg.height = 240;
+function hex(h) { return [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16)); }
+function makeBg(seed) {
+  let s = seed; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const b = bg.getContext('2d'), img = b.createImageData(400, 240), D = img.data;
+  const stops = ['#141438', '#24205c', '#4c2878', '#943c70', '#d8644c', '#fca850'].map(hex);
+  const bay = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+  const GY = GPX;
+  for (let y = 0; y < 240; y++) for (let x = 0; x < 400; x++) {
+    let c;
+    if (y < GY) {
+      const t = (y / GY) * (stops.length - 1), i = Math.min(stops.length - 2, Math.floor(t)), f = t - i;
+      c = (f * 16 > bay[(y & 3) * 4 + (x & 3)]) ? stops[i + 1] : stops[i];
+      const dx = x - 300, dy = y - 172, r = Math.sqrt(dx * dx + dy * dy);
+      if (r < 30 && !(dy > 0 && (y % 5) < (dy / 6))) c = r < 26 || bay[(y & 3) * 4 + (x & 3)] > 7 ? hex('#fcfc54') : c;
+      if (y < 60 && rnd() < 0.0015) c = hex('#fcfcfc');
+    } else {
+      const n = rnd();
+      c = y < GY + 2 ? hex('#8c6c40') : n < 0.08 ? hex('#7c5830') : n < 0.16 ? hex('#4c3018') : hex('#644020');
+    }
+    const k = (y * 400 + x) * 4; D[k] = c[0]; D[k + 1] = c[1]; D[k + 2] = c[2]; D[k + 3] = 255;
+  }
+  b.putImageData(img, 0, 0);
+  // skyline
+  for (let layer = 0; layer < 2; layer++) {
+    let x = -5;
+    while (x < 400) {
+      const w = 10 + Math.floor(rnd() * 24), h = (layer ? 20 : 40) + Math.floor(rnd() * (layer ? 40 : 60));
+      b.fillStyle = layer ? '#100c24' : '#2a1c48'; b.fillRect(x, GY - h, w, h);
+      if (rnd() < 0.3) b.fillRect(x + (w >> 1), GY - h - 6, 1, 6);
+      b.fillStyle = layer ? '#fcd454' : '#a86c54';
+      for (let wy = GY - h + 3; wy < GY - 3; wy += 4) for (let wx = x + 2; wx < x + w - 2; wx += 3) if (rnd() < (layer ? 0.18 : 0.1)) b.fillRect(wx, wy, 1, 1);
+      x += w + Math.floor(rnd() * (layer ? 8 : 4));
+    }
+  }
+}
+
+// ---------- level ----------
+function makeNeighbors(lvl, li) {
+  const out = [], [L, R] = lvl.lot;
+  if (L > 90) out.push({ x0: L - 78, x1: L - 14, h: 70 + (li * 23) % 50 });
+  if (R < 720) out.push({ x0: R + 14, x1: R + 78, h: 60 + (li * 37) % 60 });
+  return out;
+}
+function startLevel(li) {
+  G.li = li; const lvl = LEVELS[li];
+  G.engine = makeEngine();
+  G.neighbors = makeNeighbors(lvl, li);
+  for (const n of G.neighbors) {
+    const nb = Matter.Bodies.rectangle((n.x0 + n.x1) / 2, GROUND_Y - n.h / 2, n.x1 - n.x0, n.h, { isStatic: true, friction: 0.9, label: 'neighbor' });
+    Matter.Composite.add(G.engine.world, nb);
+  }
+  G.st = buildLevel(G.engine, lvl);
+  const [L, R] = lvl.lot;
+  cam.k = clamp(Math.min(400 / (R - L + 140), (GPX - 8) / (G.st.origH + 50)), 0.5, 1);
+  cam.x = (L + R) / 2 - 200 / cam.k;
+  hookImpacts(G.engine, G.st, onHit);
+  G.charges = []; G.parts = []; G.report = null; G.phase = 'place'; G.t = 0; G.calm = 0; G.flash = 0; G.shake = 0; G.hover = null;
+  makeBg(1234 + li * 77);
+  $('overlay').hidden = true; $('banner').textContent = '';
+  const mats = siteMats(lvl);
+  status(li === 0 ? 'Tap a block to rig it. Rubble must end below the green line and inside the fence.'
+    : mats.length === 1 && mats[0] !== 'concrete' ? HINT[mats[0]]
+    : 'On site: ' + mats.map(m => MATS[m].name).join(', ') + '. Hover or tap a block to see how it behaves.');
+  updateHud();
+}
+const chargeCost = () => G.charges.reduce((s, c) => s + CHARGES[c.type].cost, 0);
+function passHeight(st) { return CELL + 0.3 * (st.origH - CELL); }
+
+function updateHud() {
+  const lvl = LEVELS[G.li], cost = chargeCost();
+  $('lvlName').textContent = G.phase === 'menu' ? 'Blastworks ’96' : lvl.name;
+  $('cash').textContent = money(save.cash); $('cash').classList.toggle('neg', save.cash < 0);
+  $('hudL').innerHTML = G.phase === 'menu' ? '' : `Contract <b>${money(lvl.fee)}</b>`;
+  $('hudR').innerHTML = G.phase === 'menu' ? '' : `Charges <b>${G.charges.length}</b> for <b>${money(cost)}</b>`;
+  $('fCost').textContent = money(cost);
+  $('dVal').textContent = DELAYS[G.delayIdx].toFixed(1) + 's';
+  const placing = G.phase === 'place';
+  for (const id of ['tSmall', 'tBig', 'tDelay', 'tRemove']) $(id).disabled = !placing;
+  $('fire').disabled = !placing || !G.charges.length;
+  $('tSmall').setAttribute('aria-pressed', G.tool === 'small');
+  $('tBig').setAttribute('aria-pressed', G.tool === 'big');
+  $('tRemove').setAttribute('aria-pressed', G.tool === 'remove');
+  $('sndBtn').setAttribute('aria-pressed', save.snd); $('sndBtn').textContent = save.snd ? '♪ On' : '♪ Off';
+}
+function status(t) { $('status').textContent = t; }
+
+// ---------- input ----------
+function toWorld(e) {
+  const r = cv.getBoundingClientRect();
+  const px = (e.clientX - r.left) / r.width * 400, py = (e.clientY - r.top) / r.height * 240;
+  return { x: px / cam.k + cam.x, y: (py - GPX) / cam.k + GROUND_Y };
+}
+function blockAt(p) {
+  const hits = Matter.Query.point(G.st.blocks.filter(b => b.alive), p);
+  return hits[0] || null;
+}
+cv.addEventListener('pointerdown', e => {
+  audioInit();
+  if (G.phase === 'done' && $('overlay').hidden && G.report) { finishRewire(); return; }
+  if (G.phase !== 'place') return;
+  const b = blockAt(toWorld(e)); if (!b) return;
+  const i = G.charges.findIndex(c => c.body === b), d = DELAYS[G.delayIdx];
+  if (G.tool === 'remove') { if (i >= 0) { G.charges.splice(i, 1); blip(220); } updateHud(); return; }
+  const def = CHARGES[G.tool];
+  if (i >= 0) {
+    const c = G.charges[i];
+    if (c.type === G.tool && c.delay === d) { G.charges.splice(i, 1); blip(220); }
+    else {
+      if (chargeCost() - CHARGES[c.type].cost + def.cost > save.cash) { status('Not enough cash for that charge.'); blip(110, .15); return; }
+      c.type = G.tool; c.delay = d; blip(660);
+    }
+  } else {
+    if (chargeCost() + def.cost > save.cash) { status('Not enough cash for that charge.'); blip(110, .15); return; }
+    G.charges.push({ body: b, type: G.tool, delay: d, pos: { x: b.position.x, y: b.position.y }, done: false }); blip(880);
+  }
+  if (G.tool === 'small' && b.mat === 'steel') { status('Small charges can’t cut steel. Use a big one here.'); clank(700); }
+  else status(HINT[b.mat]);
+  updateHud();
+});
+cv.addEventListener('pointermove', e => {
+  const h = G.phase === 'place' && e.pointerType === 'mouse' ? blockAt(toWorld(e)) : null;
+  if (h && (!G.hover || G.hover.mat !== h.mat)) status(HINT[h.mat]);
+  G.hover = h;
+});
+cv.addEventListener('pointerleave', () => G.hover = null);
+$('tSmall').onclick = () => { G.tool = 'small'; blip(500, .03); updateHud(); };
+$('tBig').onclick = () => { G.tool = 'big'; blip(500, .03); updateHud(); };
+$('tRemove').onclick = () => { G.tool = 'remove'; blip(500, .03); updateHud(); };
+$('tDelay').onclick = () => { G.delayIdx = (G.delayIdx + 1) % DELAYS.length; blip(400 + G.delayIdx * 120, .03); status('New charges blow ' + (DELAYS[G.delayIdx] ? DELAYS[G.delayIdx].toFixed(1) + ' s after detonation. Yellow pips show delay.' : 'immediately.')); updateHud(); };
+$('fire').onclick = () => { audioInit(); if (G.phase !== 'place' || !G.charges.length) return; G.phase = 'count'; G.cd = 1.5; G.lastBeep = -1; status('Fire in the hole!'); updateHud(); };
+$('menuBtn').onclick = () => showMenu();
+$('sndBtn').onclick = () => { audioInit(); save.snd = !save.snd; persist(); updateHud(); };
+
+// ---------- blast ----------
+function startBlast() {
+  save.cash -= chargeCost(); persist();
+  G.paid = chargeCost();
+  G.phase = 'blast'; G.t = 0; G.calm = 0; $('banner').textContent = '';
+  G.lastDelay = Math.max(...G.charges.map(c => c.delay));
+  updateHud();
+}
+function blastStep() {
+  const dt = 1000 / 60;
+  for (const c of G.charges) {
+    if (c.body.alive) c.pos = { x: c.body.position.x, y: c.body.position.y };
+    if (!c.done && G.t >= c.delay) { c.done = true; const r = explode(G.engine, G.st, c); blastFx(r, c.type === 'big'); }
+  }
+  const broken = stepPhysics(G.engine, G.st, dt);
+  for (let i = 0; i < Math.min(broken.length, 6); i++) {
+    const k = broken[i];
+    if (k.mat === 'steel') { puff(k.x, k.y, 'spark', 6, 3); if (i === 0) clank(500 + Math.random() * 300); }
+    else puff(k.x, k.y, 'dust', 3, 1.2);
+  }
+  for (const ev of G.st.events) if (ev.type === 'glass') {
+    for (let i = 0; i < 10; i++) G.parts.push({ x: ev.x + (Math.random() - .5) * 16, y: ev.y + (Math.random() - .5) * 16,
+      vx: ev.vx + (Math.random() - .5) * 4, vy: ev.vy + (Math.random() - .8) * 3, life: 50 + Math.random() * 40, max: 90, type: 'glass', sz: 2 });
+    tinkle();
+  }
+  G.st.events.length = 0;
+  if (G.st.burning) {
+    for (const b of G.st.blocks) if (b.alive && b.burn > 0) {
+      if (Math.random() < 0.35) G.parts.push({ x: b.position.x + (Math.random() - .5) * b.size, y: b.position.y + (Math.random() - .5) * b.size,
+        vx: (Math.random() - .5) * 0.6, vy: -0.6 - Math.random(), life: 14 + Math.random() * 16, max: 30, type: 'fire', sz: 4 });
+      if (Math.random() < 0.06) puff(b.position.x, b.position.y - 6, 'smoke', 1, 0.6);
+    }
+    if (Math.random() < 0.3) crackle();
+  }
+  G.t += dt / 1000;
+  if (G.t > G.lastDelay + 1.5) {
+    const m = measure(G.st);
+    const fireHolding = G.st.burning && G.st.blocks.some(b => b.alive && b.burn > 0 && b.joints.some(j => j.alive));
+    G.calm = m.motion < 0.08 && !fireHolding ? G.calm + 1 : 0;
+    if (G.calm > 40 || G.t > G.lastDelay + 22) finish();
+  }
+}
+function onHit(p, v, metal) {
+  if (G.phase !== 'blast') return;
+  if (v > 1.6 && G.parts.length < 1400) puff(p.x, p.y, metal ? 'spark' : 'dust', Math.min(6, v | 0), v * 0.5);
+  if (v > 2) { if (metal && Math.random() < 0.4) clank(300 + Math.random() * 400); else rumble(v); }
+}
+function blastFx(r, big) {
+  const { p, destroyed, clang } = r;
+  if (clang) { clank(1100); puff(p.x, p.y, 'spark', 14, 4); status('Clang. Small charges can’t cut steel.'); }
+  boom(big); G.shake = big ? 14 : 8; G.flash = big ? 3 : 2;
+  puff(p.x, p.y, 'fire', big ? 70 : 36, big ? 6 : 4);
+  puff(p.x, p.y, 'smoke', big ? 30 : 16, big ? 2.5 : 1.6);
+  for (const b of destroyed) { const pp = { x: b.position.x, y: b.position.y }; puff(pp.x, pp.y, 'chunk', 8, big ? 9 : 6); G.parts[G.parts.length - 1].mat = b.mat; if (b.mat === 'steel') puff(pp.x, pp.y, 'spark', 16, 6); }
+}
+function puff(x, y, type, n, spd) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, s = Math.random() * spd;
+    const life = type === 'spark' ? 12 + Math.random() * 18 : type === 'fire' ? 18 + Math.random() * 22 : type === 'smoke' ? 80 + Math.random() * 90 : type === 'chunk' ? 60 + Math.random() * 40 : 30 + Math.random() * 40;
+    G.parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - (type === 'smoke' ? 0.6 : 0), life, max: life, type, sz: type === 'smoke' ? 6 : 2 });
+  }
+}
+function updateParts() {
+  const P = G.parts;
+  for (let i = P.length - 1; i >= 0; i--) {
+    const p = P[i];
+    p.x += p.vx; p.y += p.vy; p.life--;
+    if (p.type === 'fire') { p.vx *= 0.9; p.vy = p.vy * 0.9 - 0.08; }
+    else if (p.type === 'smoke') { p.vx = p.vx * 0.97 + 0.01; p.vy = p.vy * 0.97 - 0.015; p.sz = 6 + (1 - p.life / p.max) * 14; }
+    else if (p.type === 'dust') { p.vx *= 0.95; p.vy = p.vy * 0.95 + 0.02; }
+    else if (p.type === 'spark') { p.vy += 0.12; }
+    else if (p.type === 'glass') { p.vy += 0.25; p.vx *= 0.98; if (p.y > GROUND_Y - 1) { p.y = GROUND_Y - 1; p.vy *= -0.25; p.vx *= 0.5; } }
+    else if (p.type === 'chunk') { p.vy += 0.35; if (p.y > GROUND_Y - 2) { p.y = GROUND_Y - 2; p.vy *= -0.3; p.vx *= 0.6; } }
+    if (p.life <= 0) P.splice(i, 1);
+  }
+}
+
+// ---------- results ----------
+function finish() {
+  G.phase = 'done';
+  const lvl = LEVELS[G.li], m = measure(G.st), demo = m.demo, spill = Math.round(m.spill);
+  const factor = clamp((demo - 0.5) / 0.4, 0, 1);
+  const earned = Math.round(lvl.fee * factor / 10) * 10;
+  const fines = spill * 150;
+  const pass = demo >= 0.7;
+  const bonus = pass && spill === 0 ? Math.round(lvl.fee * 0.15 / 10) * 10 : 0;
+  const net = earned + bonus - fines;
+  save.cash += net;
+  const pts = demo * 100 - spill * 1.5;
+  const grade = !pass ? 'F' : pts >= 92 ? 'A' : pts >= 84 ? 'B' : pts >= 76 ? 'C' : 'D';
+  const order = 'ABCDF';
+  if (pass) {
+    save.unlocked = Math.max(save.unlocked, Math.min(LEVELS.length, G.li + 2));
+    const old = save.best[G.li]; if (!old || order.indexOf(grade) < order.indexOf(old)) save.best[G.li] = grade;
+  }
+  persist(); updateHud();
+  const verdict = !pass ? 'Structure still standing. Client refuses full payment.'
+    : grade === 'A' ? 'Textbook implosion. The city council is impressed.'
+    : spill > 6 ? 'It came down, mostly onto the neighbors.' : 'Job done. Bring a bigger broom next time.';
+  blip(pass ? 880 : 140, .3, 'square', .05); if (pass) setTimeout(() => blip(1320, .3, 'square', .05), 160);
+  const row = (k, v, cls = '') => `<span class="${cls}">${k}</span><span class="v ${cls}">${v}</span>`;
+  const next = pass && G.li + 1 < LEVELS.length;
+  setTimeout(() => {
+    if (G.phase !== 'done') return;
+    showOverlay(`<div class="dos">
+      <h2>${lvl.name}</h2>
+      <div class="grade">${grade}</div>
+      <div class="verdict">${verdict}</div>
+      <div class="rows">
+        ${row('Demolished', Math.round(demo * 100) + '%')}
+        ${row('Rubble height', (Math.round(m.height / CELL * 10) / 10) + ' floors')}
+        ${row('Debris outside fence', spill + ' blocks')}
+        ${row('Contract paid', money(earned), earned ? 'pos' : '')}
+        ${bonus ? row('Clean-site bonus', money(bonus), 'pos') : ''}
+        ${fines ? row('Damage fines', money(-fines), 'neg') : ''}
+        ${row('Explosives', money(-G.paid), 'neg')}
+        ${row('Profit', money(net - G.paid), 'tot')}
+      </div>
+      <div class="acts">
+        <button id="rLook">View rubble</button>
+        <button id="rRetry">Retry site</button>
+        ${next ? '<button id="rNext">Next site</button>' : '<button id="rSites">Sites</button>'}
+      </div>
+      ${loanBtn()}
+    </div>`);
+    G.next = next; wireReport();
+  }, 700);
+}
+function finishRewire() { showOverlay(G.report); wireReport(); }
+function wireReport() {
+    const next = G.next;
+    G.report = $('overlay').innerHTML;
+    $('rLook').onclick = () => { $('overlay').hidden = true; status('Tap the site to see the report again.'); };
+    $('rRetry').onclick = () => startLevel(G.li);
+    if (next) $('rNext').onclick = () => startLevel(G.li + 1); else $('rSites').onclick = showMenu;
+    hookLoan();
+}
+function loanBtn() { return save.cash < CHARGES.small.cost * 2 ? '<div class="acts" style="margin-top:8px"><button id="loan">Take a bank loan (+$3,000)</button></div>' : ''; }
+function hookLoan() { const l = $('loan'); if (l) l.onclick = () => { save.cash += 3000; save.loans = (save.loans || 0) + 1; persist(); updateHud(); l.parentNode.remove(); }; }
+function showOverlay(html) { const o = $('overlay'); o.innerHTML = html; o.hidden = false; o.scrollTop = 0; const f = o.querySelector('button:not(:disabled)'); if (f) f.focus({ preventScroll: true }); }
+function showMenu() {
+  if (G.phase === 'blast' || G.phase === 'count') return;
+  G.phase = G.st ? G.phase : 'menu';
+  const list = LEVELS.map((l, i) => {
+    const locked = i >= save.unlocked;
+    return `<button class="site" data-i="${i}" ${locked ? 'disabled' : ''}>
+      <span>${i + 1}. ${locked ? 'Locked site' : l.name}${locked ? '' : `<span class="mats">${siteMats(l).map(m => MATS[m].name).join(', ')}</span>`}</span><span>${money(l.fee)}</span><span class="g">${save.best[i] || ''}</span></button>`;
+  }).join('');
+  showOverlay(`<div class="dos">
+    <div class="logo">BLASTWORKS<br>’96</div>
+    <div class="tag">Licensed controlled demolition. Est. 1996.</div>
+    <div class="sites">${list}</div>
+    <p class="how">Tap blocks to rig charges. Small charges crack joints, big ones pulverize and cut steel. Set delays to steer the fall. Drop the rubble below the green line and keep it inside the fence. Spilled debris costs $150 a block.</p>
+    ${loanBtn()}
+    ${G.st && G.phase === 'place' ? '<div class="acts" style="margin-top:8px"><button id="resume">Back to site</button></div>' : ''}
+  </div>`);
+  document.querySelectorAll('.site').forEach(b => b.onclick = () => { audioInit(); startLevel(+b.dataset.i); });
+  const r = $('resume'); if (r) r.onclick = () => { $('overlay').hidden = true; };
+  hookLoan(); updateHud();
+}
+
+// ---------- render ----------
+function render() {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(bg, 0, 0);
+  if (!G.st) return;
+  const sx = Math.round((Math.random() - 0.5) * G.shake), sy = Math.round((Math.random() - 0.5) * G.shake);
+  G.shake *= 0.86; if (G.shake < 0.5) G.shake = 0;
+  ctx.setTransform(cam.k, 0, 0, cam.k, -cam.x * cam.k + sx, GPX - GROUND_Y * cam.k + sy);
+  const lvl = LEVELS[G.li], [L, R] = lvl.lot;
+  // lot
+  ctx.fillStyle = '#7c6038'; ctx.fillRect(L, GROUND_Y, R - L, 6);
+  for (const x of [L, R]) {
+    for (let y = 0; y < 44; y += 8) { ctx.fillStyle = (y / 8) % 2 ? '#000' : '#fcfc54'; ctx.fillRect(x - 3, GROUND_Y - 44 + y, 6, 8); }
+  }
+  ctx.fillStyle = '#fc5454';
+  for (let x = L; x < R; x += 24) ctx.fillRect(x, GROUND_Y - 30, 12, 2);
+  // neighbors
+  for (const n of G.neighbors) {
+    const w = n.x1 - n.x0, top = GROUND_Y - n.h;
+    ctx.fillStyle = '#8c3c28'; ctx.fillRect(n.x0, top, w, n.h);
+    ctx.fillStyle = '#6c2c1c'; for (let y = top + 6; y < GROUND_Y; y += 6) ctx.fillRect(n.x0, y, w, 2);
+    ctx.fillStyle = '#3c1c14'; ctx.fillRect(n.x0 - 4, top - 6, w + 8, 6);
+    for (let y = top + 12; y < GROUND_Y - 16; y += 22) for (let x = n.x0 + 8; x < n.x1 - 12; x += 20) {
+      ctx.fillStyle = '#202040'; ctx.fillRect(x, y, 10, 12); ctx.fillStyle = '#fcd454'; ctx.fillRect(x + 2, y + 2, 4, 4);
+    }
+  }
+  // pass line
+  if (G.phase === 'place' || G.phase === 'count') {
+    const y = Math.round(GROUND_Y - passHeight(G.st));
+    ctx.fillStyle = '#54fc54';
+    for (let x = L; x < R; x += 12) ctx.fillRect(x, y, 6, 2);
+  }
+  // blocks
+  for (const b of G.st.blocks) {
+    if (!b.alive) continue;
+    if (b.size === CELL) drawBlock(b);
+    else {
+      const v = b.vertices; ctx.beginPath(); ctx.moveTo(v[0].x, v[0].y);
+      for (let i = 1; i < v.length; i++) ctx.lineTo(v[i].x, v[i].y);
+      ctx.closePath(); const P = PAL[b.mat];
+      ctx.fillStyle = b.charred ? '#3c2c20' : P.base[b.shade]; ctx.fill();
+      ctx.lineWidth = 2; ctx.strokeStyle = b.charred ? '#1c140c' : P.dark; ctx.stroke();
+      if (b.burn > 0 && (performance.now() / 90 + b.id) % 3 < 1.2) { ctx.fillStyle = 'rgba(252,140,0,.55)'; ctx.fill(); }
+    }
+  }
+  if (G.hover && G.hover.alive) {
+    ctx.save(); ctx.translate(G.hover.position.x, G.hover.position.y); ctx.rotate(G.hover.angle);
+    ctx.strokeStyle = G.tool === 'remove' ? '#fc5454' : '#fcfc54'; ctx.lineWidth = 2; ctx.strokeRect(-10, -10, 20, 20); ctx.restore();
+  }
+  // charges
+  const blink = (performance.now() / 120 | 0) % 2;
+  for (const c of G.charges) {
+    if (c.done) continue;
+    const b = c.body; if (!b.alive) continue;
+    ctx.save(); ctx.translate(b.position.x, b.position.y); ctx.rotate(b.angle);
+    if (c.type === 'small') {
+      ctx.fillStyle = '#000'; ctx.fillRect(-4, -8, 8, 16);
+      ctx.fillStyle = '#d82020'; ctx.fillRect(-2, -6, 4, 12);
+      ctx.fillStyle = '#fcfcfc'; ctx.fillRect(-2, -8, 4, 2);
+    } else {
+      ctx.fillStyle = '#000'; ctx.fillRect(-9, -8, 18, 16);
+      ctx.fillStyle = '#d82020'; ctx.fillRect(-7, -6, 4, 12); ctx.fillRect(-2, -6, 4, 12); ctx.fillRect(3, -6, 4, 12);
+      ctx.fillStyle = '#202020'; ctx.fillRect(-7, -1, 14, 2);
+    }
+    ctx.fillStyle = G.phase === 'count' ? (blink ? '#fc5454' : '#540000') : '#54fc54'; ctx.fillRect(-2, -12, 4, 4);
+    ctx.fillStyle = '#fcfc54';
+    const k = DELAYS.indexOf(c.delay);
+    for (let i = 0; i < k; i++) ctx.fillRect(10, -8 + i * 6, 4, 4);
+    ctx.restore();
+  }
+  // particles
+  for (const p of G.parts) {
+    const f = p.life / p.max;
+    let col;
+    if (p.type === 'fire') col = f > .75 ? '#fcfcfc' : f > .5 ? '#fcfc54' : f > .3 ? '#fca800' : f > .15 ? '#d82020' : '#541c1c';
+    else if (p.type === 'smoke') col = f > .6 ? '#545454' : f > .3 ? '#6c6c6c' : '#848484';
+    else if (p.type === 'dust') col = f > .5 ? '#bcb4a0' : '#948c78';
+    else if (p.type === 'spark') col = f > .6 ? '#fcfcfc' : f > .3 ? '#fcfc54' : '#fca800';
+    else if (p.type === 'glass') col = (p.life | 0) % 6 < 2 ? '#fcfcfc' : f > .4 ? '#a8d8fc' : '#5494d8';
+    else col = p.mat ? PAL[p.mat].base[1] : '#787870';
+    if (p.type === 'smoke' && f < .25 && ((p.x + p.y) | 0) % 2) continue;
+    ctx.fillStyle = col; const s = Math.max(1, Math.round(p.sz * cam.k)) / cam.k;
+    ctx.fillRect(Math.round(p.x * cam.k) / cam.k - s / 2, Math.round(p.y * cam.k) / cam.k - s / 2, s, s);
+  }
+  if (G.flash > 0) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = G.flash > 1 ? '#fcfcfc' : '#fcfc54'; ctx.globalAlpha = 0.5; ctx.fillRect(0, 0, 400, 240); ctx.globalAlpha = 1; G.flash--; }
+}
+const PAL = {
+  concrete: { base: ['#9c9c94', '#8c8c84', '#a8a89c'], hi: '#c4c4b8', dark: '#54544c' },
+  brick:    { base: ['#a84830', '#984028', '#b4543c'], hi: '#c86c4c', dark: '#5c2418', mortar: '#c8b8a0' },
+  steel:    { base: ['#5c6478', '#545c70', '#646c80'], hi: '#8c94ac', dark: '#2c3040' },
+  wood:     { base: ['#a8743c', '#9c6830', '#b4804a'], hi: '#c8945c', dark: '#5c3818' },
+  glass:    { base: ['#3c80d0', '#3878c8', '#4488d8'], hi: '#c8ecfc', dark: '#204070' }
+};
+const R = (x, y, w, h) => ctx.fillRect(x, y, w, h);
+function bevel(base, hi, dark) {
+  ctx.fillStyle = base; R(-10, -10, 20, 20);
+  ctx.fillStyle = hi; R(-10, -10, 20, 2); R(-10, -10, 2, 20);
+  ctx.fillStyle = dark; R(-10, 8, 20, 2); R(8, -10, 2, 20);
+}
+function drawBlock(b) {
+  ctx.save(); ctx.translate(b.position.x, b.position.y); ctx.rotate(b.angle);
+  const P = PAL[b.mat], k = b.kind, sh = b.shade;
+  if (b.mat === 'concrete') {
+    const roof = k === 'r';
+    bevel(roof ? '#6c6c78' : P.base[sh], roof ? '#8c8c9c' : P.hi, P.dark);
+    if (k === 'w') {
+      const lit = (b.id * 7) % 5 === 0;
+      ctx.fillStyle = lit ? '#fcd454' : '#202058'; R(-6, -6, 12, 12);
+      ctx.fillStyle = lit ? '#fcfca8' : '#5454a8'; R(-6, -6, 4, 2); R(-6, -6, 2, 4);
+      ctx.fillStyle = P.dark; R(-1, -6, 2, 12);
+    } else if (!roof && sh === 1) { ctx.fillStyle = '#7c7c74'; R(-4, 0, 2, 2); R(4, -4, 2, 2); }
+  } else if (b.mat === 'brick') {
+    ctx.fillStyle = P.base[sh]; R(-10, -10, 20, 20);
+    ctx.fillStyle = P.mortar; R(-10, -1, 20, 2); R(-10, 8, 20, 2); R(-1, -10, 2, 9); R(-7, 1, 2, 7); R(5, 1, 2, 7);
+    ctx.fillStyle = P.hi; R(-10, -10, 9, 2); R(1, -10, 9, 2);
+    if (k === 'B') {
+      ctx.fillStyle = '#1c1c38'; R(-5, -4, 10, 12); R(-3, -6, 6, 2);
+      ctx.fillStyle = (b.id * 3) % 4 === 0 ? '#fcb454' : '#3c3c70'; R(-3, -2, 2, 4);
+    }
+  } else if (b.mat === 'steel') {
+    ctx.fillStyle = P.base[sh]; R(-10, -10, 20, 20);
+    ctx.fillStyle = P.dark; R(-10, -10, 20, 4); R(-10, 6, 20, 4);
+    ctx.fillStyle = P.hi; R(-10, -10, 20, 2); R(-10, 6, 20, 1);
+    ctx.fillStyle = P.dark;
+    for (let i = -6; i < 6; i += 2) { R(i, i, 2, 2); R(i, -i - 2, 2, 2); }
+    ctx.fillStyle = '#b0b8cc'; R(-8, -8, 2, 2); R(6, -8, 2, 2); R(-8, 7, 2, 2); R(6, 7, 2, 2);
+  } else if (b.mat === 'wood') {
+    const ch = b.charred;
+    ctx.fillStyle = ch ? '#3c2c20' : P.base[sh]; R(-10, -10, 20, 20);
+    ctx.fillStyle = ch ? '#1c140c' : P.dark; R(-10, -4, 20, 2); R(-10, 3, 20, 2); R(-10, 8, 20, 2);
+    if (!ch) { ctx.fillStyle = P.hi; R(-10, -10, 20, 2); R(-6 + sh * 3, -8, 4, 1); R(2 - sh * 2, 5, 5, 1); }
+    if (k === 'O') { ctx.fillStyle = '#1c1c38'; R(-6, -6, 12, 12); ctx.fillStyle = ch ? '#1c140c' : P.dark; R(-1, -6, 2, 12); R(-6, -1, 12, 2); }
+    if (b.burn > 0 && (performance.now() / 90 + b.id) % 3 < 1.2) { ctx.fillStyle = 'rgba(252,140,0,.5)'; R(-10, -10, 20, 20); }
+  } else if (b.mat === 'glass') {
+    ctx.fillStyle = P.dark; R(-10, -10, 20, 20);
+    ctx.fillStyle = P.base[sh]; R(-8, -8, 16, 16);
+    ctx.fillStyle = P.hi; for (let i = -6; i < 2; i += 2) R(i, -i - 4, 2, 2);
+    ctx.fillStyle = '#ffffff'; R(-6, -6, 2, 2);
+  }
+  let dead = 0; for (const j of b.joints) if (!j.alive) dead++;
+  if (dead && b.mat !== 'glass') {
+    ctx.fillStyle = b.mat === 'steel' ? '#fcfc54' : '#2c2c28';
+    if (b.mat === 'steel') { R(-2, -2, 4, 4); }
+    else { R(-8, -2, 6, 2); R(-2, 0, 2, 4); if (dead > 2) { R(0, 4, 6, 2); R(4, -8, 2, 6); } }
+  }
+  ctx.restore();
+}
+
+// ---------- loop ----------
+let last = performance.now(), acc = 0;
+function frame(now) {
+  const dt = Math.min(100, now - last); last = now;
+  if (G.phase === 'count') {
+    G.cd -= dt / 1000;
+    const n = Math.ceil(G.cd / 0.5);
+    if (n !== G.lastBeep && n > 0) { G.lastBeep = n; blip(n === 1 ? 1320 : 880, .12); $('banner').textContent = n; }
+    if (G.cd <= 0) startBlast();
+  }
+  if (G.phase === 'blast') {
+    acc += dt; let n = 0;
+    while (acc >= 1000 / 60 && n < 2 && G.phase === 'blast') { blastStep(); acc -= 1000 / 60; n++; }
+    if (n === 2) acc = 0;
+  } else acc = 0;
+  updateParts(); render();
+  requestAnimationFrame(frame);
+}
+makeBg(99); updateHud(); showMenu(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>
